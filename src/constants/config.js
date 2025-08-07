@@ -1,0 +1,19 @@
+export const COMPANY_NAME = 'Lunori';
+export const APP_NAME = 'Lunori';
+export const EMAIL = 'contact@lunori.app';
+export const PHONE_CODE = '+371';
+export const PHONE_NUMBER = '12345678';
+export const COUNTRY = 'Latvia';
+export const CITY = 'Riga';
+export const STREET = 'Brivibas Street 172';
+export const POST_CODE = 'LV-1052';
+export const LATITUDE = '56.9496';
+export const LONGITUDE = '24.1052';
+
+export const YOUTUBE = 'https://www.youtube.com';
+export const X = 'https://www.x.com';
+export const FACEBOOK = 'https://www.facebook.com';
+export const INSTAGRAM = 'https://www.instagram.com';
+export const DOMAIN_URL = 'https://www.lunori.app';
+export const DOMAIN_URL2 = 'https://lunori.netlify.app';
+export const PAYPAL_BUTTON_ID = '7X42GYG39BMSG';

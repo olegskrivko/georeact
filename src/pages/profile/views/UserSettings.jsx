@@ -1,0 +1,982 @@
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CardMembershipIcon from '@mui/icons-material/CardMembership';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
+import SendIcon from '@mui/icons-material/Send';
+import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  CircularProgress,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Paper,
+  Slider,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import axios from 'axios';
+import Lottie from 'lottie-react';
+
+import spinnerAnimation from '../../../assets/Animation-1749725645616.json';
+import { useAuth } from '../../../contexts/AuthContext';
+import LeafletAddNotificationMap from '../../../shared/maps/LeafletAddNotificationMap';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const urlBase64ToUint8Array = (base64String) => {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; i++) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+};
+
+const arrayBufferToBase64 = (buffer) => {
+  const uint8Array = new Uint8Array(buffer);
+  let binary = '';
+  uint8Array.forEach((byte) => {
+    binary += String.fromCharCode(byte);
+  });
+  return window.btoa(binary);
+};
+function UserSettings() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+  });
+  const [location, setLocation] = useState({ lat: 56.946285, lng: 24.105078 });
+  const [distance, setDistance] = useState(5); // Default 5 km
+  const [quota, setQuota] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [subscriptionStatus, setSubscriptionStatus] = useState(null);
+  const [loadingSubscription, setLoadingSubscription] = useState(false);
+  const [subscriptionError, setSubscriptionError] = useState(null);
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        username: user.username,
+        email: user.email,
+      });
+      setLoading(false); // stop loading once user data is set
+    }
+  }, [user]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  const fetchUserPetQuota = async () => {
+    try {
+      const accessToken = localStorage.getItem('access_token');
+      const response = await fetch(`${API_BASE_URL}/api/pets/pet-quota/`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch pet quota');
+      }
+
+      const data = await response.json();
+      console.log('Pet Quota:', data);
+      setQuota(data); // ✅ set the state here
+    } catch (error) {
+      console.error('Error fetching pet quota:', error);
+      setQuota(null); // optional: set to null or default if there's an error
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/logout');
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      const accessToken = localStorage.getItem('access_token');
+
+      if (!accessToken) {
+        console.error('No access token found');
+        return;
+      }
+
+      await axios.delete(`${API_BASE_URL}/api/auth/user/delete/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      // Call logout
+      logout();
+
+      // Delay navigation so logout completes before rerender
+      setTimeout(() => {
+        navigate('/account-deleted');
+      }, 100); // 100ms is usually enough
+    } catch (err) {
+      console.error('Error deleting account:', err);
+    }
+  };
+
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [subscription, setSubscription] = useState(null);
+  // const [lat, setLat] = useState(56.946);     // Default to Riga
+  // const [lon, setLon] = useState(24.1059);    // Default to Riga
+
+  // Add useEffect to fetch user location on component mount
+  useEffect(() => {
+    fetchUserLocation();
+  }, []);
+
+  const handleLocationChange = (coords) => {
+    setLocation({
+      lat: coords.lat,
+      lng: coords.lng,
+    });
+    // If user is subscribed, update the subscription with new location
+    if (isSubscribed && subscription) {
+      saveSubscriptionToBackend(subscription);
+    }
+  };
+
+  const fetchUserLocation = async () => {
+    try {
+      const accessToken = localStorage.getItem('access_token');
+      const response = await fetch(`${API_BASE_URL}/api/notifications/user-location/`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user location');
+      }
+
+      const data = await response.json();
+      console.log('Fetched location data:', data);
+
+      // Make sure lat/lng exist before setting
+      if (data.lat && data.lon) {
+        setLocation({ lat: data.lat, lng: data.lon });
+        if (data.distance) setDistance(data.distance);
+      }
+    } catch (error) {
+      console.error('Error fetching user location:', error);
+    }
+  };
+
+  const askForNotificationPermission = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        await subscribeUserToPush();
+      }
+    } catch (error) {
+      console.error('Permission request failed', error);
+    }
+  };
+
+  const subscribeUserToPush = async () => {
+    try {
+      const registration = await navigator.serviceWorker.register('/service-worker.js');
+
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(
+          'BOZTcqsdJXUbELTV3ax5lK3X3Wh4S33MuJAZ75MVWCxjtrcn7nVr2Xp-JPiPlVJCE9gqmLv23_PR_f-7uKgU8iU',
+        ),
+      });
+
+      setSubscription(subscription);
+      setIsSubscribed(true);
+      await saveSubscriptionToBackend(subscription);
+    } catch (error) {
+      console.error('Subscription error:', error);
+    }
+  };
+
+  const saveSubscriptionToBackend = async (subscription) => {
+    try {
+      const accessToken = localStorage.getItem('access_token');
+
+      const subscriptionData = {
+        endpoint: subscription.endpoint,
+        p256dh: arrayBufferToBase64(subscription.getKey('p256dh')),
+        auth: arrayBufferToBase64(subscription.getKey('auth')),
+        lat: location.lat,
+        lon: location.lng,
+        distance,
+      };
+
+      const response = await fetch(`${API_BASE_URL}/api/notifications/subscribe/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(subscriptionData),
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        console.error('Subscription error:', error);
+      }
+    } catch (error) {
+      console.error('Error saving subscription:', error);
+    }
+  };
+
+  const checkExistingSubscription = async () => {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const existingSubscription = await registration.pushManager.getSubscription();
+
+      if (!existingSubscription) return setIsSubscribed(false);
+
+      setSubscription(existingSubscription);
+
+      const accessToken = localStorage.getItem('access_token');
+      const response = await fetch(
+        `${API_BASE_URL}/api/notifications/is_subscribed/?endpoint=${encodeURIComponent(existingSubscription.endpoint)}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      );
+
+      const result = await response.json();
+      setIsSubscribed(result.subscribed);
+
+      if (!result.subscribed) {
+        await saveSubscriptionToBackend(existingSubscription);
+      }
+    } catch (error) {
+      console.error('Subscription check failed:', error);
+    }
+  };
+
+  const unsubscribeUser = async () => {
+    try {
+      const registration = await navigator.serviceWorker.getRegistration();
+      const subscription = await registration.pushManager.getSubscription();
+      const accessToken = localStorage.getItem('access_token');
+
+      if (subscription) {
+        await subscription.unsubscribe();
+        await fetch(`${API_BASE_URL}/api/notifications/unsubscribe/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ endpoint: subscription.endpoint }),
+        });
+
+        setIsSubscribed(false);
+        setSubscription(null);
+      }
+    } catch (error) {
+      console.error('Unsubscribe failed:', error);
+    }
+  };
+
+  const sendTestNotification = async () => {
+    try {
+      const accessToken = localStorage.getItem('access_token');
+      await fetch(`${API_BASE_URL}/api/notifications/send_notification/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          title: 'Test xxx Notification',
+          body: 'This XXX is a test notification.',
+          icon: '/logo192.png', // Make sure this icon exists in your public folder
+          badge: '/logo192.png', // Optional: Make sure this icon exists in your public folder
+          image:
+            'https://images.unsplash.com/photo-1534361960057-19889db9621e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // ← This is the image that shows inside the notification (on supported devices)
+          data: {
+            url: 'https://example.com', // URL to open when notification is clicked
+          },
+          // url: 'https://example.com',
+        }),
+      });
+    } catch (error) {
+      console.error('Send notification failed:', error);
+    }
+  };
+
+  const fetchSubscriptionStatus = async () => {
+    try {
+      setLoadingSubscription(true);
+      setSubscriptionError(null);
+      const accessToken = localStorage.getItem('access_token');
+      const response = await fetch(`${API_BASE_URL}/api/payment/subscription/status/`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = await response.json();
+      setSubscriptionStatus(data);
+    } catch (error) {
+      setSubscriptionError('Failed to fetch subscription status');
+      console.error('Error fetching subscription status:', error);
+    } finally {
+      setLoadingSubscription(false);
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    try {
+      setLoadingSubscription(true);
+      setSubscriptionError(null);
+      const accessToken = localStorage.getItem('access_token');
+      const response = await fetch(`${API_BASE_URL}/api/payment/subscription/cancel/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = await response.json();
+      setSubscriptionStatus((prev) => ({
+        ...prev,
+        cancel_at_period_end: true,
+        cancel_at: data.cancel_at,
+      }));
+      setCancelDialogOpen(false);
+    } catch (error) {
+      setSubscriptionError('Failed to cancel subscription');
+      console.error('Error canceling subscription:', error);
+    } finally {
+      setLoadingSubscription(false);
+    }
+  };
+
+  useEffect(() => {
+    checkExistingSubscription();
+    fetchSubscriptionStatus();
+    fetchUserPetQuota(); // ✅ Add this line
+  }, []);
+
+  if (loading) {
+    return (
+      <Container>
+        <Box
+          sx={{
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Box sx={{ width: 180, height: 180 }}>
+            <Lottie animationData={spinnerAnimation} loop autoplay />
+          </Box>
+        </Box>
+      </Container>
+    );
+  }
+  if (!user) {
+    return <Typography>User data not found</Typography>;
+  }
+  return (
+    <Container component="main" maxWidth="lg" disableGutters>
+      <Box sx={{ my: { xs: 2, sm: 2, md: 3, lg: 4, xl: 4 } }}>
+        <Typography
+          component="h1"
+          align="center"
+          sx={{
+            fontWeight: 800,
+            fontSize: {
+              xs: '1.5rem',
+              sm: '2rem',
+              md: '2.5rem',
+              lg: '2.5rem',
+            },
+            mb: 5,
+            background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          User Settings
+        </Typography>
+
+        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{ mb: 3 }}>
+          <Card
+            sx={{
+              p: { xs: 1, sm: 2 },
+              borderRadius: 3,
+              background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+            }}
+          >
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Username"
+              name="username"
+              disabled
+              value={formData.username}
+              onChange={handleChange}
+              InputProps={{ readOnly: true }}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Email"
+              name="email"
+              disabled
+              value={formData.email}
+              onChange={handleChange}
+              InputProps={{ readOnly: true }}
+            />
+          </Card>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{ mb: 3 }}>
+          <Card
+            sx={{
+              p: { xs: 1, sm: 2 },
+              borderRadius: 3,
+              background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+            }}
+          >
+            <Box display="flex" alignItems="center" mb={2}>
+              <Typography variant="h6">Push Notification Management</Typography>
+            </Box>
+            <LeafletAddNotificationMap onLocationChange={handleLocationChange} location={location} />
+            <Box sx={{ my: 3 }}>
+              <Box sx={{ display: 'none' }}>
+                <TextField
+                  label="Latitude"
+                  type="number"
+                  value={location.lat}
+                  onChange={(e) =>
+                    setLocation({
+                      ...location,
+                      lat: parseFloat(e.target.value),
+                    })
+                  }
+                  fullWidth
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  label="Longitude"
+                  type="number"
+                  value={location.lng}
+                  onChange={(e) =>
+                    setLocation({
+                      ...location,
+                      lng: parseFloat(e.target.value),
+                    })
+                  }
+                  fullWidth
+                  sx={{ mb: 2 }}
+                />
+              </Box>
+              <Typography gutterBottom>Distance {distance ? distance : 0} km</Typography>
+              <Slider
+                value={distance}
+                onChange={(e, newValue) => setDistance(newValue)}
+                min={1}
+                max={50}
+                step={1}
+                valueLabelDisplay="auto"
+              />
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              {isSubscribed ? (
+                <>
+                  <Box display="flex" alignItems="center" mb={2}>
+                    <NotificationsActiveIcon color="primary" sx={{ mr: 1 }} />
+                    <Typography variant="h6"> You are subscribed to push notifications.</Typography>
+                  </Box>
+                </>
+              ) : (
+                <>
+                  <NotificationsOffIcon color="warning" sx={{ mr: 1 }} />
+                  <Typography variant="h6" color="text.secondary">
+                    You are not subscribed yet.
+                  </Typography>
+                </>
+              )}
+            </Box>
+
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+              {isSubscribed ? (
+                <>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    color="error"
+                    onClick={unsubscribeUser}
+                    startIcon={<CancelIcon />}
+                  >
+                    Unsubscribe
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  variant="contained"
+                  startIcon={<NotificationsActiveIcon />}
+                  fullWidth
+                  onClick={askForNotificationPermission}
+                >
+                  Subscribe
+                </Button>
+              )}
+            </Box>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+              {isSubscribed && (
+                <Button variant="outlined" fullWidth startIcon={<SendIcon />} onClick={sendTestNotification}>
+                  Send Test Notification
+                </Button>
+              )}
+            </Box>
+          </Card>
+        </Grid>
+        {/* <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{ mb: 3 }}>
+          <Card
+            sx={{
+              p: { xs: 1, sm: 2 },
+              borderRadius: 3,
+              background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+            }}
+          >
+            <Box display="flex" alignItems="center" mb={2}>
+           
+              <Typography variant="h6">Push Notification Management</Typography>
+            </Box>
+            <LeafletAddNotificationMap onLocationChange={handleLocationChange} location={location} />
+            <Box sx={{ my: 3 }}>
+              <Box sx={{ display: 'none' }}>
+                <TextField
+                  label="Latitude"
+                  type="number"
+                  value={location.lat}
+                  onChange={(e) =>
+                    setLocation({
+                      ...location,
+                      lat: parseFloat(e.target.value),
+                    })
+                  }
+                  fullWidth
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  label="Longitude"
+                  type="number"
+                  value={location.lng}
+                  onChange={(e) =>
+                    setLocation({
+                      ...location,
+                      lng: parseFloat(e.target.value),
+                    })
+                  }
+                  fullWidth
+                  sx={{ mb: 2 }}
+                />
+              </Box>
+              <Typography gutterBottom>Distance {distance ? distance : 0} km</Typography>
+              <Slider
+                value={distance}
+                onChange={(e, newValue) => setDistance(newValue)}
+                min={1}
+                max={50}
+                step={1}
+                valueLabelDisplay="auto"
+              />
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              {isSubscribed ? (
+                <>
+                  <Box display="flex" alignItems="center" mb={2}>
+                    <NotificationsActiveIcon color="primary" sx={{ mr: 1 }} />
+                    <Typography variant="h6"> You are subscribed to push notifications.</Typography>
+                  </Box>
+                </>
+              ) : (
+                <>
+                  <NotificationsOffIcon color="warning" sx={{ mr: 1 }} />
+                  <Typography variant="h6" color="text.secondary">
+                    You are not subscribed yet.
+                  </Typography>
+                </>
+              )}
+            </Box>
+
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+              {isSubscribed ? (
+                <>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    color="error"
+                    onClick={unsubscribeUser}
+                    startIcon={<CancelIcon />}
+                  >
+                    Unsubscribe
+                  </Button>
+                  <Button variant="outlined" fullWidth startIcon={<SendIcon />} onClick={sendTestNotification}>
+                    Send Test Notification
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  variant="contained"
+                  startIcon={<NotificationsActiveIcon />}
+                  fullWidth
+                  onClick={askForNotificationPermission}
+                >
+                  Subscribe
+                </Button>
+              )}
+            </Box>
+          </Card>
+        </Grid> */}
+
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+            <Card
+              sx={{
+                p: { xs: 1, sm: 2 },
+                borderRadius: 3,
+                background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+              }}
+            >
+              <Box display="flex" alignItems="center" mb={2}>
+                {/* <CardMembershipIcon sx={{ mr: 1 }} /> */}
+                <Typography variant="h6">Subscription Management</Typography>
+              </Box>
+
+              {loadingSubscription ? (
+                <Box display="flex" justifyContent="center" p={2}>
+                  <CircularProgress />
+                </Box>
+              ) : subscriptionError ? (
+                <Alert severity="error" sx={{ mb: 2 }}>
+                  {subscriptionError}
+                </Alert>
+              ) : subscriptionStatus ? (
+                <Box>
+                  {subscriptionStatus.is_subscribed ? (
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Alert severity="success" sx={{ mb: 2 }}>
+                        Active Subscription: {subscriptionStatus.subscription_type}
+                      </Alert>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        Started: {new Date(subscriptionStatus.subscription_start).toLocaleDateString()}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        Current Period Ends: {new Date(subscriptionStatus.subscription_end).toLocaleDateString()}
+                      </Typography>
+
+                      {/* Quota */}
+                      {quota && (
+                        <Card
+                          sx={{
+                            p: { xs: 1, sm: 2 },
+                            mb: 2,
+                            borderRadius: 3,
+                            background: 'linear-gradient(90deg, #edf4ff 0%, #f3faff 100%)',
+                          }}
+                        >
+                          <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+                            Your subscription limit
+                          </Typography>
+                          <Typography variant="body2" component="p" sx={{ mb: 1 }}>
+                            Allowed number of pets: <strong>{quota.limit}</strong>
+                          </Typography>
+                          <Typography variant="body2" component="p" sx={{ mb: 1 }}>
+                            Currently used: <strong>{quota.used}</strong>
+                          </Typography>
+                          {/* <Box mt={3}>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                              Abonementu limiti:
+                            </Typography>
+                            <Box display="flex" gap={2} flexWrap="wrap">
+                              <Chip label="Freemium: 1" size="small" color="primary" />
+                              <Chip label="Plus: 3" size="small" color="primary" />
+                              <Chip label="Premium: 5" size="small" color="primary" />
+                            </Box>
+                          </Box> */}
+                        </Card>
+                      )}
+
+                      {subscriptionStatus.cancel_at_period_end ? (
+                        <Box mt={2}>
+                          <Alert severity="warning" sx={{ mb: 2 }}>
+                            Subscription will end on {new Date(subscriptionStatus.cancel_at).toLocaleDateString()}
+                          </Alert>
+                        </Box>
+                      ) : (
+                        <Box>
+                          {/* <Button
+                            variant="contained"
+                            color="error"
+                            fullWidth
+                            onClick={() => setCancelDialogOpen(true)}
+                            startIcon={<CancelIcon />}
+                            sx={{ mt: 2 }}
+                            disabled={subscriptionStatus.cancel_at_period_end}
+                          >
+                            Cancel Subscription
+                          </Button> */}
+                          <Button
+                            variant="contained"
+                            color="error"
+                            fullWidth
+                            onClick={() => setCancelDialogOpen(true)}
+                            startIcon={<CancelIcon />}
+                            sx={{
+                              mt: 2,
+                              justifyContent: 'flex-start', // Align icon and text to the left
+                              pl: 2, // Optional: add left padding for spacing
+                            }}
+                            disabled={subscriptionStatus.cancel_at_period_end}
+                          >
+                            Cancel Subscription
+                          </Button>
+                        </Box>
+                      )}
+                    </Box>
+                  ) : (
+                    <Alert severity="info">No active subscription</Alert>
+                  )}
+                </Box>
+              ) : null}
+            </Card>
+          </Grid>
+        </Grid>
+
+        {/* <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+            <Accordion elevation={1}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Box display="flex" alignItems="center">
+                  <CardMembershipIcon sx={{ mr: 1 }} />
+                  <Typography variant="h6">Subscription Management</Typography>
+                </Box>
+              </AccordionSummary>
+              <AccordionDetails>
+                {loadingSubscription ? (
+                  <Box display="flex" justifyContent="center" p={2}>
+                    <CircularProgress />
+                  </Box>
+                ) : subscriptionError ? (
+                  <Alert severity="error" sx={{ mb: 2 }}>
+                    {subscriptionError}
+                  </Alert>
+                ) : subscriptionStatus ? (
+                  <Box>
+                    {subscriptionStatus.is_subscribed ? (
+                      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Alert severity="success" sx={{ mb: 2 }}>
+                          Active Subscription: {subscriptionStatus.subscription_type}
+                        </Alert>
+                        <Typography variant="body2" color="text.secondary">
+                          Started: {new Date(subscriptionStatus.subscription_start).toLocaleDateString()}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Ends: {new Date(subscriptionStatus.subscription_end).toLocaleDateString()}
+                        </Typography>
+
+                        {subscriptionStatus.cancel_at_period_end ? (
+                          <Alert severity="warning" sx={{ mt: 2 }}>
+                            Subscription will end on {new Date(subscriptionStatus.cancel_at).toLocaleDateString()}
+                          </Alert>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            color="error"
+                            onClick={() => setCancelDialogOpen(true)}
+                            startIcon={<CancelIcon />}
+                            sx={{ mt: 2 }}
+                            disabled={subscriptionStatus.cancel_at_period_end}
+                          >
+                            Cancel Subscription
+                          </Button>
+                        )}
+                      </Box>
+                    ) : (
+                      <Alert severity="info">No active subscription</Alert>
+                    )}
+                  </Box>
+                ) : null}
+              </AccordionDetails>
+            </Accordion>
+          </Grid> */}
+
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+            <Paper
+              sx={{
+                p: { xs: 1, sm: 2 },
+                borderRadius: 3,
+                background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+              }}
+            >
+              <Box display="flex" alignItems="center" sx={{ mb: { xs: 1, sm: 2 } }}>
+                <Tooltip title="Logout">
+                  <IconButton
+                    color="primary"
+                    sx={{ backgroundColor: '#f7f9fd' }}
+                    size="small"
+                    aria-label="logout"
+                    onClick={handleLogout}
+                  >
+                    <ExitToAppIcon />
+                  </IconButton>
+                </Tooltip>
+
+                <Typography variant="body1" sx={{ ml: { xs: 1, sm: 2 } }}>
+                  Logout
+                </Typography>
+              </Box>
+              {/* <Box display="flex" alignItems="center" sx={{ mb: { xs: 1, sm: 2 } }}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  startIcon={<ExitToAppIcon />}
+                  onClick={handleLogout}
+                  sx={{
+                    justifyContent: 'flex-start',
+                    pl: 2,
+                    background: 'transparent',
+                    color: 'black',
+                    boxShadow: 'none',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                      boxShadow: 'none',
+                    },
+                  }}
+                >
+                  Izrakstīties
+                </Button>
+              </Box> */}
+
+              <Box display="flex" alignItems="center">
+                <Tooltip title="Delete">
+                  <IconButton
+                    color="primary"
+                    sx={{ backgroundColor: '#f7f9fd' }}
+                    size="small"
+                    aria-label="delete"
+                    onClick={() => setOpenDialog(true)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+                <Box flexGrow={1}>
+                  <Typography variant="body1" sx={{ ml: { xs: 1, sm: 2 } }}>
+                    Delete user
+                  </Typography>
+                </Box>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+
+        {/* Delete Confirmation Dialog */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Are you sure you want to delete your profile?</DialogTitle>
+          <DialogContent>
+            <Typography>This action will permanently delete your account and all data.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" onClick={handleDeleteAccount} color="error">
+              Delete
+            </Button>
+            <Button onClick={() => setOpenDialog(false)} color="primary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Back Button */}
+        {/* <Grid container spacing={2} sx={{ mt: 4 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+            <Box textAlign="left">
+              <Button
+                variant="outlined"
+                color="primary"
+                startIcon={<ArrowBackIcon />}
+                component={Link}
+                to={`/user-profile`}
+              >
+                Atpakaļ
+              </Button>
+            </Box>
+          </Grid>
+        </Grid> */}
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+            <Box mt={4} display="flex" justifyContent="space-between" alignItems="center" textAlign="center">
+              <Link
+                to="/user-profile"
+                style={{
+                  color: '#00b5ad',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                }}
+              >
+                <ArrowBackIcon fontSize="small" />
+                Back
+              </Link>
+            </Box>
+          </Grid>
+        </Grid>
+        {/* </Container> */}
+
+        {/* Add Cancel Subscription Dialog */}
+        <Dialog open={cancelDialogOpen} onClose={() => setCancelDialogOpen(false)}>
+          <DialogTitle>Cancel Subscription</DialogTitle>
+          <DialogContent>
+            <Typography>
+              Are you sure you want to cancel your subscription? You'll continue to have access until the end of your
+              current billing period.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setCancelDialogOpen(false)}>Keep Subscription</Button>
+            <Button onClick={handleCancelSubscription} color="error">
+              Cancel Subscription
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    </Container>
+  );
+}
+
+export default UserSettings;

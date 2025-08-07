@@ -1,0 +1,29 @@
+{
+  "short_name": "Lunori",
+  "name": "Lunori - Lost & Found Pets",
+  "description": "We help reunite lost and found pets with their owners. Find your pet, contact shelters, and get advice on what to do.",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "orientation": "portrait",
+  "display": "standalone",
+  "theme_color": "#00b3a4",
+  "background_color": "#00b3a4"
+}

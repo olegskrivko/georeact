@@ -1,0 +1,108 @@
+body {
+  margin: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+.custom-marker-cluster {
+  /* background-color: rgba(255, 165, 0, 0.6);  */
+  background-color: rgba(91, 155, 213, 0.7);
+
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  width: 33px;
+  height: 33px;
+}
+
+.custom-marker-cluster span {
+  display: inline-block;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+/* Custom styles to remove the white background from the popup */
+.leaflet-popup-content-wrapper {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.leaflet-popup-tip-container {
+  display: none !important;
+}
+
+/* Custom styles to hide the popup close button */
+.leaflet-popup-close-button {
+  display: none !important;
+}
+
+/* Add this to your CSS or styled components */
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(100%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in {
+  animation: slideInFromBottom 3s ease-out;
+}
+
+/* General approach for all major browsers */
+body {
+  overflow: auto; /* Ensure scroll functionality */
+}
+
+/* Hide scrollbar for WebKit browsers */
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Hide browser’s native password reveal icon */
+input[type='password']::-webkit-textfield-decoration-container,
+input[type='password']::-webkit-password-toggle-button {
+  display: none !important;
+}
+
+input[type='password']::-ms-reveal {
+  display: none !important;
+}
+input[type='password']::-webkit-textfield-decoration-container {
+  display: none !important;
+}
+
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear,
+input[type='password']::-webkit-password-toggle-button {
+  display: none !important;
+}
