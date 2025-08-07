@@ -78,37 +78,6 @@ const GuidesPage = lazy(() => import('./pages/guides/views/GuidesPage'));
 const FullLayout = lazy(() => import('./pages/layout/FullLayout'));
 const Layout = lazy(() => import('./pages/layout/Layout'));
 
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#00b3a4',
-//       contrastText: '#ffffff',
-//     },
-//     secondary: {
-//       main: '#FF5733',
-//       contrastText: '#ffffff',
-//     },
-//   },
-//   components: {
-//     MuiTypography: {
-//       defaultProps: {
-//         variantMapping: {
-//           h1: 'h2',
-//           h2: 'h2',
-//           h3: 'h2',
-//           h4: 'h2',
-//           h5: 'h2',
-//           h6: 'h2',
-//           subtitle1: 'h2',
-//           subtitle2: 'h2',
-//           body1: 'span',
-//           body2: 'span',
-//         },
-//       },
-//     },
-//   },
-// });
-
 const stripePromise = loadStripe(
   'pk_test_51MsAlCBnYVUZPzgiEPtA6hevdWCEOymSzerTmiA2mWpkutsMBMyo8aAuryBXQGXt7rqAk7pgkWCwCmPQddSCXoHQ00gJEKTAS3',
 );
