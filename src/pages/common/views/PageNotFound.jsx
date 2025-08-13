@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { Box, Button, CardMedia, Container, Link as MuiLink, Typography } from '@mui/material';
+import { Box, Button, CardMedia, Container, Typography } from '@mui/material';
 
 import ImgNotFound from '../../../assets/images/pagenotfound/monster_404_error_rafiki.svg';
 
@@ -22,7 +22,7 @@ const PageNotFound = () => {
           alt="404 Not Found"
           sx={{
             width: {
-              xs: '100%', // full width on extra small screens
+              xs: '100%',
               sm: '80%',
               md: '80%',
               lg: '80%',

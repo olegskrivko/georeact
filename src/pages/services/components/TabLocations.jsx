@@ -140,7 +140,7 @@ const TabLocations = ({ service, mapRef, onPanToLocation }) => {
                     {distances[index]} km
                   </Typography>
                 )} */}
-                {location.distance_from_riga_km < 1 ? 'Within 1 km' : `${location.distance_from_riga_km} km away`}
+                {location.distance_km < 1 ? 'Within 1 km' : `${location.distance_km} km away`}
               </Box>
             </Box>
           </Card>

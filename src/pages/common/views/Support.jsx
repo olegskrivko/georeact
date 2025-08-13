@@ -23,7 +23,6 @@ import ImgCollaboration from '../../../assets/images/support/creative_team_amico
 import { DOMAIN_URL, PAYPAL_BUTTON_ID } from '../../../constants/config';
 
 const Support = () => {
-  // English arrays from support.json
   const collaborationPoints = [
     'Animal shelters and rescue organizations – to help find homes for lost pets faster.',
     'Veterinary clinics and specialists – to provide valuable advice to pet owners.',
@@ -38,11 +37,10 @@ const Support = () => {
     'Recommendations or contacts that can help with growth.',
   ];
 
-  // Function to copy the URL to the clipboard
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(DOMAIN_URL).then(
-      () => toast.success('URL copied!'), // Success toast notification when URL is copied
-      () => toast.error('Failed to copy URL'), // Error toast notification when copying fails
+      () => toast.success('URL copied!'),
+      () => toast.error('Failed to copy URL'),
     );
   };
 
@@ -152,7 +150,7 @@ const Support = () => {
           <Box display="flex" alignItems="center" sx={{ my: 2 }}>
             <TextField
               fullWidth
-              value="https://lunori.app"
+              value={DOMAIN_URL}
               variant="outlined"
               InputProps={{
                 readOnly: true,

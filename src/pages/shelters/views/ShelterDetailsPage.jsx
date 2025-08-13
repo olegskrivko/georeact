@@ -10,6 +10,7 @@ import LeafletShelterDetailsMap from '../../../shared/maps/LeafletShelterDetails
 import SectionLabel from '../components/SectionLabel';
 import ShelterContacts from '../components/ShelterContacts';
 import ShelterHeaderCard from '../components/ShelterHeaderCard';
+import ShelterReportInfoCard from '../components/ShelterReportInfoCard';
 import ShelterSocialMedia from '../components/ShelterSocialMedia';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -105,6 +106,10 @@ function ShelterDetailsPage() {
         <Grid container spacing={2} mb={2}>
           <Grid size={{ xs: 12 }}>{shelter && <ShelterSocialMedia socialMedia={shelter.social_media} />}</Grid>
         </Grid>
+      </Box>
+      {/* Report Info Section */}
+      <Box mt={4}>
+        <ShelterReportInfoCard />
       </Box>
     </Container>
   );

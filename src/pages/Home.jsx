@@ -22,7 +22,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import MapBanner from '../pages/common/components/MapBanner';
 import MapBannerDeepBottom from '../pages/common/components/MapBannerDeepBottom';
 import PetPath from '../pages/common/components/PetPath';
-import ChatBot from './common/components/ChatBot';
+import ChatBot from './assistant/components/ChatBot';
 import TestimonialSlider from './common/components/TestimonialSlider';
 
 function Home() {

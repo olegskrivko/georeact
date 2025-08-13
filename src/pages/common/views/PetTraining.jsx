@@ -97,7 +97,6 @@ const PetTraining = () => {
   };
   const videoSource = 'Source: RSPCA South Australia';
 
-  // English training tips from petTraining.json
   const trainingTipsContent = {
     basicCommands: {
       title: 'Start with Basic Commands',

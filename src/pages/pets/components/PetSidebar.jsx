@@ -1,3 +1,5 @@
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { Box, Button, Chip, InputLabel, List, ListItem, TextField } from '@mui/material';
 
 import {
@@ -11,6 +13,8 @@ import {
 import SearchAutocomplete from './SearchAutocomplete';
 
 const PetSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const handleChipClick = (type, value) => {
     const newFilters = {
       ...filters,

@@ -21,12 +21,13 @@ const SearchAutocomplete = ({ filters, searchValue, onSearchSelect }) => {
       const fetchSuggestions = async () => {
         try {
           // added part after ?search=${inputValue} so it would suggest based on already filtered pets
+          // dont need to include here &latitude=${lat}&longitude=${lng}, searh filter will not work
           const res = await axios.get(
             `${API_BASE_URL}/api/pets/?search=${inputValue}&status=${filters.status}&species=${filters.species}&gender=${filters.gender}&size=${filters.size}&pattern=${filters.pattern}&date=${filters.date}&color=${filters.color}`,
           );
           const suggestions = res.data.results.map((pet) => ({
             label: pet.notes || '',
-            value: pet.identifier || '',
+            value: pet.notes || '',
           }));
           setOptions(suggestions);
         } catch (err) {

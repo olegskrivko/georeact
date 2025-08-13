@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import axios from 'axios';
 
+import { LocationContext } from '../../../contexts/LocationContext';
 import LeafletSheltersMap from '../../../shared/maps/LeafletSheltersMap';
 import ShelterCard from '../components/ShelterCard';
 import ShelterCardSkeleton from '../components/ShelterCardSkeleton';
@@ -15,11 +16,13 @@ import Sidebar from '../components/ShelterSidebar';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const SheltersPage = () => {
+  const { location: contextLocation } = useContext(LocationContext);
   const mapRef = useRef();
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [mapCenter, setMapCenter] = useState([56.946285, 24.105078]);
+  const [userLocation, setUserLocation] = useState([56.946285, 24.105078]);
   const [shelters, setShelters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -28,51 +31,17 @@ const SheltersPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const mapContainerRef = useRef();
-  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
-    const fetchLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            console.log('User granted geolocation:', latitude, longitude);
-            setUserLocation([latitude, longitude]);
-            setMapCenter([latitude, longitude]);
-          },
-          (error) => {
-            console.warn('Geolocation error:', error);
-            fetchIpLocation();
-          },
-        );
-      } else {
-        fetchIpLocation();
-      }
-    };
+    const lat = contextLocation?.latitude ?? contextLocation?.lat;
+    const lng = contextLocation?.longitude ?? contextLocation?.lng;
 
-    const fetchIpLocation = async () => {
-      try {
-        const response = await fetch('https://ipapi.co/json/');
-        if (!response.ok) throw new Error('Failed to fetch IP location');
-        const data = await response.json();
-        console.log('IP location data:', data);
-
-        if (data.latitude && data.longitude) {
-          setUserLocation([data.latitude, data.longitude]);
-          setMapCenter([data.latitude, data.longitude]);
-        } else {
-          setUserLocation([56.946285, 24.105078]);
-          setMapCenter([56.946285, 24.105078]);
-        }
-      } catch (error) {
-        console.error('IP location error:', error);
-        setUserLocation([56.946285, 24.105078]);
-        setMapCenter([56.946285, 24.105078]);
-      }
-    };
-
-    fetchLocation();
-  }, []);
+    if (lat != null && lng != null) {
+      const coords = [lat, lng];
+      setUserLocation(coords);
+      setMapCenter(coords);
+    }
+  }, [contextLocation]);
 
   useEffect(() => {
     const fetchShelters = async () => {
@@ -91,6 +60,13 @@ const SheltersPage = () => {
 
     fetchShelters();
   }, []);
+
+  const handlePanToLocation = (lat, lng) => {
+    setMapCenter([parseFloat(lat), parseFloat(lng)]);
+    if (mapContainerRef.current) {
+      mapContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -148,31 +124,26 @@ const SheltersPage = () => {
   };
 
   const handleResetFilters = () => {
-    setFilters({ category: '', size: '', search: '', animal_type_slug: '' }); // Reset to empty values
+    // Start with only page param
+    const queryParams = new URLSearchParams({ page: 1 });
+    // Reset filters state
+    setFilters({ category: '', size: '', search: '', animal_type_slug: '' });
+    // Reset pagination state
     setPagination((prev) => ({ ...prev, page: 1 }));
-    navigate(`${window.location.pathname}?page=1`, { replace: true });
+    // Update URL
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, { replace: true });
   };
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
     setPagination((prev) => ({ ...prev, page: 1 }));
-
     const queryParams = new URLSearchParams();
     if (newFilters.category) queryParams.append('category', newFilters.category);
     if (newFilters.size) queryParams.append('size', newFilters.size);
     if (newFilters.search) queryParams.append('search', newFilters.search);
     if (newFilters.animal_type_slug) queryParams.append('animal_type_slug', newFilters.animal_type_slug);
     queryParams.append('page', 1);
-    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
-      replace: true,
-    });
-  };
-
-  const handlePanToLocation = (lat, lng) => {
-    setMapCenter([parseFloat(lat), parseFloat(lng)]);
-    if (mapContainerRef.current) {
-      mapContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, { replace: true });
   };
 
   return (
@@ -198,7 +169,13 @@ const SheltersPage = () => {
             }}
           >
             {/* Map */}
-            <LeafletSheltersMap shelters={shelters} centerCoords={mapCenter} userLocation={userLocation} ref={mapRef} />
+            <LeafletSheltersMap
+              shelters={shelters}
+              mapCenter={mapCenter}
+              isLoading={loading}
+              userLocation={userLocation}
+              ref={mapRef}
+            />
           </Box>
           {/* Filter button for mobile to show drawer */}
           <Box

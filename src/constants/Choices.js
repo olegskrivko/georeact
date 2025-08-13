@@ -97,8 +97,8 @@ export const PRICE_TYPE_CHOICES = [
 ];
 
 export const SUBJECT_CHOICES = [
-  { value: 1, label: 'Bug Report' },
-  { value: 2, label: 'General Question' },
+  { value: 1, label: 'General Question' },
+  { value: 2, label: 'Bug Report' },
   { value: 3, label: 'Feature Request' },
   { value: 4, label: 'Collaboration Request' },
   { value: 5, label: 'Other' },

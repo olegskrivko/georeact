@@ -64,7 +64,7 @@ const ServiceCard = ({ service, onPanToLocation }) => {
                 : service.operating_name}
             </Typography>
             <Typography component="p" variant="caption">
-              {service.min_distance_to_riga < 1 ? 'Within 1 km' : `${service.min_distance_to_riga} km`}
+              {service?.min_distance_km < 1 ? 'Within 1 km' : `${service?.min_distance_km} km`}
             </Typography>
           </Box>
         </Box>

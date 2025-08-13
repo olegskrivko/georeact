@@ -42,7 +42,7 @@ const ShelterCard = ({ shelter, onPanToLocation }) => {
                 : shelter.operating_name}
             </Typography>
             <Typography component="p" variant="caption">
-              {shelter.distance_from_riga_km < 1 ? 'Within 1 km' : `${shelter.distance_from_riga_km} km`}
+              {shelter?.distance_km < 1 ? 'Within 1 km' : `${shelter?.distance_km} km`}
             </Typography>
           </Box>
         </Box>

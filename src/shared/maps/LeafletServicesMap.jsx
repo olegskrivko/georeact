@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { MapContainer, Marker, Popup, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
+import { Link } from 'react-router-dom';
 
 import '@maptiler/leaflet-maptilersdk';
 import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk';
+import { Box, CardMedia, Typography } from '@mui/material';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import locationIcon from '../../assets/map_icons/suitcase.png';
 
+// Icons
 const defaultIcon = new L.Icon({
   iconUrl: locationIcon,
   iconSize: new L.Point(40, 47),
 });
-
+// User pulse icon
 const userPulseIcon = L.divIcon({
   className: '',
   html: `
@@ -25,7 +28,7 @@ const userPulseIcon = L.divIcon({
   iconSize: [30, 30],
   iconAnchor: [15, 15],
 });
-
+// Cluster icon
 const createClusterCustomIcon = (cluster) => {
   return new L.DivIcon({
     html: `<span>${cluster.getChildCount()}</span>`,
@@ -34,6 +37,24 @@ const createClusterCustomIcon = (cluster) => {
   });
 };
 
+const UserLocationUpdater = ({ userLocation }) => {
+  const map = useMap();
+  const hasCentered = useRef(false);
+
+  useEffect(() => {
+    if (!hasCentered.current && userLocation && userLocation.length === 2) {
+      map.flyTo(userLocation, map.getZoom(), {
+        animate: true,
+        duration: 1.0,
+      });
+      hasCentered.current = true;
+    }
+  }, [userLocation, map]);
+
+  return null;
+};
+
+// Center update hook
 const MapUpdater = ({ mapCenter }) => {
   const map = useMap();
   useEffect(() => {
@@ -44,6 +65,7 @@ const MapUpdater = ({ mapCenter }) => {
   return null;
 };
 
+// Layer provider
 const MapTilerLayer = () => {
   const map = useMap();
   useEffect(() => {
@@ -57,79 +79,107 @@ const MapTilerLayer = () => {
   return null;
 };
 
-function LeafletServicesMap({ services, mapCenter, userLocation, mapRef }) {
-  console.log('locationservices', services);
-
+function LeafletServicesMap({ services, mapCenter, isLoading, userLocation, mapRef }) {
   return (
-    <div ref={mapRef}>
+    <Box component="section" ref={mapRef} className="map-container">
       <MapContainer
-        style={{ height: '500px', width: '100%' }}
-        center={[56.946285, 24.105078]}
-        zoom={9}
+        style={{ height: '400px', width: '100%' }}
+        center={mapCenter}
+        zoom={7}
         scrollWheelZoom
+        minZoom={1}
         maxZoom={18}
       >
         <MapTilerLayer />
         <MapUpdater mapCenter={mapCenter} />
-        {userLocation && (
-          <Marker position={userLocation} icon={userPulseIcon}>
-            <Popup offset={[0, 5]}>
-              <div
-                style={{
-                  background: '#5B9BD5',
-                  color: 'white',
-                  padding: '6px 12px',
-                  borderRadius: '12px',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                Your Location
-              </div>
-            </Popup>
-          </Marker>
-        )}
+        <UserLocationUpdater userLocation={userLocation} />
+        {userLocation && <Marker position={userLocation} icon={userPulseIcon} />}
         <MarkerClusterGroup
           iconCreateFunction={createClusterCustomIcon}
           maxClusterRadius={150}
           spiderfyOnMaxZoom={false}
           showCoverageOnHover={false}
         >
-          {services?.flatMap((service) =>
-            (service.locations || [])
-              .filter((loc) => loc.latitude && loc.longitude)
-              .map((loc) => (
-                <Marker
-                  key={`service-${service.id}-loc-${loc.id}`}
-                  icon={defaultIcon}
-                  position={[parseFloat(loc.latitude), parseFloat(loc.longitude)]}
-                >
-                  <Popup offset={[0, 5]}>
-                    <a href={`/services/${service.id}`} style={{ textDecoration: 'none' }}>
-                      <div
-                        style={{
-                          background: '#5B9BD5',
-                          color: 'white',
-                          padding: '6px 12px',
-                          borderRadius: '12px',
-                          fontSize: '14px',
-                          fontWeight: 500,
-                          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
-                          whiteSpace: 'nowrap',
-                          textDecoration: 'none',
-                        }}
-                      >
-                        {service.operating_name}
-                      </div>
-                    </a>
-                  </Popup>
-                </Marker>
-              )),
+          {!isLoading && (!services || services.length === 0) ? (
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                background: 'rgba(255, 255, 255, 0.9)',
+                p: 3,
+                borderRadius: 2,
+                textAlign: 'center',
+                zIndex: 1000,
+              }}
+            >
+              <Typography component="p">No services to display</Typography>
+              <Typography component="p" fontSize="12px" color="#666">
+                Try changing the filters or come back later.
+              </Typography>
+            </Box>
+          ) : (
+            services?.flatMap((service) =>
+              (service.locations || [])
+                .filter((loc) => loc.latitude && loc.longitude)
+                .map((loc) => (
+                  <Marker
+                    key={`service-${service.id}-loc-${loc.id}`}
+                    icon={defaultIcon}
+                    position={[parseFloat(loc.latitude), parseFloat(loc.longitude)]}
+                  >
+                    <Popup offset={[0, 5]}>
+                      <Link to={`/services/${service.id}`} style={{ textDecoration: 'none' }}>
+                        <Box
+                          sx={{
+                            width: '180px',
+                            textAlign: 'center',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
+                            borderRadius: 2,
+                            backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                            p: 1,
+                            overflow: 'hidden',
+                          }}
+                        >
+                          <CardMedia
+                            component="img"
+                            image={service?.service_image_1 || ImgPlaceholder}
+                            alt={service.operating_name}
+                            sx={{
+                              width: '100%',
+                              height: '140px',
+                              borderRadius: 2,
+
+                              objectFit: 'cover',
+                              mb: 1,
+                            }}
+                          />
+                          <Typography
+                            variant="subtitle1"
+                            sx={{
+                              color: '#244A72',
+                              fontWeight: 600,
+                              fontSize: '0.7rem',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}
+                            title={service.operating_name}
+                          >
+                            {service.operating_name}
+                          </Typography>
+                        </Box>
+                      </Link>
+                    </Popup>
+                  </Marker>
+                )),
+            )
           )}
         </MarkerClusterGroup>
       </MapContainer>
-    </div>
+    </Box>
   );
 }
 

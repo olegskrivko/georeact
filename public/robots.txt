@@ -1,6 +1,6 @@
 User-agent: *
 Disallow: /admin/
 Disallow: /api/
-Allow: /
+Disallow: /user-profile/
 
 Sitemap: https://www.lunori.app/sitemap.xml

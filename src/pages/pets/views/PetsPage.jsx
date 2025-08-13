@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 
 import { LocationContext } from '../../../contexts/LocationContext';
-import LeafletClusterMap from '../../../shared/maps/LeafletClusterMap';
+import LeafletPetsMap from '../../../shared/maps/LeafletPetsMap';
 import PetCard from '../components/PetCard';
 import PetCardSkeleton from '../components/PetCardSkeleton';
 import PetSidebar from '../components/PetSidebar';
@@ -51,6 +51,7 @@ const PetsList = () => {
   console.log('contextLocation', contextLocation);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   useEffect(() => {
     const lat = contextLocation?.latitude ?? contextLocation?.lat;
     const lng = contextLocation?.longitude ?? contextLocation?.lng;
@@ -61,50 +62,6 @@ const PetsList = () => {
       setMapCenter(coords);
     }
   }, [contextLocation]);
-
-  // useEffect(() => {
-  //   const fetchLocation = () => {
-  //     if (navigator.geolocation) {
-  //       navigator.geolocation.getCurrentPosition(
-  //         (position) => {
-  //           const { latitude, longitude } = position.coords;
-  //           console.log('User granted geolocation:', latitude, longitude);
-  //           setUserLocation([latitude, longitude]);
-  //           setMapCenter([latitude, longitude]);
-  //         },
-  //         (error) => {
-  //           console.warn('Geolocation error:', error);
-  //           fetchIpLocation();
-  //         },
-  //       );
-  //     } else {
-  //       fetchIpLocation();
-  //     }
-  //   };
-
-  //   const fetchIpLocation = async () => {
-  //     try {
-  //       const response = await fetch('https://ipapi.co/json/');
-  //       if (!response.ok) throw new Error('Failed to fetch IP location');
-  //       const data = await response.json();
-  //       console.log('IP location data:', data);
-
-  //       if (data.latitude && data.longitude) {
-  //         setUserLocation([data.latitude, data.longitude]);
-  //         setMapCenter([data.latitude, data.longitude]);
-  //       } else {
-  //         setUserLocation([56.946285, 24.105078]);
-  //         setMapCenter([56.946285, 24.105078]);
-  //       }
-  //     } catch (error) {
-  //       console.error('IP location error:', error);
-  //       setUserLocation([56.946285, 24.105078]);
-  //       setMapCenter([56.946285, 24.105078]);
-  //     }
-  //   };
-
-  //   fetchLocation();
-  // }, []);
 
   const handlePanToLocation = (lat, lng) => {
     console.log('lat, lng', lat, lng);
@@ -182,8 +139,9 @@ const PetsList = () => {
   };
 
   const handleResetFilters = () => {
-    const queryParams = new URLSearchParams();
-    queryParams.set('page', 1);
+    // Start with only page param
+    const queryParams = new URLSearchParams({ page: 1 });
+    // Reset filters state
     setFilters({
       status: '',
       species: '',
@@ -194,7 +152,10 @@ const PetsList = () => {
       search: '',
       color: '',
     });
+
+    // Reset pagination state
     setPagination((prev) => ({ ...prev, page: 1 }));
+    // Update URL
     navigate(`${window.location.pathname}?${queryParams.toString()}`, { replace: true });
   };
 
@@ -211,9 +172,7 @@ const PetsList = () => {
     if (newFilters.search) queryParams.append('search', newFilters.search);
     if (newFilters.color) queryParams.append('color', newFilters.color);
     queryParams.append('page', 1);
-    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
-      replace: true,
-    });
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, { replace: true });
   };
 
   return (
@@ -251,7 +210,13 @@ const PetsList = () => {
               justifyContent: 'flex-end',
             }}
           >
-            <LeafletClusterMap pets={pets} mapCenter={mapCenter} userLocation={userLocation} mapRef={mapRef} />
+            <LeafletPetsMap
+              pets={pets}
+              mapCenter={mapCenter}
+              isLoading={loading}
+              userLocation={userLocation}
+              mapRef={mapRef}
+            />
           </Box>
           <Box
             py={2}
@@ -320,7 +285,7 @@ const PetsList = () => {
                       color: '#0b3d91',
                     }}
                   >
-                    <Typography variant="h6">
+                    <Typography variant="h6" sx={{ paddingTop: 0 }}>
                       There are currently no pets available that match your search criteria.
                     </Typography>
                     <Typography variant="body2">

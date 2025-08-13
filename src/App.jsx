@@ -57,6 +57,7 @@ import UserPosters from './pages/profile/views/UserPosters';
 import UserServiceBookmarks from './pages/profile/views/UserServiceBookmarks';
 import UserServices from './pages/profile/views/UserServices';
 import UserSettings from './pages/profile/views/UserSettings';
+import AddServicePage from './pages/services/views/AddServicePage';
 import ServiceDetailsPage from './pages/services/views/ServiceDetailsPage';
 import ServicesPage from './pages/services/views/ServicesPage';
 import ShelterDetailsPage from './pages/shelters/views/ShelterDetailsPage';
@@ -69,7 +70,7 @@ const AboutPage = lazy(() => import('./pages/common/views/AboutPage'));
 const Contact = lazy(() => import('./pages/common/views/Contact'));
 const FrequentlyAskedQuestions = lazy(() => import('./pages/common/views/FrequentlyAskedQuestions'));
 const PageNotFound = lazy(() => import('./pages/common/views/PageNotFound'));
-const PetQuiz = lazy(() => import('./pages/common/views/PetQuiz'));
+const PetQuiz = lazy(() => import('./pages/assistant/views/PetQuiz'));
 const PetTraining = lazy(() => import('./pages/common/views/PetTraining'));
 const PolicyPage = lazy(() => import('./pages/common/views/PolicyPage'));
 const Support = lazy(() => import('./pages/common/views/Support'));
@@ -131,6 +132,8 @@ function App() {
                           <Route path="user-profile/edit-pet/:id" element={<EditPetPage />} />
                           <Route path="services" element={<ServicesPage />} />
                           <Route path="services/:id" element={<ServiceDetailsPage />} />
+                          <Route path="add-service" element={<AddServicePage />} />
+
                           <Route path="guides" element={<GuidesPage />} />
                           <Route path="guides/:slug" element={<GuideDetailsPage />} />
                           <Route path="pricing" element={<Pricing />} />

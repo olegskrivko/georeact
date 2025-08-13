@@ -198,7 +198,13 @@ const ServicesPage = () => {
               justifyContent: 'flex-end',
             }}
           >
-            <LeafletServicesMap services={services} mapCenter={mapCenter} userLocation={userLocation} mapRef={mapRef} />
+            <LeafletServicesMap
+              services={services}
+              mapCenter={mapCenter}
+              isLoading={loading}
+              userLocation={userLocation}
+              mapRef={mapRef}
+            />
           </Box>
           <Box
             py={2}

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import SendIcon from '@mui/icons-material/Send';
-import { Avatar, Box, Button, Chip, CircularProgress, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Chip, CircularProgress, Paper, TextField, Typography } from '@mui/material';
+import Lottie from 'lottie-react';
 
-import catAvatar from '../pages/images/avatars/avatars/Animation-1747321325950.gif';
-import dogAvatar from '../pages/images/avatars/avatars/Animation-1747321325950.gif';
+import AIRobot from '../../../assets/Animation-1749072232400.json';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -15,35 +15,52 @@ const ChatBot = () => {
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
-  const [petType] = useState(Math.random() > 0.5 ? 'dog' : 'cat');
   const [showSpeechBubble, setShowSpeechBubble] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [notLoggedIn, setNotLoggedIn] = useState(false); // NEW
+  const [notLoggedIn, setNotLoggedIn] = useState(false);
+  const bottomRef = useRef(null);
 
-  const avatar = petType === 'dog' ? dogAvatar : catAvatar;
+  const avatar = AIRobot;
 
   const predefinedQuestions = [
-    'Kā pareizi izvēlēties mājdzīvnieku?',
-    'Ko darīt, ja esmu pazaudējis savu mājdzīvnieku?',
-    'Kā pareizi rūpēties par mājdzīvnieku?',
+    'How should I care for a sick parrot?',
+    'What food is best for a kitten?',
+    'How to train a new puppy?',
   ];
 
-  const handleChipClick = (question) => {
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleChipClick = async (question) => {
     if (loading) return;
-    setNotLoggedIn(false); // reset
+
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      setNotLoggedIn(true);
+      return;
+    }
+
+    setNotLoggedIn(false);
     setMessages((prev) => [...prev, { text: question, isUser: true }]);
-    sendMessageToBackend(question);
+    await sendMessageToBackend(question);
   };
 
   const handleMessageSend = async () => {
-    if (inputText.trim() && !loading) {
-      setNotLoggedIn(false); // reset
-      setMessages((prev) => [...prev, { text: inputText, isUser: true }]);
-      const messageToSend = inputText;
-      setInputText('');
-      await sendMessageToBackend(messageToSend);
+    if (!inputText.trim() || loading) return;
+
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      setNotLoggedIn(true);
+      return;
     }
+
+    setNotLoggedIn(false);
+    setMessages((prev) => [...prev, { text: inputText, isUser: true }]);
+    const messageToSend = inputText;
+    setInputText('');
+    await sendMessageToBackend(messageToSend);
   };
 
   const sendMessageToBackend = async (message) => {
@@ -52,11 +69,10 @@ const ChatBot = () => {
       const accessToken = localStorage.getItem('access_token');
       if (!accessToken) {
         setNotLoggedIn(true);
-        setLoading(false);
         return;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/chatbot/`, {
+      const response = await fetch(`${API_BASE_URL}/api/assistant/chatbot/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,38 +81,29 @@ const ChatBot = () => {
         body: JSON.stringify({ message }),
       });
 
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.reply || 'Server error');
+      }
+
       const data = await response.json();
 
-      if (data.type === 'pet_results') {
-        setMessages((prev) => [
-          ...prev,
-          { pets: data.pets, isUser: false, type: 'pet_results' }
-        ]);
-      } else if (data.reply) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            text: data.reply,
-            isUser: false,
-          },
-        ]);
-      }
-      // No fallback message for unrecognized response
-    } catch (error) {
-      console.error('Error:', error);
       setMessages((prev) => [
         ...prev,
         {
-          text: 'Atvainojiet, radās kļūda saziņā ar serveri.',
+          text: data.reply || 'Sorry, I didn’t understand your question.',
           isUser: false,
         },
       ]);
+    } catch (error) {
+      console.error('ChatBot error:', error.message);
+      setMessages((prev) => [...prev, { text: error.message || 'Something went wrong.', isUser: false }]);
     } finally {
       setLoading(false);
     }
   };
 
-  const toggleChat = () => setChatOpen(!chatOpen);
+  const toggleChat = () => setChatOpen((prev) => !prev);
 
   useEffect(() => {
     const style = document.createElement('style');
@@ -109,12 +116,13 @@ const ChatBot = () => {
     `;
     document.head.appendChild(style);
 
-    const timer = setTimeout(() => {
-      setShowSpeechBubble(false);
-    }, 4000);
-
+    const timer = setTimeout(() => setShowSpeechBubble(false), 4000);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <Box>
@@ -123,17 +131,17 @@ const ChatBot = () => {
           variant="caption"
           style={{
             position: 'fixed',
-            bottom: 90,
-            right: 90,
+            bottom: 100,
+            right: 110,
             backgroundColor: '#fff',
             padding: '4px 10px',
             borderRadius: '10px',
             boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
             fontSize: '12px',
-            zIndex: 9999,
+            zIndex: 999,
           }}
         >
-          Sveiki!
+          Hello! How can I help you?
         </Typography>
       )}
 
@@ -149,15 +157,14 @@ const ChatBot = () => {
             borderRadius: '50%',
             width: '70px',
             height: '70px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
             color: '#fff',
             animation: 'shake 0.5s ease-in-out 1s 3',
             zIndex: 9999,
           }}
         >
-          <Avatar src={avatar} alt="Pet Avatar" style={{ width: '60px', height: '60px' }} />
+          <Box sx={{ width: 180, height: 180, marginRight: '30px' }}>
+            <Lottie animationData={avatar} loop autoplay style={{ width: '70px', height: '70px' }} />
+          </Box>
         </Button>
       )}
 
@@ -180,7 +187,7 @@ const ChatBot = () => {
         >
           <Box
             style={{
-              backgroundColor: '#0EB9F0',
+              background: 'linear-gradient(to right, rgba(0,150,136,0.7), rgba(63,81,181,0.7))',
               color: '#fff',
               padding: '10px',
               display: 'flex',
@@ -188,13 +195,14 @@ const ChatBot = () => {
               justifyContent: 'space-between',
               borderTopLeftRadius: isFullscreen ? 0 : '12px',
               borderTopRightRadius: isFullscreen ? 0 : '12px',
-              background: 'linear-gradient(to right, rgba(0,150,136,0.7), rgba(63,81,181,0.7))',
             }}
           >
             <Box style={{ display: 'flex', alignItems: 'center' }}>
-              <Avatar src={avatar} alt="Pet Avatar" />
-              <Typography marginLeft={1} variant="h6">
-                AI ChatBot
+              <Box style={{ width: '50px', height: '50px' }}>
+                <Lottie animationData={avatar} loop autoplay />
+              </Box>
+              <Typography marginLeft={1} variant="body1">
+                AI Assistant
               </Typography>
             </Box>
             <Box>
@@ -207,85 +215,81 @@ const ChatBot = () => {
             </Box>
           </Box>
 
-          <Box
-            style={{
-              padding: '10px',
-              flexGrow: 1,
-              overflowY: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
+          <Box style={{ padding: '10px', flexGrow: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
             {messages.map((message, index) => (
               <Box
                 key={index}
                 style={{
                   display: 'flex',
-                  alignItems: 'center',
                   marginBottom: '10px',
                   justifyContent: message.isUser ? 'flex-end' : 'flex-start',
                 }}
               >
                 {!message.isUser && (
-                  <Avatar style={{ width: 30, height: 30, marginRight: 10 }} src={avatar} alt="Pet Avatar" />
-                )}
-                {message.type === 'pet_results' ? (
-                  <Box>
-                    {message.pets.length === 0 ? (
-                      <Paper style={{ maxWidth: '70%', padding: '10px', borderRadius: '12px', backgroundColor: '#f1f1f1', color: '#000' }}>
-                        Nekas netika atrasts.
-                      </Paper>
-                    ) : (
-                      message.pets.map((pet, i) => (
-                        <Paper key={i} style={{ margin: 8, padding: 8, display: 'flex', alignItems: 'center', gap: 12 }}>
-                          <img src={pet.image} alt={pet.name} style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, marginRight: 12 }} />
-                          <Box>
-                            <Typography variant="subtitle2">{pet.name}</Typography>
-                            <Typography variant="body2">{pet.status_display} {pet.species_display}</Typography>
-                            <a href={pet.url} target="_blank" rel="noopener noreferrer">Apskatīt</a>
-                          </Box>
-                        </Paper>
-                      ))
-                    )}
+                  <Box style={{ width: '60px', height: '60px', marginRight: 10 }}>
+                    <Lottie animationData={avatar} loop autoplay />
                   </Box>
-                ) : (
-                  <Paper
-                    style={{
-                      maxWidth: '70%',
-                      padding: '10px',
-                      borderRadius: '12px',
-                      backgroundColor: message.isUser ? '#0EB9F0' : '#f1f1f1',
-                      color: message.isUser ? '#fff' : '#000',
-                    }}
-                  >
-                    {message.text}
-                  </Paper>
                 )}
+                <Paper
+                  style={{
+                    maxWidth: '70%',
+                    padding: '10px',
+                    borderRadius: '12px',
+                    backgroundColor: message.isUser ? '#0EB9F0' : '#f1f1f1',
+                    color: message.isUser ? '#fff' : '#000',
+                  }}
+                >
+                  {message.text && <Typography>{message.text}</Typography>}
+
+                  {message.pets && Array.isArray(message.pets) && (
+                    <Box mt={1}>
+                      {message.pets.map((pet, i) => (
+                        <a
+                          key={i}
+                          href={pet.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ textDecoration: 'none', color: 'inherit' }}
+                        >
+                          <Box
+                            mb={1}
+                            p={1}
+                            style={{ border: '1px solid #ccc', borderRadius: '8px', cursor: 'pointer' }}
+                          >
+                            <Typography variant="subtitle2">{pet.name || 'Unknown name'}</Typography>
+                            <Typography variant="body2">{`${pet.status_display || ''} ${pet.species_display || ''}`}</Typography>
+                            {pet.image && (
+                              <img
+                                src={pet.image}
+                                alt={pet.name || 'Pet'}
+                                style={{ width: '100%', borderRadius: '6px', marginTop: '6px' }}
+                              />
+                            )}
+                          </Box>
+                        </a>
+                      ))}
+                    </Box>
+                  )}
+                </Paper>
               </Box>
             ))}
-
-            <Box
-              style={{
-                display: 'flex',
-                gap: '10px',
-                marginTop: '10px',
-                flexWrap: 'wrap',
-              }}
-            >
+            <div ref={bottomRef} />
+            <Box style={{ display: 'flex', gap: '10px', marginTop: '10px', flexWrap: 'wrap' }}>
               {predefinedQuestions.map((question, index) => (
                 <Chip
                   key={index}
                   label={question}
                   onClick={() => handleChipClick(question)}
-                  color="primary"
-                  style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
                   disabled={loading}
+                  style={{
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    background: '#e3f2fd',
+                  }}
                 />
               ))}
             </Box>
           </Box>
 
-          {/* Show warning if not logged in */}
           {notLoggedIn && (
             <Typography
               variant="caption"
@@ -295,7 +299,7 @@ const ChatBot = () => {
                 fontSize: '12px',
               }}
             >
-              Lai izmantotu čatbotu, nepieciešama autorizācija.
+              To use the chatbot, you need to be logged in.
             </Typography>
           )}
 
@@ -314,7 +318,7 @@ const ChatBot = () => {
               size="small"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Ieraksti savu ziņu..."
+              placeholder="Type your message..."
               disabled={loading}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey && !loading) {

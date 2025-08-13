@@ -12,7 +12,7 @@ export default function ShelterHeaderCard({ shelter }) {
           <CardMedia
             component="img"
             src={shelter?.cover_url || ImgPlaceholder}
-            alt={shelter.operating_name}
+            alt={shelter?.operating_name}
             sx={{
               width: '100%',
               height: { xs: 280, sm: 360, md: 320 },
@@ -32,7 +32,7 @@ export default function ShelterHeaderCard({ shelter }) {
         >
           <Box>
             <Typography variant="h3" fontWeight={700} color="primary">
-              {shelter.operating_name}
+              {shelter?.operating_name}
             </Typography>
 
             <Typography
@@ -44,12 +44,12 @@ export default function ShelterHeaderCard({ shelter }) {
               gap={0.5}
               sx={{ mt: 1 }}
             >
-              {shelter.distance_from_riga_km < 1 ? 'Within 1 km' : `${shelter.distance_from_riga_km} km away`}
+              {shelter?.distance_km < 1 ? 'Within 1 km' : `${shelter?.distance_km} km away`}
               <SouthEastIcon fontSize="small" />
             </Typography>
 
             <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-              {shelter.description}
+              {shelter?.description}
             </Typography>
           </Box>
 
@@ -72,7 +72,7 @@ export default function ShelterHeaderCard({ shelter }) {
                     userSelect: 'none',
                   }}
                 >
-                  {type.name}
+                  {type?.name}
                 </Box>
               ))}
             </Box>

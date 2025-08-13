@@ -9,15 +9,27 @@ import { Box, CardMedia, Typography } from '@mui/material';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import locationIcon from '../../assets/map_icons/pet_house.png';
+import catIconUrl from '../../assets/map_icons/catlocation.svg';
+import dogIconUrl from '../../assets/map_icons/doglocation.svg';
+// import locationIcon from '../../assets/map_icons/location.svg';
+import locationIcon from '../../assets/map_icons/paw.png';
 import ImgPlaceholder from '../../assets/placeholder.svg';
 
-// Shelter icon
+// Icons
 const defaultIcon = new L.Icon({
   iconUrl: locationIcon,
   iconSize: new L.Point(40, 47),
 });
 
+const dogIcon = new L.Icon({
+  iconUrl: dogIconUrl,
+  iconSize: new L.Point(40, 47),
+});
+
+const catIcon = new L.Icon({
+  iconUrl: catIconUrl,
+  iconSize: new L.Point(40, 47),
+});
 // User pulse icon
 const userPulseIcon = L.divIcon({
   className: '',
@@ -30,7 +42,6 @@ const userPulseIcon = L.divIcon({
   iconSize: [30, 30],
   iconAnchor: [15, 15],
 });
-
 // Cluster icon
 const createClusterCustomIcon = (cluster) => {
   return new L.DivIcon({
@@ -77,13 +88,21 @@ const MapTilerLayer = () => {
       style: 'basic-v2',
     });
     mtLayer.addTo(map);
-    return () => map.removeLayer(mtLayer);
+    return () => {
+      map.removeLayer(mtLayer);
+    };
   }, [map]);
+
   return null;
 };
 
-// Main map component
-function LeafletSheltersMap({ shelters = [], mapCenter, isLoading, userLocation, mapRef }) {
+function LeafletPetsMap({ pets = [], mapCenter, isLoading, userLocation, mapRef }) {
+  const getIconBySpecies = (species) => {
+    if (species === 1) return dogIcon;
+    if (species === 2) return catIcon;
+    return defaultIcon;
+  };
+
   return (
     <Box component="section" ref={mapRef} className="map-container">
       <MapContainer
@@ -98,14 +117,13 @@ function LeafletSheltersMap({ shelters = [], mapCenter, isLoading, userLocation,
         <MapUpdater mapCenter={mapCenter} />
         <UserLocationUpdater userLocation={userLocation} />
         {userLocation && <Marker position={userLocation} icon={userPulseIcon} />}
-
         <MarkerClusterGroup
           iconCreateFunction={createClusterCustomIcon}
           maxClusterRadius={150}
           spiderfyOnMaxZoom={false}
           showCoverageOnHover={false}
         >
-          {!isLoading && shelters.length === 0 ? (
+          {!isLoading && pets.length === 0 ? (
             <Box
               sx={{
                 position: 'absolute',
@@ -119,62 +137,37 @@ function LeafletSheltersMap({ shelters = [], mapCenter, isLoading, userLocation,
                 zIndex: 1000,
               }}
             >
-              <Typography component="p">No shelters to display</Typography>
+              <Typography component="p">No pets to display</Typography>
               <Typography component="p" fontSize="12px" color="#666">
                 Try changing the filters or come back later.
               </Typography>
             </Box>
           ) : (
-            shelters
-              .filter((shelter) => shelter.latitude && shelter.longitude)
-              .map((shelter) => (
+            pets
+              .filter((pet) => pet.latitude && pet.longitude)
+              .map((pet) => (
                 <Marker
-                  key={shelter.id}
-                  icon={defaultIcon}
-                  position={[parseFloat(shelter.latitude), parseFloat(shelter.longitude)]}
+                  key={pet.id}
+                  icon={getIconBySpecies(pet.species)}
+                  position={[parseFloat(pet.latitude), parseFloat(pet.longitude)]}
                 >
                   <Popup offset={[0, 5]}>
-                    <Link to={`/shelters/${shelter.id}`} style={{ textDecoration: 'none' }}>
-                      <Box
-                        sx={{
-                          width: '140px',
-                          textAlign: 'center',
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
-                          borderRadius: 2,
-                          backgroundColor: 'rgba(255, 255, 255, 0.85)',
-                          p: 1,
-                          overflow: 'hidden',
-                        }}
-                      >
+                    <Box style={{ textAlign: 'center' }}>
+                      <Link to={`/pets/${pet.id}`} style={{ textDecoration: 'none' }}>
                         <CardMedia
                           component="img"
-                          image={shelter?.cover || ImgPlaceholder}
-                          alt={shelter.operating_name}
-                          sx={{
-                            width: '100%',
-                            height: '140px',
-                            borderRadius: 2,
-
+                          image={pet?.pet_image_1 || ImgPlaceholder}
+                          alt={pet.species_display}
+                          style={{
+                            width: '120px',
+                            height: '120px',
+                            borderRadius: '50%',
+                            border: '3px solid white',
                             objectFit: 'cover',
-                            mb: 1,
                           }}
                         />
-                        <Typography
-                          variant="subtitle1"
-                          sx={{
-                            color: '#244A72',
-                            fontWeight: 600,
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                          }}
-                          title={shelter.operating_name}
-                        >
-                          {shelter.operating_name}
-                        </Typography>
-                      </Box>
-                    </Link>
+                      </Link>
+                    </Box>
                   </Popup>
                 </Marker>
               ))
@@ -185,4 +178,4 @@ function LeafletSheltersMap({ shelters = [], mapCenter, isLoading, userLocation,
   );
 }
 
-export default LeafletSheltersMap;
+export default LeafletPetsMap;

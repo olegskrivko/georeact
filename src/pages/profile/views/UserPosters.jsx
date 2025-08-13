@@ -358,15 +358,16 @@
 //   );
 // };
 // export default PostersList;
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Alert,
-  Grid,
-
   Box,
   CircularProgress,
   Container,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -377,14 +378,18 @@ import {
   Typography,
 } from '@mui/material';
 import axios from 'axios';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+import { LocationContext } from '../../../contexts/LocationContext';
 import LeafletPostersMap from '../../../shared/maps/LeafletPostersMap';
 import StatsCard from '../components/StatsCard';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const PostersList = () => {
-  const [centerCoords, setCenterCoords] = useState([56.946285, 24.105078]);
+  const { location: contextLocation } = useContext(LocationContext);
+  const mapRef = useRef(null);
+  const [userLocation, setUserLocation] = useState([56.946285, 24.105078]); // Latvia default
+  const [mapCenter, setMapCenter] = useState([56.946285, 24.105078]); // Latvia default
   const [posters, setPosters] = useState([]);
   const [pets, setPets] = useState([]); // <-- new state for pets
   const [loading, setLoading] = useState(true);
@@ -394,6 +399,16 @@ const PostersList = () => {
   const [totalPosters, setTotalPosters] = useState(0);
   const [postersCountByPet, setPostersCountByPet] = useState({});
 
+  useEffect(() => {
+    const lat = contextLocation?.latitude ?? contextLocation?.lat;
+    const lng = contextLocation?.longitude ?? contextLocation?.lng;
+
+    if (lat != null && lng != null) {
+      const coords = [lat, lng];
+      setUserLocation(coords);
+      setMapCenter(coords);
+    }
+  }, [contextLocation]);
   // Fetch posters
   const fetchUserPosters = async () => {
     const accessToken = localStorage.getItem('access_token');
@@ -464,7 +479,7 @@ const PostersList = () => {
 
   return (
     <Container maxWidth="lg" disableGutters>
-       <Box sx={{ my: { xs: 2, sm: 2, md: 3, lg: 4, xl: 4 } }}>
+      <Box sx={{ my: { xs: 2, sm: 2, md: 3, lg: 4, xl: 4 } }}>
         <Typography
           component="h1"
           align="center"
@@ -484,70 +499,76 @@ const PostersList = () => {
         >
           My Posters
         </Typography>
-   
 
-      {loading && <CircularProgress />}
-      {error && <Alert severity="error">{error}</Alert>}
+        {loading && <CircularProgress />}
+        {error && <Alert severity="error">{error}</Alert>}
 
-      {!loading && !error && (
-        <>
-          {/* Posters Table */}
-          <TableContainer
-            component={Paper}
-            sx={{ mt: 3, px: 2, borderTop: '4px solid #00b5ad', boxShadow: 2, position: 'relative' }}
-          >
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <strong>Name</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Pet ID</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Scans</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Latitude</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Longitude</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Created At</strong>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {posters.map((poster) => (
-                  <TableRow key={poster.id}>
-                    <TableCell>{poster.name}</TableCell>
-                    <TableCell>{poster.pet}</TableCell>
-                    <TableCell>{poster.scans}</TableCell>
+        {!loading && !error && (
+          <>
+            {/* Posters Table */}
+            <TableContainer
+              component={Paper}
+              sx={{ mt: 3, px: 2, borderTop: '4px solid #00b5ad', boxShadow: 2, position: 'relative' }}
+            >
+              <Table>
+                <TableHead>
+                  <TableRow>
                     <TableCell>
-                      {poster.has_location && poster.latitude != null ? poster.latitude.toFixed(5) : '-'}
+                      <strong>Name</strong>
                     </TableCell>
                     <TableCell>
-                      {poster.has_location && poster.longitude != null ? poster.longitude.toFixed(5) : '-'}
+                      <strong>Pet ID</strong>
                     </TableCell>
-                    <TableCell>{new Date(poster.created_at).toLocaleString()}</TableCell>
+                    <TableCell>
+                      <strong>Scans</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Latitude</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Longitude</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Created At</strong>
+                    </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {posters.map((poster) => (
+                    <TableRow key={poster.id}>
+                      <TableCell>{poster.name}</TableCell>
+                      <TableCell>{poster.pet}</TableCell>
+                      <TableCell>{poster.scans}</TableCell>
+                      <TableCell>
+                        {poster.has_location && poster.latitude != null ? poster.latitude.toFixed(5) : '-'}
+                      </TableCell>
+                      <TableCell>
+                        {poster.has_location && poster.longitude != null ? poster.longitude.toFixed(5) : '-'}
+                      </TableCell>
+                      <TableCell>{new Date(poster.created_at).toLocaleString()}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
 
-          {/* Map with posters and pets */}
-          <Box sx={{ mt: 6 }}>
-            {/* Pass both posters and pets as props */}
-            <LeafletPostersMap posters={posters} pets={pets} centerCoords={centerCoords} />
-          </Box>
+            {/* Map with posters and pets */}
+            <Box sx={{ mt: 6 }}>
+              {/* Pass both posters and pets as props */}
+              <LeafletPostersMap
+                posters={posters}
+                pets={pets}
+                mapCenter={mapCenter}
+                isLoading={loading}
+                userLocation={userLocation}
+                mapRef={mapRef}
+              />
+            </Box>
 
-          {/* Statistics */}
-          <StatsCard totalPosters={totalPosters} postersCountByPet={postersCountByPet} />
-        </>
-      )}
+            {/* Statistics */}
+            <StatsCard totalPosters={totalPosters} postersCountByPet={postersCountByPet} />
+          </>
+        )}
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
             <Box mt={4} display="flex" justifyContent="space-between" alignItems="center" textAlign="center">

@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 import { Link, useParams } from 'react-router-dom';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -36,6 +32,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 import html2PDF from 'html2pdf.js';
 
 import { APP_NAME, DOMAIN_URL } from '../../../constants/config';
@@ -225,7 +225,7 @@ const Poster = () => {
           <TextField
             label="Phone Number"
             value={posterPhone}
-            onChange={e => setPosterPhone(e.target.value)}
+            onChange={(e) => setPosterPhone(e.target.value)}
             fullWidth
             autoFocus
             placeholder="Enter phone number to display"
@@ -286,7 +286,7 @@ const Poster = () => {
           >
             <CardContent>
               <Grid container spacing={3} alignItems="center">
-                <Grid size={{xs:12, md:6}} >
+                <Grid size={{ xs: 12, md: 6 }}>
                   <TextField
                     label="Poster Name"
                     fullWidth
@@ -315,7 +315,7 @@ const Poster = () => {
                     }}
                   />
                 </Grid>
-                <Grid size={{xs:12, md:3}} >
+                <Grid size={{ xs: 12, md: 3 }}>
                   <TextField
                     label="Number of Posters"
                     fullWidth
@@ -342,7 +342,6 @@ const Poster = () => {
                       ),
                     }}
                     sx={{
-                      
                       '& .MuiOutlinedInput-root': {
                         color: 'white',
                         '& fieldset': {
@@ -364,7 +363,7 @@ const Poster = () => {
                     }}
                   />
                 </Grid>
-                <Grid size={{xs:12, md:3}}>
+                <Grid size={{ xs: 12, md: 3 }}>
                   <Button
                     variant="contained"
                     fullWidth
@@ -374,7 +373,7 @@ const Poster = () => {
                       background: 'rgba(255,255,255,0.2)',
                       backdropFilter: 'blur(10px)',
                       border: '1px solid rgba(255,255,255,0.3)',
-                      
+
                       color: 'white',
                       fontWeight: 600,
                       py: 1.5,
@@ -397,367 +396,362 @@ const Poster = () => {
 
       {/* Center PDF preview horizontally */}
       <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-      <Box display="flex" flexDirection="column" alignItems="center" width="100%">
-        {generatedPosters.length > 0 && (
-          <>
-            <Box
-              sx={{
-                background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-                borderRadius: 2,
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                p: 3,
-                mb: 3,
-                width: '100%',
-                maxWidth: '100%',
-              }}
-            >
-              <Typography variant="h5" mb={2} sx={{ fontWeight: 600, color: '#fff' }}>
-                Generated Posters ({generatedPosters.length})
-              </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<ArrowDownwardIcon />}
-                onClick={bulkDownloadPDFs}
-                disabled={downloading !== null}
+        <Box display="flex" flexDirection="column" alignItems="center" width="100%">
+          {generatedPosters.length > 0 && (
+            <>
+              <Box
                 sx={{
+                  background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+                  borderRadius: 2,
                   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  '&:hover': {
-                    background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-                  },
+                  p: 3,
+                  mb: 3,
+                  width: '100%',
+                  maxWidth: '100%',
                 }}
               >
-                Download All Posters as PDF
-              </Button>
-            </Box>
+                <Typography variant="h5" mb={2} sx={{ fontWeight: 600, color: '#fff' }}>
+                  Generated Posters ({generatedPosters.length})
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<ArrowDownwardIcon />}
+                  onClick={bulkDownloadPDFs}
+                  disabled={downloading !== null}
+                  sx={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                    },
+                  }}
+                >
+                  Download All Posters as PDF
+                </Button>
+              </Box>
 
-            {generatedPosters.map((poster) => {
-              const posterUrl = `${DOMAIN_URL}/posters/${poster.id}/scan/`;
+              {generatedPosters.map((poster) => {
+                const posterUrl = `${DOMAIN_URL}/posters/${poster.id}/scan/`;
 
-              return (
-                <Box key={poster.id} mb={4} display="flex" flexDirection="column" alignItems="center">
-                  {/* Download Button - Above PDF Content */}
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      mb: 2,
-                      p: 2,
-                      background: 'rgba(102, 126, 234, 0.1)',
-                      borderRadius: 2,
-                      border: '1px solid rgba(102, 126, 234, 0.2)',
-                      width: '100%',
-                      maxWidth: '794px',
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: '#2c3e50' }}>
-                      {poster.name}
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => generatePDF(poster.id)}
-                        startIcon={<FileDownloadIcon />}
-                        disabled={downloading === poster.id}
-                        sx={{
-                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                          '&:hover': {
-                            background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-                          },
-                        }}
-                      >
-                        {downloading === poster.id ? 'Generating...' : 'Download PDF'}
-                      </Button>
-                      {downloadedIds.includes(poster.id) && (
-                        <Typography color="success.main" sx={{ fontWeight: 500 }}>
-                          ✓ Downloaded
-                        </Typography>
-                      )}
-                    </Box>
-                  </Box>
-                  {/* PDF Content - Centered Below */}
-                  <Box
-                    id={`page-${poster.id}`}
-                    sx={{
-                      background: '#fff',
-                      maxWidth: '794px',
-                      maxHeight: '1122px',
-                      padding: 1,
-                      border: '1px solid #ccc',
-                      borderRadius: 1,
-                      boxShadow: '0px 4px 8px rgba(0,0,0,0.1)',
-                    }}
-                  >
-                    <Box
-                      style={{
-                        background: 'darkred',
-                        padding: '0.5rem 0',
-                   
-                      }}
-                    >
-                      <Typography
-                        variant="h4"
-                        textAlign="center"
-                        sx={{ textTransform: 'uppercase', fontWeight: 700, color: '#fff' }}
-                      >
-                        ATTENTION!
-                      </Typography>
-                      <Typography
-                        variant="h5"
-                        textAlign="center"
-                        sx={{ color: '#fff', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 500 }}
-                      >
-                        Missing {pet.species_display}
-                      </Typography>
-                    </Box>
-                    {/* image */}
-                    <Grid container spacing={3}>
-                      <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-                        {pet.pet_image_1 && (
-                          <Box
-                            position="relative"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            sx={{ width: '100%', borderRadius: 1 }}
-                          >
-                            <img
-                              src={pet.pet_image_1}
-                              alt={pet.name}
-                              style={{
-                                maxWidth: '100%',
-                                height: 'auto',
-                                // borderRadius: '4px',
-                              }}
-                            />
-                            <Typography
-                              variant="caption"
-                              sx={{
-                                position: 'absolute',
-                                bottom: 8,
-                                right: 8,
-                                backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                                color: 'black',
-                                px: 1,
-                                py: 0.2,
-                                borderRadius: 1,
-                                fontSize: '0.6rem',
-                                fontWeight: 500,
-                              }}
-                            >
-                              Made by {APP_NAME}
-                            </Typography>
-                          </Box>
-                        )}
-                      </Grid>
-                    </Grid>
-                    {/* attributes */}
+                return (
+                  <Box key={poster.id} mb={4} display="flex" flexDirection="column" alignItems="center">
+                    {/* Download Button - Above PDF Content */}
                     <Box
                       sx={{
-                        background: 'rgba(102, 126, 234, 0.07)',
-                  
-                        p: 3,
-             
-                        boxShadow: '0 2px 8px rgba(102,126,234,0.08)',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        mb: 2,
+                        p: 2,
+                        background: 'rgba(102, 126, 234, 0.1)',
+                        borderRadius: 2,
+                        border: '1px solid rgba(102, 126, 234, 0.2)',
                         width: '100%',
-                        maxWidth: '100%',
+                        maxWidth: '794px',
                       }}
                     >
+                      <Typography variant="h6" sx={{ fontWeight: 600, color: '#2c3e50' }}>
+                        {poster.name}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => generatePDF(poster.id)}
+                          startIcon={<FileDownloadIcon />}
+                          disabled={downloading === poster.id}
+                          sx={{
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            '&:hover': {
+                              background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                            },
+                          }}
+                        >
+                          {downloading === poster.id ? 'Generating...' : 'Download PDF'}
+                        </Button>
+                        {downloadedIds.includes(poster.id) && (
+                          <Typography color="success.main" sx={{ fontWeight: 500 }}>
+                            ✓ Downloaded
+                          </Typography>
+                        )}
+                      </Box>
+                    </Box>
+                    {/* PDF Content - Centered Below */}
+                    <Box
+                      id={`page-${poster.id}`}
+                      sx={{
+                        background: '#fff',
+                        maxWidth: '794px',
+                        maxHeight: '1122px',
+                        padding: 1,
+                        border: '1px solid #ccc',
+                        borderRadius: 1,
+                        boxShadow: '0px 4px 8px rgba(0,0,0,0.1)',
+                      }}
+                    >
+                      <Box
+                        style={{
+                          background: 'darkred',
+                          padding: '0.5rem 0',
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          textAlign="center"
+                          sx={{ textTransform: 'uppercase', fontWeight: 700, color: '#fff' }}
+                        >
+                          ATTENTION!
+                        </Typography>
+                        <Typography
+                          variant="h5"
+                          textAlign="center"
+                          sx={{ color: '#fff', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 500 }}
+                        >
+                          Missing {pet.species_display}
+                        </Typography>
+                      </Box>
+                      {/* image */}
                       <Grid container spacing={3}>
-                        <Grid size={{ xs: 4 }}>
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <MergeTypeIcon color="primary" fontSize="medium" />
-                            <Typography sx={{ fontSize: '1.1rem' }}>
-                              <strong>Breed:</strong> {pet.breed || '-'}
-                            </Typography>
-                          </Box>
+                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                          {pet.pet_image_1 && (
+                            <Box
+                              position="relative"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              sx={{ width: '100%', borderRadius: 1 }}
+                            >
+                              <img
+                                src={pet.pet_image_1}
+                                alt={pet.name}
+                                style={{
+                                  maxWidth: '100%',
+                                  height: 'auto',
+                                  // borderRadius: '4px',
+                                }}
+                              />
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  position: 'absolute',
+                                  bottom: 8,
+                                  right: 8,
+                                  backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                                  color: 'black',
+                                  px: 1,
+                                  py: 0.2,
+                                  borderRadius: 1,
+                                  fontSize: '0.6rem',
+                                  fontWeight: 500,
+                                }}
+                              >
+                                Made by {APP_NAME}
+                              </Typography>
+                            </Box>
+                          )}
                         </Grid>
-                        <Grid size={{ xs: 4 }}>
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <MaleIcon color="primary" fontSize="medium" />
-                            <Typography sx={{ fontSize: '1.1rem' }}>
-                              <strong>Gender:</strong> {pet.gender_display || '-'}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid size={{ xs: 4 }}>
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <TextureIcon color="primary" fontSize="medium" />
-                            <Typography sx={{ fontSize: '1.1rem' }}>
-                              <strong>Coat:</strong> {pet.pattern_display || '-'}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid size={{ xs: 4 }}>
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <CakeIcon color="primary" fontSize="medium" />
-                            <Typography sx={{ fontSize: '1.1rem' }}>
-                              <strong>Age:</strong> {pet.age_display || '-'}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid size={{ xs: 4 }}>
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <HeightIcon color="primary" fontSize="medium" />
-                            <Typography sx={{ fontSize: '1.1rem' }}>
-                              <strong>Size:</strong> {pet.size_display || '-'}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid size={{ xs: 4 }}>
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <ColorLensIcon color="primary" fontSize="medium" />
-                            <Typography sx={{ fontSize: '1.1rem' }}>
-                              <strong>Primary color:</strong> {pet.primary_color_display || '-'}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid size={{ xs: 4 }}>
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <AccessTimeIcon color="primary" fontSize="medium" />
-                            <Typography sx={{ fontSize: '1.1rem' }}>
-                              <strong>Date:</strong> {formatDate(pet.created_at)}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid size={{ xs: 4 }}>
-                          {/* <Box display="flex" alignItems="center" gap={2}>
+                      </Grid>
+                      {/* attributes */}
+                      <Box
+                        sx={{
+                          background: 'rgba(102, 126, 234, 0.07)',
+
+                          p: 3,
+
+                          boxShadow: '0 2px 8px rgba(102,126,234,0.08)',
+                          width: '100%',
+                          maxWidth: '100%',
+                        }}
+                      >
+                        <Grid container spacing={3}>
+                          <Grid size={{ xs: 4 }}>
+                            <Box display="flex" alignItems="center" gap={2}>
+                              <MergeTypeIcon color="primary" fontSize="medium" />
+                              <Typography sx={{ fontSize: '1.1rem' }}>
+                                <strong>Breed:</strong> {pet.breed || '-'}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                          <Grid size={{ xs: 4 }}>
+                            <Box display="flex" alignItems="center" gap={2}>
+                              <MaleIcon color="primary" fontSize="medium" />
+                              <Typography sx={{ fontSize: '1.1rem' }}>
+                                <strong>Gender:</strong> {pet.gender_display || '-'}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                          <Grid size={{ xs: 4 }}>
+                            <Box display="flex" alignItems="center" gap={2}>
+                              <TextureIcon color="primary" fontSize="medium" />
+                              <Typography sx={{ fontSize: '1.1rem' }}>
+                                <strong>Coat:</strong> {pet.pattern_display || '-'}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                          <Grid size={{ xs: 4 }}>
+                            <Box display="flex" alignItems="center" gap={2}>
+                              <CakeIcon color="primary" fontSize="medium" />
+                              <Typography sx={{ fontSize: '1.1rem' }}>
+                                <strong>Age:</strong> {pet.age_display || '-'}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                          <Grid size={{ xs: 4 }}>
+                            <Box display="flex" alignItems="center" gap={2}>
+                              <HeightIcon color="primary" fontSize="medium" />
+                              <Typography sx={{ fontSize: '1.1rem' }}>
+                                <strong>Size:</strong> {pet.size_display || '-'}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                          <Grid size={{ xs: 4 }}>
+                            <Box display="flex" alignItems="center" gap={2}>
+                              <ColorLensIcon color="primary" fontSize="medium" />
+                              <Typography sx={{ fontSize: '1.1rem' }}>
+                                <strong>Primary color:</strong> {pet.primary_color_display || '-'}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                          <Grid size={{ xs: 4 }}>
+                            <Box display="flex" alignItems="center" gap={2}>
+                              <AccessTimeIcon color="primary" fontSize="medium" />
+                              <Typography sx={{ fontSize: '1.1rem' }}>
+                                <strong>Date:</strong> {formatDate(pet.created_at)}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                          <Grid size={{ xs: 4 }}>
+                            {/* <Box display="flex" alignItems="center" gap={2}>
                             <TagIcon color="primary" fontSize="medium" />
                             <Typography sx={{ fontSize: '1.1rem' }}>
                               <strong>ID:</strong> {pet.identifier}
                             </Typography>
                           </Box> */}
+                          </Grid>
+                          <Grid size={{ xs: 4 }}>
+                            <Box display="flex" alignItems="center" gap={2}>
+                              <ColorLensIcon color="primary" fontSize="medium" />
+                              <Typography sx={{ fontSize: '1.1rem' }}>
+                                <strong>Secondary color:</strong> {pet.secondary_color_display || '-'}
+                              </Typography>
+                            </Box>
+                          </Grid>
                         </Grid>
-                        <Grid size={{ xs: 4 }}>
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <ColorLensIcon color="primary" fontSize="medium" />
-                            <Typography sx={{ fontSize: '1.1rem' }}>
-                              <strong>Secondary color:</strong> {pet.secondary_color_display || '-'}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                    {/* phone line */}
-                    <Grid container spacing={3}>
-                      <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-                        <Box
-                          style={{
-                            background: 'darkred',
-                            padding: '0.5rem 0',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            minHeight: '76px',
-                          }}
-                        >
-                          <Typography
-                            variant="h6"
-                            textAlign="center"
+                      </Box>
+                      {/* phone line */}
+                      <Grid container spacing={3}>
+                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                          <Box
                             style={{
-                              textTransform: 'uppercase',
-                              fontWeight: '700',
-                              color: '#fff',
+                              background: 'darkred',
+                              padding: '0.5rem 0',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              minHeight: '76px',
                             }}
                           >
-                            If you have seen this pet, please contact!
-                          </Typography>
-                          {/* Always show phone, even if blank */}
-                          <Box display="flex" justifyContent="center" alignItems="center">
-                            <span
+                            <Typography
+                              variant="h6"
+                              textAlign="center"
                               style={{
+                                textTransform: 'uppercase',
+                                fontWeight: '700',
                                 color: '#fff',
-                                fontSize: '1.4rem',
-                                fontWeight: '500',
                               }}
                             >
-                              {posterPhone
-                                ? `+${pet.phone_code} ${posterPhone}`
-                                : 'Leave info in app'
-                              }
-                            </span>
+                              If you have seen this pet, please contact!
+                            </Typography>
+                            {/* Always show phone, even if blank */}
+                            <Box display="flex" justifyContent="center" alignItems="center">
+                              <span
+                                style={{
+                                  color: '#fff',
+                                  fontSize: '1.4rem',
+                                  fontWeight: '500',
+                                }}
+                              >
+                                {posterPhone ? `+${pet.phone_code} ${posterPhone}` : 'Leave info in app'}
+                              </span>
+                            </Box>
                           </Box>
-                        </Box>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                    {/* qrcode */}
-                    <Box sx={{   background: 'rgba(102, 126, 234, 0.07)',    width: '100%',
-                        maxWidth: '100%',}}>
-                    <Grid container spacing={3} py={2}>
-                
-                      <Grid
-                        size={{ xs: 4, sm: 4, md: 6, lg: 6 }}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                       
-                        }}
-                        mt={1}
-                      >
-                      
-                        <Box sx={{ width: '100%', maxWidth: 120, aspectRatio: '1 / 1' }}>
-                          <QRCode value={posterUrl} size={120} style={{ width: '100%', height: '100%' }} viewBox={`0 0 256 256`} />
-                        </Box>
-                      </Grid>
-                      <Grid size={{ xs: 8, sm: 8, md: 6, lg: 6 }} mt={1}>
-                        <Box
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'start',
-                          }}
-                        >
-<Stack direction="column" spacing={2} alignItems="left">
-  <Typography variant="body2" textAlign="start" sx={{ fontWeight: 'bold' }}>
-    1. Scan the QR code and open the link
-  </Typography>
-  <Typography variant="body2" textAlign="start" sx={{ fontWeight: 'bold' }}>
-    2. Leave a comment if you've seen the pet
-  </Typography>
-  <Typography variant="body2" textAlign="start" sx={{ fontWeight: 'bold' }}>
-    3. Follow the pet's status and share the link to help
-  </Typography>
-</Stack>
-
-                        </Box>
-                      </Grid>
-                    
-                    </Grid>
+                      {/* qrcode */}
+                      <Box sx={{ background: 'rgba(102, 126, 234, 0.07)', width: '100%', maxWidth: '100%' }}>
+                        <Grid container spacing={3} py={2}>
+                          <Grid
+                            size={{ xs: 4, sm: 4, md: 6, lg: 6 }}
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                            mt={1}
+                          >
+                            <Box sx={{ width: '100%', maxWidth: 120, aspectRatio: '1 / 1' }}>
+                              <QRCode
+                                value={posterUrl}
+                                size={120}
+                                style={{ width: '100%', height: '100%' }}
+                                viewBox={`0 0 256 256`}
+                              />
+                            </Box>
+                          </Grid>
+                          <Grid size={{ xs: 8, sm: 8, md: 6, lg: 6 }} mt={1}>
+                            <Box
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'start',
+                              }}
+                            >
+                              <Stack direction="column" spacing={2} alignItems="left">
+                                <Typography variant="body2" textAlign="start" sx={{ fontWeight: 'bold' }}>
+                                  1. Scan the QR code and open the link
+                                </Typography>
+                                <Typography variant="body2" textAlign="start" sx={{ fontWeight: 'bold' }}>
+                                  2. Leave a comment if you've seen the pet
+                                </Typography>
+                                <Typography variant="body2" textAlign="start" sx={{ fontWeight: 'bold' }}>
+                                  3. Follow the pet's status and share the link to help
+                                </Typography>
+                              </Stack>
+                            </Box>
+                          </Grid>
+                        </Grid>
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
-              );
-            })}
-          </>
-        )}
-      </Box>
+                );
+              })}
+            </>
+          )}
+        </Box>
       </Grid>
 
       <Grid container spacing={2}>
-          <Grid size={{ xs: 12 }}>
-            <Box mt={4} display="flex" justifyContent="space-between" alignItems="center" textAlign="center">
-              <Link
-                to={`/pets/${pet.id}`}
-                style={{
-                  color: '#00b5ad',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  fontSize: '0.875rem',
-                  fontWeight: '500',
-                }}
-              >
-                <ArrowBackIcon fontSize="small" />
-                Back
-              </Link>
-            </Box>
-          </Grid>
+        <Grid size={{ xs: 12 }}>
+          <Box mt={4} display="flex" justifyContent="space-between" alignItems="center" textAlign="center">
+            <Link
+              to={`/pets/${pet.id}`}
+              style={{
+                color: '#00b5ad',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+              }}
+            >
+              <ArrowBackIcon fontSize="small" />
+              Back
+            </Link>
+          </Box>
+        </Grid>
       </Grid>
     </Container>
   );

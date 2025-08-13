@@ -55,8 +55,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Contact = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [subject, setSubject] = useState(2);
-  const [sender, setSender] = useState('');
+  const [subject, setSubject] = useState(1);
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -76,8 +76,8 @@ const Contact = () => {
   const validate = () => {
     const tempErrors = {};
 
-    if (!sender.trim()) {
-      tempErrors.sender = 'Please enter your name.';
+    if (!name.trim()) {
+      tempErrors.name = 'Please enter your name.';
     }
     if (!email) {
       tempErrors.email = 'Please enter your email.';
@@ -128,7 +128,7 @@ const Contact = () => {
         `${API_BASE_URL}/api/feedbacks/`,
         {
           subject: parseInt(subject),
-          sender,
+          name,
           email,
           message,
           user: user.userId,
@@ -145,7 +145,7 @@ const Contact = () => {
         showAlert('Message sent successfully!');
         toast.success('Message sent successfully!');
         setSubject(5);
-        setSender('');
+        setName('');
         setEmail('');
         setMessage('');
         setErrors({});
@@ -313,10 +313,10 @@ const Contact = () => {
               <TextField
                 label="Your Name"
                 fullWidth
-                value={sender}
-                onChange={(e) => setSender(e.target.value)}
-                error={!!errors.sender}
-                helperText={errors.sender}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                error={!!errors.name}
+                helperText={errors.name}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     '&:hover fieldset': {

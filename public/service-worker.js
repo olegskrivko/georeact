@@ -87,11 +87,23 @@ self.addEventListener('pushsubscriptionchange', function (event) {
 });
 
 // Helper function to convert VAPID key
+// function urlBase64ToUint8Array(base64String) {
+//   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+//   const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+
+//   const rawData = window.atob(base64);
+//   const outputArray = new Uint8Array(rawData.length);
+
+//   for (let i = 0; i < rawData.length; ++i) {
+//     outputArray[i] = rawData.charCodeAt(i);
+//   }
+//   return outputArray;
+// }
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
 
-  const rawData = window.atob(base64);
+  const rawData = atob(base64); // <-- Here, no 'window.' prefix
   const outputArray = new Uint8Array(rawData.length);
 
   for (let i = 0; i < rawData.length; ++i) {
@@ -99,3 +111,19 @@ function urlBase64ToUint8Array(base64String) {
   }
   return outputArray;
 }
+
+// npm install base64url-to-buffer
+// import base64urlToBuffer from 'base64url-to-buffer';
+
+// const publicVapidKey = 'YOUR_BASE64URL_VAPID_PUBLIC_KEY';
+// const applicationServerKey = base64urlToBuffer(publicVapidKey);
+
+// // Then use applicationServerKey in pushManager.subscribe
+// navigator.serviceWorker.ready.then(registration => {
+//   registration.pushManager.subscribe({
+//     userVisibleOnly: true,
+//     applicationServerKey: applicationServerKey
+//   }).then(subscription => {
+//     // handle subscription
+//   });
+// });
