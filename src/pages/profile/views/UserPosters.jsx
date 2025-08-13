@@ -430,7 +430,7 @@ const PostersList = () => {
 
       // Calculate statistics
       setTotalPosters(postersData.length);
-
+      console.log('postersData', postersData);
       // Count posters per pet
       const countByPet = postersData.reduce((acc, poster) => {
         const petId = poster.pet;

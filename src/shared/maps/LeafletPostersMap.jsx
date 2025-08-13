@@ -310,7 +310,7 @@ function LeafletPostersMap({ posters = [], pets, mapCenter, isLoading, userLocat
   //     }
   //   });
   // }, [posters, centerCoords]);
-
+  const markerRefs = useRef({});
   return (
     <Box component="section" ref={mapRef} className="map-container">
       <MapContainer

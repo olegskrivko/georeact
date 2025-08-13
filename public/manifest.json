@@ -8,7 +8,7 @@
     {
       "src": "favicon.svg",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     },
     {
       "src": "logo192.png",
