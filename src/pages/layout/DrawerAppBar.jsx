@@ -126,7 +126,9 @@ function DrawerAppBar(props) {
       </List>
     </Box>
   );
-
+  {
+    /* <a href="https://storyset.com/people">People illustrations by Storyset</a> */
+  }
   return (
     <Box sx={{ flexGrow: 1, zIndex: '99' }}>
       <AppBar

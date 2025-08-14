@@ -144,7 +144,7 @@ const lightPalette = {
   },
   text: {
     primary: '#000000',
-    secondary: '#555555',
+    secondary: '#16477c',
   },
   custom: {
     navbar: 'linear-gradient(190deg, #16477c 0%, #00b5ad 100%)',
@@ -163,20 +163,20 @@ const darkPalette = {
   primary: { main: '#00b3a4', contrastText: '#ffffff' },
   secondary: { main: '#FF5733', contrastText: '#ffffff' },
   background: {
-    default: '#282828',
+    default: '#0c182e',
     paper: '#1e1e1e',
   },
   text: {
     primary: '#ffffff',
-    secondary: '#aaaaaa',
+    secondary: '#c9d0ee',
   },
   custom: {
-    navbar: '#1f1f1f', // or '#000000'
-    body: '#282828',
-    section: '#323232',
-    footer: '#1f1f1f',
+    navbar: '#0c182e', // or '#000000'
+    body: '#0c182e',
+    section: '#0c182e',
+    footer: '#0c182e',
     card: {
-      main: '#1f1f1f',
+      main: '#1a2944',
       contrastText: '#ffffff',
     },
   },

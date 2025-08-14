@@ -14,9 +14,9 @@ const ThemeToggle = () => {
     <Tooltip title="Change Theme">
       <IconButton onClick={toggleTheme} color="inherit" size="small">
         {mode === 'dark' ? (
-          <Brightness7 style={{ color: '#DAFF84' }} fontSize="small" />
+          <Brightness7 style={{ color: '#00b3a4' }} fontSize="small" />
         ) : (
-          <Brightness4 style={{ color: '#DAFF84' }} fontSize="small" />
+          <Brightness4 style={{ color: '#00b3a4' }} fontSize="small" />
         )}
       </IconButton>
     </Tooltip>

@@ -18,8 +18,8 @@ import {
   Typography,
 } from '@mui/material';
 
-import ImgSupport from '../../../assets/images/support/cat_astronaut_cuate_blue.svg';
-import ImgCollaboration from '../../../assets/images/support/creative_team_amico_blue.svg';
+import ImgCollaboration from '../../../assets/images/support/creative_team_amico.svg';
+import ImgSupport from '../../../assets/images/support/piggy_bank_amico.svg';
 import { DOMAIN_URL, PAYPAL_BUTTON_ID } from '../../../constants/config';
 
 const Support = () => {

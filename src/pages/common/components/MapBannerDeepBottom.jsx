@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles';
 
 //import illustration from '../pages/images/innovation_amico_blue.svg'; // replace with your own SVG
 
-import illustration from '../../../assets/images/home/innovation_animate.svg';
+import illustration from '../../../assets/images/home/innovation_amico.svg';
 
 {
   /* <a href="https://storyset.com/city">City illustrations by Storyset</a> */

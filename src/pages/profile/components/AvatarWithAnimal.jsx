@@ -29,7 +29,7 @@ const AnimalAvatar = ({ animal, username }) => {
     <Avatar
       src={imageSrc}
       alt={altText}
-      sx={{ backgroundColor: '#00b3a4', color: '#fff', width: '200px', height: '200px', padding: '1rem 1rem' }}
+      sx={{ backgroundColor: '#00b3a4', padding: '0.5rem 0.5rem', color: '#fff', width: '200px', height: '200px' }}
     >
       {!imageSrc && altText[0]} {/* fallback to first letter if no image */}
     </Avatar>

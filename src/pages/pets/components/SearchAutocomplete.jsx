@@ -46,7 +46,7 @@ const SearchAutocomplete = ({ filters, searchValue, onSearchSelect }) => {
   return (
     <ListItem sx={{ padding: '0 !important', paddingTop: '0.8rem !important' }}>
       <Box sx={{ width: '100%' }}>
-        <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Search</InputLabel>
+        <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Search</InputLabel>
         <Autocomplete
           freeSolo
           options={options}

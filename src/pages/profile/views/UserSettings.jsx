@@ -32,6 +32,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import Lottie from 'lottie-react';
 
@@ -62,6 +63,9 @@ const arrayBufferToBase64 = (buffer) => {
   return window.btoa(binary);
 };
 function UserSettings() {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -435,7 +439,8 @@ function UserSettings() {
             sx={{
               p: { xs: 1, sm: 2 },
               borderRadius: 3,
-              background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+              background: cardBg,
+              color: cardText,
             }}
           >
             <TextField
@@ -465,7 +470,8 @@ function UserSettings() {
             sx={{
               p: { xs: 1, sm: 2 },
               borderRadius: 3,
-              background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+              background: cardBg,
+              color: cardText,
             }}
           >
             <Box display="flex" alignItems="center" mb={2}>
@@ -668,7 +674,8 @@ function UserSettings() {
               sx={{
                 p: { xs: 1, sm: 2 },
                 borderRadius: 3,
-                background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+                background: cardBg,
+                color: cardText,
               }}
             >
               <Box display="flex" alignItems="center" mb={2}>
@@ -839,7 +846,8 @@ function UserSettings() {
               sx={{
                 p: { xs: 1, sm: 2 },
                 borderRadius: 3,
-                background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+                background: cardBg,
+                color: cardText,
               }}
             >
               <Box display="flex" alignItems="center" sx={{ mb: { xs: 1, sm: 2 } }}>

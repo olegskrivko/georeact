@@ -49,7 +49,7 @@ const PetSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Status Filter */}
         <ListItem sx={{ padding: '0 !important' }}>
           <Box>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Status</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Status</InputLabel>
             {STATUS_CHOICES.map((status) => (
               <Chip
                 key={status.value}
@@ -66,7 +66,7 @@ const PetSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Species Filter */}
         <ListItem sx={{ padding: '0 !important', paddingTop: '0.8rem !important' }}>
           <Box>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Species</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Species</InputLabel>
             {SPECIES_CHOICES.map((species) => (
               <Chip
                 key={species.value}
@@ -83,7 +83,7 @@ const PetSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Gender Filter */}
         <ListItem sx={{ padding: '0 !important', paddingTop: '0.8rem !important' }}>
           <Box>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Gender</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Gender</InputLabel>
             {GENDER_CHOICES.map((gender) => (
               <Chip
                 key={gender.value}
@@ -100,7 +100,7 @@ const PetSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Size Filter */}
         <ListItem sx={{ padding: '0 !important', paddingTop: '0.8rem !important' }}>
           <Box>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Size</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Size</InputLabel>
             {SIZE_CHOICES.map((size) => (
               <Chip
                 key={size.value}
@@ -117,7 +117,7 @@ const PetSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Pattern Filter */}
         <ListItem sx={{ padding: '0 !important', paddingTop: '0.8rem !important' }}>
           <Box>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Coat Pattern</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Coat Pattern</InputLabel>
             {PATTERN_CHOICES.map((pattern) => (
               <Chip
                 key={pattern.value}
@@ -134,7 +134,7 @@ const PetSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Color Filter */}
         <ListItem sx={{ padding: '0 !important', paddingTop: '0.8rem !important' }}>
           <Box>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Color</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Color</InputLabel>
             {COLOR_CHOICES.map((color) => (
               <Chip
                 key={color.value}
@@ -151,7 +151,7 @@ const PetSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Date Filter */}
         <ListItem sx={{ padding: '0 !important', paddingTop: '0.8rem !important' }}>
           <Box sx={{ width: '100%' }}>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Date</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Date</InputLabel>
             <TextField
               type="date"
               variant="outlined"

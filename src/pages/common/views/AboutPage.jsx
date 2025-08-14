@@ -12,7 +12,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
 import ImgAPI from '../../../assets/images/about/application_programming_interface_amico.svg';
-import ImgNavigation from '../../../assets/images/about/navigation_pana.svg';
+import ImgNavigation from '../../../assets/images/about/navigation_amico.svg';
 import ImgQRCode from '../../../assets/images/about/qr_code_bro.svg';
 import Jumbotron from '../components/Jumbotron';
 

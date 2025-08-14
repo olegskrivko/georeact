@@ -10,13 +10,20 @@ import {
   CircularProgress,
   Container,
   Grid,
+  IconButton,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const FrequentlyAskedQuestions = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const cardTextSecondary = theme.palette.text.secondary;
+
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -62,10 +69,8 @@ const FrequentlyAskedQuestions = () => {
         align="center"
         sx={{
           mb: 5,
-          fontWeight: 800,
-          background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+          mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+          color: theme.palette.text.secondary,
         }}
       >
         Frequently Asked Questions
@@ -77,11 +82,13 @@ const FrequentlyAskedQuestions = () => {
               sx={{
                 py: 1,
                 borderRadius: 3,
-                background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+                background: cardBg,
+                color: cardText,
+                transition: 'transform 0.2s ease',
+                boxShadow: '0.2s ease',
                 '&:hover': {
-                  boxShadow: '0px 3px 10px rgba(0,0,0,0.1)',
-                  transform: 'scale(1.01)',
-                  background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
                 },
               }}
             >
@@ -91,7 +98,7 @@ const FrequentlyAskedQuestions = () => {
                 id={`faq-${index}-header`}
               >
                 <Box display="flex" alignItems="center">
-                  <Box
+                  {/* <Box
                     component="span"
                     sx={{
                       mr: 2,
@@ -104,13 +111,21 @@ const FrequentlyAskedQuestions = () => {
                       height: 32,
                       color: 'primary.main',
                     }}
+                  > */}
+                  <IconButton
+                    sx={{
+                      mr: 2,
+                      color: 'primary.main',
+                      backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                      },
+                    }}
                   >
-                    <TipsAndUpdatesIcon fontSize="small" />
-                  </Box>
-                  <Typography
-                    variant="h6"
-                    sx={{ fontWeight: 600, color: '#16477c', fontSize: { xs: '0.9rem', sm: '1rem' } }}
-                  >
+                    <TipsAndUpdatesIcon />
+                  </IconButton>
+                  {/* </Box> */}
+                  <Typography variant="h6" sx={{ fontWeight: 500, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                     {faq.question}
                   </Typography>
                 </Box>
@@ -118,7 +133,12 @@ const FrequentlyAskedQuestions = () => {
               <AccordionDetails>
                 <Typography
                   variant="body1"
-                  sx={{ color: '#444', fontSize: { xs: '0.9rem', sm: '1rem' }, lineHeight: 1.6 }}
+                  sx={{
+                    color: cardTextSecondary,
+                    fontWeight: 400,
+                    fontSize: { xs: '0.9rem', sm: '1rem' },
+                    lineHeight: 1.6,
+                  }}
                 >
                   {faq.answer}
                 </Typography>

@@ -27,16 +27,21 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 // import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import Lottie from 'lottie-react';
 
 import spinnerAnimation from '../../../assets/Animation-1749725645616.json';
+import ImgPlaceholder from '../../../assets/placeholder.svg';
 import { useAuth } from '../../../contexts/AuthContext';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function UserPetBookmarks() {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const { user } = useAuth(); // Assuming you are managing user state in context
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -132,20 +137,13 @@ function UserPetBookmarks() {
     <Container component="main" maxWidth="lg" disableGutters>
       <Box sx={{ my: { xs: 2, sm: 2, md: 3, lg: 4, xl: 4 } }}>
         <Typography
-          component="h1"
+          variant="h5"
+          color="primary"
           align="center"
           sx={{
-            fontWeight: 800,
-            fontSize: {
-              xs: '1.5rem',
-              sm: '2rem',
-              md: '2.5rem',
-              lg: '2.5rem',
-            },
             mb: 5,
-            background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+            color: theme.palette.text.secondary,
           }}
         >
           Saved Pets
@@ -156,19 +154,29 @@ function UserPetBookmarks() {
               sx={{
                 p: { xs: 1, sm: 2 },
                 borderRadius: 3,
-                background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
-
-                transition: 'all 0.3s ease-in-out',
+                background: cardBg,
+                color: cardText,
+                transition: 'transform 0.2s ease',
+                boxShadow: '0.2s ease',
                 '&:hover': {
-                  background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
                 },
               }}
             >
               <Box display="flex" alignItems="center">
-                <IconButton color="primary" style={{ backgroundColor: '#f7f9fd', cursor: 'default' }}>
+                <IconButton
+                  sx={{
+                    color: 'primary.main',
+                    backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                    },
+                  }}
+                >
                   <BookmarkIcon />
                 </IconButton>
-                <Typography variant="body1" color="textSecondary" sx={{ ml: { xs: 1, sm: 2 } }}>
+                <Typography variant="body1" color="text.secondary" sx={{ ml: { xs: 1, sm: 2 } }}>
                   No saved listings yet.
                 </Typography>
               </Box>
@@ -182,75 +190,59 @@ function UserPetBookmarks() {
                   sx={{
                     p: { xs: 1, sm: 2 },
                     borderRadius: 3,
-                    background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
                     textAlign: 'left',
-                    transition: 'all 0.3s ease-in-out',
+                    background: cardBg,
+                    color: cardText,
+                    transition: 'transform 0.2s ease',
+                    boxShadow: '0.2s ease',
                     '&:hover': {
-                      background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
                     },
                   }}
                 >
                   <Box display="flex" alignItems="center">
-                    <MuiLink href={`/pets/${pet.id}`} underline="none">
+                    <Link to={`/pets/${pet.id}`} style={{ textDecoration: 'none' }}>
                       <Avatar
-                        src={pet.pet_image_1 || ''}
+                        src={pet.pet_image_1 || ImgPlaceholder}
                         alt={pet?.species_display || 'Unknown'}
-                        sx={{ width: 64, height: 64, mr: { xs: 1, sm: 2 }, cursor: 'pointer' }}
+                        sx={{
+                          width: 64,
+                          height: 64,
+                          mr: { xs: 1, sm: 2 },
+                          cursor: 'pointer',
+                          border: '2px solid #00b3a4',
+                        }}
                       >
                         {pet?.species_display?.[0] || '?'}
                       </Avatar>
-                    </MuiLink>
+                    </Link>
                     <Box flexGrow={1}>
-                      <Typography variant="h6">
-                        <Chip label={pet?.species_display || 'Unknown'} size="small" color="primary" />
+                      <Typography
+                        variant="caption"
+                        component="p"
+                        sx={{
+                          fontWeight: 500,
+                          color: 'primary.main',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        {pet?.status_display || 'Unknown'} {pet?.species_display || 'Unknown'}
                       </Typography>
-
-                      <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            fontWeight: 500,
-                            fontSize: '0.6rem',
-                            color: 'primary.main',
-                            textTransform: 'uppercase',
-                          }}
-                        >
-                          {pet?.status_display || 'Unknown'}
-                        </Typography>
-
-                        <DoubleArrowIcon
-                          sx={{
-                            color: '#00b5ad',
-                            fontSize: 16,
-                            opacity: 0.7,
-                          }}
-                        />
-
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            fontWeight: 500,
-                            fontSize: '0.6rem',
-                            color: pet?.final_status === 1 ? 'slategray' : 'primary.main',
-                            textTransform: 'uppercase',
-                          }}
-                        >
-                          {pet?.final_status_display || 'Unknown'}
-                        </Typography>
-                      </Box>
                     </Box>
 
-                    {pet.is_closed ? (
+                    {pet.is_closed && (
                       <Tooltip title="Listing Closed">
-                        <IconButton edge="end" size="small" aria-label="delete" sx={{ mr: 1 }}>
-                          <LockOutlineIcon />
-                        </IconButton>
-                      </Tooltip>
-                    ) : (
-                      <Tooltip title="Listing Open">
-                        <IconButton edge="end" size="small" aria-label="delete" sx={{ mr: 1 }}>
-                          <LockOpenIcon />
-                        </IconButton>
+                        <Box
+                          sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            mr: 1,
+                            cursor: 'default', // removes hand pointer
+                          }}
+                        >
+                          <LockOutlineIcon sx={{ color: 'text.disabled' }} />
+                        </Box>
                       </Tooltip>
                     )}
 

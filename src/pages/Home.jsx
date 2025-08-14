@@ -70,12 +70,14 @@ function Home() {
 
               <Typography
                 variant={isSmallScreen ? 'h4' : 'h2'}
+                color="primary"
                 sx={{
                   fontWeight: 500,
-                  color: '#16477c',
-                  background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  color: theme.palette.text.secondary,
+                  // color: '#16477c',
+                  // // background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
+                  // // WebkitBackgroundClip: 'text',
+                  // // WebkitTextFillColor: 'transparent',
                 }}
               >
                 How exactly do we help you?

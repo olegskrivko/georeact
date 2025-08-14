@@ -8,11 +8,15 @@ import PetsIcon from '@mui/icons-material/Pets';
 import SettingsIcon from '@mui/icons-material/Settings';
 import WorkIcon from '@mui/icons-material/Work';
 import { Avatar, Box, Container, Grid, IconButton, Paper, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import { useAuth } from '../../../contexts/AuthContext';
 import AvatarWithAnimal from '../components/AvatarWithAnimal';
 
 const Profile = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -75,16 +79,27 @@ const Profile = () => {
                   sx={{
                     p: { xs: 1, sm: 2 },
                     borderRadius: 3,
-                    background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
                     cursor: 'pointer',
-                    transition: 'all 0.3s ease-in-out',
+                    background: cardBg,
+                    color: cardText,
+                    transition: 'transform 0.2s ease',
+                    boxShadow: '0.2s ease',
                     '&:hover': {
-                      background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
                     },
                   }}
                 >
                   <Box display="flex" alignItems="center">
-                    <IconButton color="primary" sx={{ backgroundColor: '#f7f9fd' }}>
+                    <IconButton
+                      sx={{
+                        color: 'primary.main',
+                        backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                        '&:hover': {
+                          backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                        },
+                      }}
+                    >
                       {icon}
                     </IconButton>
                     <Typography variant="body1" color="text.secondary" sx={{ ml: { xs: 1, sm: 2 } }}>

@@ -32,10 +32,11 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 
-import ImgFeedback from '../../../assets/images/contact/customer_feedback_amico_blue.svg';
-import ImgSocialMedia from '../../../assets/images/contact/mobile_marketing_cuate_blue.svg';
+import ImgFeedback from '../../../assets/images/contact/feedback_amico.svg';
+import ImgQuestions from '../../../assets/images/contact/questions_bro.svg';
 import { SUBJECT_CHOICES } from '../../../constants/Choices';
 import {
   CITY,
@@ -53,6 +54,9 @@ import { useAuth } from '../../../contexts/AuthContext';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Contact = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const { user } = useAuth();
   const navigate = useNavigate();
   const [subject, setSubject] = useState(1);
@@ -199,39 +203,20 @@ const Contact = () => {
       </Helmet>
 
       <ToastContainer position="top-right" autoClose={3000} />
+
       <Typography
         variant="h4"
         align="center"
         sx={{
           mb: 5,
-          fontWeight: 800,
-          background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+          mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+          color: theme.palette.text.secondary,
         }}
       >
         Contact
       </Typography>
       <Grid container spacing={6} alignItems="center" sx={{ mb: 8 }}>
-        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <CardMedia
-              component="img"
-              src={ImgSocialMedia}
-              alt="Contact illustration"
-              sx={{
-                width: { xs: '70%', sm: '80%', md: '90%', lg: '100%' },
-                objectFit: 'contain',
-                userSelect: 'none',
-                pointerEvents: 'none',
-                borderRadius: 2,
-                mb: 1,
-              }}
-            />
-          </Box>
-        </Grid>
-
-        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }} sx={{ order: { xs: 2, sm: 2, md: 1 } }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
             <Typography
               variant="h4"
@@ -254,17 +239,57 @@ const Contact = () => {
             </Typography>
           </Box>
         </Grid>
+        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }} sx={{ order: { xs: 1, sm: 1, md: 2 } }}>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <CardMedia
+              component="img"
+              src={ImgQuestions}
+              alt="Contact illustration"
+              sx={{
+                width: { xs: '70%', sm: '80%', md: '90%', lg: '100%' },
+                objectFit: 'contain',
+                userSelect: 'none',
+                pointerEvents: 'none',
+                borderRadius: 2,
+                mb: 1,
+              }}
+            />
+          </Box>
+        </Grid>
       </Grid>
 
       <Grid container spacing={6} alignItems="center">
+        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <CardMedia
+              component="img"
+              src={ImgFeedback}
+              alt="Contact illustration"
+              sx={{
+                width: { xs: '70%', sm: '80%', md: '90%', lg: '100%' },
+                objectFit: 'contain',
+                userSelect: 'none',
+                pointerEvents: 'none',
+                borderRadius: 2,
+                mb: 1,
+              }}
+            />
+          </Box>
+        </Grid>
         <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
           <Paper
             elevation={3}
             sx={{
               p: { xs: 2, sm: 3, md: 3 },
               borderRadius: 4,
-              background: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+              background: cardBg,
+              color: cardText,
+              transition: 'transform 0.2s ease',
+              boxShadow: '0.2s ease',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
+              },
             }}
           >
             <Typography
@@ -411,24 +436,6 @@ const Contact = () => {
               </Button>
             </Box>
           </Paper>
-        </Grid>
-
-        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <CardMedia
-              component="img"
-              src={ImgFeedback}
-              alt="Contact illustration"
-              sx={{
-                width: { xs: '70%', sm: '80%', md: '90%', lg: '100%' },
-                objectFit: 'contain',
-                userSelect: 'none',
-                pointerEvents: 'none',
-                borderRadius: 2,
-                mb: 1,
-              }}
-            />
-          </Box>
         </Grid>
       </Grid>
 

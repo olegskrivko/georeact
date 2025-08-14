@@ -12,8 +12,10 @@ import {
   CardMedia,
   Container,
   Grid,
+  IconButton,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const trainingTips = [
   {
@@ -86,6 +88,10 @@ const videos = [
 ];
 
 const PetTraining = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const cardTextSecondary = theme.palette.text.secondary;
   // English video titles from petTraining.json
   const videoTitles = {
     sitAndLie: 'Command - Sit and Lie Down (ENG)',
@@ -172,19 +178,17 @@ const PetTraining = () => {
 
       <Container maxWidth="lg" disableGutters>
         <Typography
-          variant="h4"
+          variant="h5"
+          color="primary"
           align="center"
           sx={{
             mb: 5,
-            fontWeight: 800,
-            background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+            color: theme.palette.text.secondary,
           }}
         >
           Dog School
         </Typography>
-
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
             <Typography variant="body1" component="p" sx={{ mb: 3 }} gutterBottom>
@@ -201,7 +205,7 @@ const PetTraining = () => {
         <Grid container spacing={4}>
           {videos.map((video, index) => (
             <Grid size={{ xs: 12, sm: 6, md: 4, lg: 4 }} key={index}>
-              <Card sx={{ boxShadow: 4, borderRadius: 2 }}>
+              <Card sx={{ boxShadow: 4, borderRadius: 2, background: cardBg, color: cardText }}>
                 <CardMedia component="div" sx={{ position: 'relative', pt: '56.25%' }}>
                   <iframe
                     src={video.src}
@@ -261,13 +265,13 @@ const PetTraining = () => {
                 sx={{
                   py: 1,
                   borderRadius: 3,
-                  background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease-in-out',
+                  background: cardBg,
+                  color: cardText,
+                  transition: 'transform 0.2s ease',
+                  boxShadow: '0.2s ease',
                   '&:hover': {
-                    boxShadow: '0px 3px 10px rgba(0,0,0,0.1)',
-                    transform: 'scale(1.01)',
-                    background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
                   },
                 }}
               >
@@ -277,27 +281,20 @@ const PetTraining = () => {
                   id={`panel-${index}-header`}
                 >
                   <Box display="flex" alignItems="center">
-                    <Box
-                      component="span"
+                    <IconButton
                       sx={{
                         mr: 2,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: '#f7f9fd',
-                        borderRadius: '50%',
-                        width: 32,
-                        height: 32,
                         color: 'primary.main',
+                        backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                        '&:hover': {
+                          backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                        },
                       }}
                     >
-                      <TipsAndUpdatesIcon fontSize="small" />
-                    </Box>
+                      <TipsAndUpdatesIcon />
+                    </IconButton>
 
-                    <Typography
-                      variant="h6"
-                      sx={{ fontWeight: 600, color: '#16477c', fontSize: { xs: '0.9rem', sm: '1rem' } }}
-                    >
+                    <Typography variant="h6" sx={{ fontWeight: 500, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                       {trainingTipsContent[tip.key].title}
                     </Typography>
                   </Box>
@@ -305,7 +302,12 @@ const PetTraining = () => {
                 <AccordionDetails>
                   <Typography
                     variant="body1"
-                    sx={{ color: '#444', fontSize: { xs: '0.9rem', sm: '1rem' }, lineHeight: 1.6 }}
+                    sx={{
+                      color: cardTextSecondary,
+                      fontWeight: 400,
+                      fontSize: { xs: '0.9rem', sm: '1rem' },
+                      lineHeight: 1.6,
+                    }}
                   >
                     {trainingTipsContent[tip.key].description}
                   </Typography>

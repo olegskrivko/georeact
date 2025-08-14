@@ -229,12 +229,12 @@ const LocationManager = ({ mode = 'full' }) => {
     >
       {mode === 'full' && (
         <Typography variant="subtitle1" component="span" sx={{ color: '#fff' }}>
-          Using your location near <strong style={{ color: '#DAFF84' }}>{city}</strong>
+          Using your location near <strong style={{ color: '#00b3a4' }}>{city}</strong>
         </Typography>
       )}
       <Tooltip title="Change Location">
         <IconButton onClick={handleOpen} size="small">
-          <RoomIcon style={{ color: '#DAFF84' }} fontSize="small" />
+          <RoomIcon style={{ color: '#00b3a4' }} fontSize="small" />
         </IconButton>
       </Tooltip>
       <LocationPicker

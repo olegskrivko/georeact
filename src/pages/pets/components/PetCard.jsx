@@ -55,7 +55,16 @@ const PetCard = ({ pet, onPanToLocation }) => {
 
       <CardActions disableSpacing style={{ justifyContent: 'start' }}>
         <Box sx={{ gap: 1 }} style={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton color="primary" style={{ backgroundColor: '#f7f9fd' }} onClick={handleLocationClick}>
+          <IconButton
+            onClick={handleLocationClick}
+            sx={{
+              color: 'primary.main',
+              backgroundColor: 'rgba(25, 118, 210, 0.08)',
+              '&:hover': {
+                backgroundColor: 'rgba(25, 118, 210, 0.2)',
+              },
+            }}
+          >
             <LocationOnIcon />
           </IconButton>
           <Box>

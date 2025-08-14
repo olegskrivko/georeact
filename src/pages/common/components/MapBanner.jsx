@@ -2,11 +2,14 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useMediaQuery } from '@mui/material';
+import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { useTheme } from '@mui/material/styles';
 
-import illustration from '../../../assets/images/home/navigation_animate.svg';
+// import illustration from '../../../assets/images/home/navigation_animate.svg';
+// import illustration from '../../../assets/images/home/dog_paw_pana.svg';
+import illustration from '../../../assets/images/support/cat_astronaut_cuate_blue.svg';
 
 {
   /* <a href="https://storyset.com/business">Business illustrations by Storyset</a> */
@@ -59,20 +62,23 @@ const MapBanner = () => {
             alignItems: isSmallScreen ? 'center' : 'flex-start',
           }}
         >
-          <h2
+          <Typography
+            variant="h1"
+            // color="primary"
             style={{
               textAlign: isSmallScreen ? 'center' : 'left',
               fontSize: isSmallScreen ? '1.75rem' : '2.5rem',
+              color: theme.palette.text.secondary,
               fontWeight: 600,
               fontFamily: "'Inter', sans-serif",
               marginBottom: '1rem',
-              background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              // background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
+              // WebkitBackgroundClip: 'text',
+              // WebkitTextFillColor: 'transparent',
             }}
           >
             Have you lost a pet?
-          </h2>
+          </Typography>
           <p
             style={{
               color: '#616f7d',

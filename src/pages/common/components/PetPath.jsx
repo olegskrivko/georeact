@@ -25,7 +25,7 @@ const PetPath = () => {
         position: 'relative',
         textAlign: 'center',
         // backgroundColor: '#ffffff',
-        background: theme.palette.custom.section,
+        // background: theme.palette.custom.section,
         overflow: 'hidden',
       }}
     >

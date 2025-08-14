@@ -12,7 +12,7 @@ const LanguageSelectorTrigger = () => {
     <>
       <Tooltip title="Change Language">
         <IconButton onClick={() => setOpen(true)} size="small">
-          <LanguageIcon fontSize="small" style={{ color: '#DAFF84' }} />
+          <LanguageIcon fontSize="small" style={{ color: '#00b3a4' }} />
         </IconButton>
       </Tooltip>
       <LanguageSelectorModal open={open} onClose={() => setOpen(false)} />

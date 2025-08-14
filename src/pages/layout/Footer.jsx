@@ -109,7 +109,7 @@ const Footer = () => {
         >
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 3, md: 3, lg: 3 }} textAlign="left">
-              <Typography variant="h6" color="#DAFF84" style={{ fontWeight: '500' }}>
+              <Typography variant="h6" color="#00b3a4" style={{ fontWeight: '500' }}>
                 Get Started
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -132,7 +132,7 @@ const Footer = () => {
             </Grid>
 
             <Grid size={{ xs: 12, sm: 3, md: 3, lg: 3 }} textAlign="left">
-              <Typography variant="h6" color="#DAFF84" style={{ fontWeight: '500' }}>
+              <Typography variant="h6" color="#00b3a4" style={{ fontWeight: '500' }}>
                 Resources
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -155,7 +155,7 @@ const Footer = () => {
             </Grid>
 
             <Grid size={{ xs: 12, sm: 3, md: 3, lg: 3 }} textAlign="left">
-              <Typography variant="h6" color="#DAFF84" style={{ fontWeight: '500' }}>
+              <Typography variant="h6" color="#00b3a4" style={{ fontWeight: '500' }}>
                 Learn More
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -178,7 +178,7 @@ const Footer = () => {
             </Grid>
 
             <Grid size={{ xs: 12, sm: 3, md: 3, lg: 3 }} textAlign="left">
-              <Typography variant="h6" color="#DAFF84" style={{ fontWeight: '500' }}>
+              <Typography variant="h6" color="#00b3a4" style={{ fontWeight: '500' }}>
                 Info
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
