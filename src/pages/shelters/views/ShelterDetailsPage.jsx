@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Box, Container, Grid, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import Lottie from 'lottie-react';
 
@@ -16,6 +17,9 @@ import ShelterSocialMedia from '../components/ShelterSocialMedia';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function ShelterDetailsPage() {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const { id } = useParams();
   const [shelter, setShelter] = useState(null);
   const [loading, setLoading] = useState(true);

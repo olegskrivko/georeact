@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Box, Card, CardContent, CardMedia, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 
 import ImgPlaceholder from '../../../assets/placeholder.svg';
@@ -9,6 +10,9 @@ import ImgPlaceholder from '../../../assets/placeholder.svg';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const GuidesPage = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -72,8 +76,14 @@ const GuidesPage = () => {
       <Grid container spacing={3}>
         {guides.map((guide) => (
           <Grid key={guide.id} size={{ xs: 12, sm: 6, md: 3, lg: 3 }}>
-            <Card>
-              <Link to={`/guides/${guide.slug}`} style={{ textDecoration: 'none' }}>
+            <Card sx={{ background: cardBg, color: cardText }}>
+              <Link
+                to={`/guides/${guide.slug}`}
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit', // keep text color same
+                }}
+              >
                 <CardMedia
                   component="img"
                   image={guide?.cover_url || ImgPlaceholder}
@@ -81,7 +91,15 @@ const GuidesPage = () => {
                   sx={{ height: 200, objectFit: 'cover' }}
                 />
                 <CardContent sx={{ paddingBottom: '1rem !important' }}>
-                  <Typography variant="subtitle1" component="h2" noWrap>
+                  <Typography
+                    variant="subtitle1"
+                    component="h2"
+                    noWrap
+                    sx={{
+                      color: 'inherit',
+                      '&:visited': { color: 'inherit' },
+                    }}
+                  >
                     {guide?.title}
                   </Typography>
                 </CardContent>

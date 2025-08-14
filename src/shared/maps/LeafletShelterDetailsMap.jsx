@@ -6,6 +6,7 @@ import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { Box, IconButton, Tooltip, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -38,6 +39,7 @@ const LocationMarker = ({ position }) => {
 
 // Main Leaflet Map component
 const LeafletShelterDetailsMap = ({ location }) => {
+  const theme = useTheme();
   const [position, setPosition] = useState([
     typeof location.lat === 'number' && !isNaN(location.lat) ? location.lat : 0,
     typeof location.lng === 'number' && !isNaN(location.lng) ? location.lng : 0,
@@ -75,21 +77,43 @@ const LeafletShelterDetailsMap = ({ location }) => {
 };
 
 // MapTiler Layer component to use MapTiler maps
+// const MapTilerLayerComponent = () => {
+//   const map = useMap();
+
+//   useEffect(() => {
+//     const mtLayer = new MaptilerLayer({
+//       apiKey: 'zqJA9kfFpP2bX0hmViWr', // Use your MapTiler API Key here
+//       style: 'basic-v2', // You can change to other MapTiler styles, e.g. "streets", "satellite"
+//     });
+
+//     mtLayer.addTo(map); // Add MapTiler layer to the map
+
+//     return () => {
+//       map.removeLayer(mtLayer); // Clean up when the component is unmounted
+//     };
+//   }, [map]);
+
+//   return null;
+// };
 const MapTilerLayerComponent = () => {
   const map = useMap();
+  const theme = useTheme();
 
   useEffect(() => {
+    // Pick style based on MUI theme mode
+    const style = theme.palette.mode === 'dark' ? 'streets-v2-dark' : 'basic-v2';
+
     const mtLayer = new MaptilerLayer({
-      apiKey: 'zqJA9kfFpP2bX0hmViWr', // Use your MapTiler API Key here
-      style: 'basic-v2', // You can change to other MapTiler styles, e.g. "streets", "satellite"
+      apiKey: 'zqJA9kfFpP2bX0hmViWr',
+      style,
     });
 
-    mtLayer.addTo(map); // Add MapTiler layer to the map
+    mtLayer.addTo(map);
 
     return () => {
-      map.removeLayer(mtLayer); // Clean up when the component is unmounted
+      map.removeLayer(mtLayer);
     };
-  }, [map]);
+  }, [map, theme.palette.mode]); // re-run if theme mode changes
 
   return null;
 };

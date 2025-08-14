@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
 
 import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const Jumbotron = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   return (
     <Grid container spacing={3} mt={8}>
       {/* Left Side */}
@@ -14,7 +18,8 @@ const Jumbotron = () => {
             height: '100%',
             p: { xs: 1, sm: 1, md: 2, lg: 2 },
             borderRadius: 3,
-            background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
+            background: cardBg,
+            color: cardText,
           }}
         >
           <CardContent
@@ -54,7 +59,8 @@ const Jumbotron = () => {
             height: '100%',
             p: { xs: 1, sm: 1, md: 2, lg: 2 },
             borderRadius: 3,
-            background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+            background: cardBg,
+            color: cardText,
           }}
         >
           <CardContent

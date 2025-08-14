@@ -20,6 +20,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 // import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 
@@ -28,6 +29,9 @@ import { useAuth } from '../../../contexts/AuthContext';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function UserServiceBookmarks() {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const { user } = useAuth(); // Assuming you are managing user state in context
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -284,11 +288,15 @@ function UserServiceBookmarks() {
                   sx={{
                     p: { xs: 1, sm: 2 },
                     borderRadius: 3,
-                    background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+
                     textAlign: 'left',
-                    transition: 'all 0.3s ease-in-out',
+                    background: cardBg,
+                    color: cardText,
+                    transition: 'transform 0.2s ease',
+                    boxShadow: '0.2s ease',
                     '&:hover': {
-                      background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
                     },
                   }}
                 >
@@ -296,15 +304,15 @@ function UserServiceBookmarks() {
                     <MuiLink href={`/services/${service.id}`} underline="none">
                       <Avatar
                         src={service.service_image_1 || ''}
-                        alt={service.title || 'Unknown'}
+                        alt={service.operating_name || 'Unknown'}
                         sx={{ width: 64, height: 64, mr: { xs: 1, sm: 2 }, cursor: 'pointer' }}
                       >
-                        {service.title || '?'}
+                        {service.operating_name || '?'}
                       </Avatar>
                     </MuiLink>
                     <Box flexGrow={1}>
                       <Typography variant="h6">
-                        <Chip label={service?.title || 'Unknown'} size="small" color="primary" />
+                        <Chip label={service?.operating_name || 'Unknown'} size="small" color="primary" />
                       </Typography>
                       <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
                         <Typography

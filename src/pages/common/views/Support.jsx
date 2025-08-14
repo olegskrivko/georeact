@@ -17,12 +17,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import ImgCollaboration from '../../../assets/images/support/creative_team_amico.svg';
 import ImgSupport from '../../../assets/images/support/piggy_bank_amico.svg';
 import { DOMAIN_URL, PAYPAL_BUTTON_ID } from '../../../constants/config';
 
 const Support = () => {
+  const theme = useTheme();
   const collaborationPoints = [
     'Animal shelters and rescue organizations – to help find homes for lost pets faster.',
     'Veterinary clinics and specialists – to provide valuable advice to pet owners.',
@@ -55,16 +57,14 @@ const Support = () => {
 
       {/* Toast notifications for success and error messages */}
       <ToastContainer />
+
       <Typography
         variant="h4"
         align="center"
         sx={{
           mb: 5,
-          fontWeight: 800,
-          color: '#16477c',
-          background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+          mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+          color: theme.palette.text.secondary,
         }}
       >
         Support the Project
@@ -97,7 +97,7 @@ const Support = () => {
             ideas.
           </Typography>
 
-          <Typography variant="h6" sx={{ my: 1, fontWeight: 500, color: '#16477c' }}>
+          <Typography variant="h6" color="primary" sx={{ my: 1, fontWeight: 500 }}>
             We are open to various types of partnerships:
           </Typography>
 
@@ -105,8 +105,21 @@ const Support = () => {
             {collaborationPoints.map((point, index) => (
               <ListItem key={index} sx={{ pl: 0 }}>
                 <ListItemIcon sx={{ minWidth: 32 }}>
-                  <Pets fontSize="small" sx={{ color: '#16477c' }} />
+                  <IconButton
+                    sx={{
+                      cursor: 'default',
+                      mr: 2,
+                      color: 'primary.main',
+                      backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                      },
+                    }}
+                  >
+                    <Pets />
+                  </IconButton>
                 </ListItemIcon>
+
                 <ListItemText primary={point} />
               </ListItem>
             ))}
@@ -121,13 +134,13 @@ const Support = () => {
       {/* Bottom part  */}
       <Grid container spacing={6} alignItems="center">
         {/* Left Side - Illustration Section */}
-        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }} sx={{ order: { xs: 2, sm: 2, md: 1 } }}>
           <Typography variant="body1" sx={{ mb: 3 }}>
             We are grateful for any support or sponsor assistance that can help us unlock the full potential of our web
             application. If you share our vision and would like to invest in premium level and service usage costs,
             please contact us.
           </Typography>
-          <Typography variant="h6" sx={{ my: 1, fontWeight: 500, color: '#16477c' }}>
+          <Typography variant="h6" color="primary" sx={{ my: 1, fontWeight: 500 }}>
             Ways you can help:
           </Typography>
 
@@ -136,7 +149,20 @@ const Support = () => {
             {supportPoints.map((point, index) => (
               <ListItem key={index} sx={{ pl: 0 }}>
                 <ListItemIcon sx={{ minWidth: 32 }}>
-                  <Pets fontSize="small" sx={{ color: '#16477c' }} />
+                  {/* <Pets fontSize="small" sx={{ color: '#16477c' }} /> */}
+                  <IconButton
+                    sx={{
+                      cursor: 'default',
+                      mr: 2,
+                      color: 'primary.main',
+                      backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                      },
+                    }}
+                  >
+                    <Pets />
+                  </IconButton>
                 </ListItemIcon>
                 <ListItemText primary={point} />
               </ListItem>
@@ -186,7 +212,7 @@ const Support = () => {
         </Grid>
 
         {/* Right Side - Content Section */}
-        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }} sx={{ order: { xs: 1, sm: 1, md: 2 } }}>
           <Box display="flex" flexDirection="column" alignItems="center">
             <CardMedia
               component="img"

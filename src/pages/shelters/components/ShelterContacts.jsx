@@ -3,20 +3,34 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PublicIcon from '@mui/icons-material/Public';
 import { Box, Card, IconButton, Link as MuiLink, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 function ShelterContacts({ shelter, onLocationClick }) {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   return (
     <Card
       sx={{
         p: { xs: 1, sm: 2 },
         borderRadius: 3,
-        background: '#fff',
+        background: cardBg,
+        color: cardText,
         boxShadow: 3,
       }}
     >
       {/* Address */}
       <Box display="flex" alignItems="center" gap={2}>
-        <IconButton sx={{ backgroundColor: '#00b3a4', color: '#f7f9fd', pointerEvents: 'none' }}>
+        <IconButton
+          sx={{
+            pointerEvents: 'none',
+            color: 'primary.main',
+            backgroundColor: 'rgba(25, 118, 210, 0.08)',
+            '&:hover': {
+              backgroundColor: 'rgba(25, 118, 210, 0.2)',
+            },
+          }}
+        >
           <LocationOnIcon />
         </IconButton>
         <Box>
@@ -31,7 +45,16 @@ function ShelterContacts({ shelter, onLocationClick }) {
 
       {/* Website */}
       <Box display="flex" alignItems="center" gap={2} mt={2}>
-        <IconButton sx={{ backgroundColor: '#00b3a4', color: '#f7f9fd', pointerEvents: 'none' }}>
+        <IconButton
+          sx={{
+            pointerEvents: 'none',
+            color: 'primary.main',
+            backgroundColor: 'rgba(25, 118, 210, 0.08)',
+            '&:hover': {
+              backgroundColor: 'rgba(25, 118, 210, 0.2)',
+            },
+          }}
+        >
           <PublicIcon />
         </IconButton>
         <Box>
@@ -52,7 +75,16 @@ function ShelterContacts({ shelter, onLocationClick }) {
 
       {/* Phone */}
       <Box display="flex" alignItems="center" gap={2} mt={2}>
-        <IconButton sx={{ backgroundColor: '#00b3a4', color: '#f7f9fd', pointerEvents: 'none' }}>
+        <IconButton
+          sx={{
+            pointerEvents: 'none',
+            color: 'primary.main',
+            backgroundColor: 'rgba(25, 118, 210, 0.08)',
+            '&:hover': {
+              backgroundColor: 'rgba(25, 118, 210, 0.2)',
+            },
+          }}
+        >
           <PhoneIcon />
         </IconButton>
         <Box>
@@ -78,7 +110,16 @@ function ShelterContacts({ shelter, onLocationClick }) {
 
       {/* Email */}
       <Box display="flex" alignItems="center" gap={2} mt={2}>
-        <IconButton sx={{ backgroundColor: '#00b3a4', color: '#f7f9fd', pointerEvents: 'none' }}>
+        <IconButton
+          sx={{
+            pointerEvents: 'none',
+            color: 'primary.main',
+            backgroundColor: 'rgba(25, 118, 210, 0.08)',
+            '&:hover': {
+              backgroundColor: 'rgba(25, 118, 210, 0.2)',
+            },
+          }}
+        >
           <EmailIcon />
         </IconButton>
         <Box>
