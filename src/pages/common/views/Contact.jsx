@@ -442,7 +442,7 @@ const Contact = () => {
       <Typography
         variant="h4"
         align="center"
-        sx={{ fontWeight: 500, color: '#16477c', mt: 8, mb: 4, mb: 5, fontSize: { xs: '1.8rem', sm: '2rem' } }}
+        sx={{ fontWeight: 500, color: '#16477c', mt: 8, mb: 4, fontSize: { xs: '1.8rem', sm: '2rem' } }}
       >
         Contact Information
       </Typography>
