@@ -12,6 +12,7 @@ import {
 } from '@mui/icons-material';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import { Box, Card, Collapse, IconButton, TextField, Tooltip, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import { useAuth } from '../../../contexts/AuthContext';
 import AnimalAvatar from '../../common/components/AnimalAvatar';
@@ -37,7 +38,9 @@ const SendMessage = ({
   const [expanded, setExpanded] = useState(false);
   const { user } = useAuth();
   const handleToggleExpand = () => setExpanded((prev) => !prev);
-
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   // Dropzone logic
   const [selectedFile, setSelectedFile] = useState(null);
   const onDrop = useCallback(
@@ -92,7 +95,8 @@ const SendMessage = ({
       sx={{
         p: { xs: 1, sm: 2 },
         borderRadius: 3,
-        background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+        background: cardBg,
+        color: cardText,
         overflow: 'hidden',
       }}
     >

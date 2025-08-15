@@ -1,11 +1,15 @@
 import SouthEastIcon from '@mui/icons-material/SouthEast';
 import { Box, Card, CardMedia, Grid, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import ImgPlaceholder from '../../../assets/placeholder.svg';
 
 export default function ShelterHeaderCard({ shelter }) {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   return (
-    <Card sx={{ mb: 4, borderRadius: 3, boxShadow: 3, overflow: 'hidden' }}>
+    <Card sx={{ mb: 4, borderRadius: 3, boxShadow: 3, overflow: 'hidden', background: cardBg, color: cardText }}>
       <Grid container>
         {/* Left: Cover Image */}
         <Grid size={{ xs: 12, md: 4 }}>
@@ -31,10 +35,20 @@ export default function ShelterHeaderCard({ shelter }) {
           sx={{ height: { xs: 360, sm: 400, md: 320 }, p: { xs: 1, sm: 2, md: 3 } }}
         >
           <Box>
-            <Typography variant="h3" fontWeight={700} color="primary">
+            {/* <Typography variant="h3" fontWeight={700} color="primary">
+              {shelter?.operating_name}
+            </Typography> */}
+            <Typography
+              variant="h4"
+              fontWeight={700}
+              sx={{
+                // mb: 5,
+                mt: { xs: 3, sm: 2, md: 1, lg: 0 },
+                color: theme.palette.text.secondary,
+              }}
+            >
               {shelter?.operating_name}
             </Typography>
-
             <Typography
               variant="subtitle1"
               color="primary"

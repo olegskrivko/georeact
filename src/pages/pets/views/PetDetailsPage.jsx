@@ -41,6 +41,7 @@ import {
   Typography,
 } from '@mui/material';
 import Chip from '@mui/material/Chip';
+import { useTheme } from '@mui/material/styles';
 import Lottie from 'lottie-react';
 import moment from 'moment';
 import 'moment/locale/lv';
@@ -58,6 +59,9 @@ import PetAttributes from '../components/PetAttributes';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const PetDetailsPage = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const { user } = useAuth();
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -794,7 +798,9 @@ const PetDetailsPage = () => {
           sx={{
             p: { xs: 1, sm: 2 },
             borderRadius: 3,
-            background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+            background: cardBg,
+            color: cardText,
+
             overflow: 'hidden',
           }}
         >

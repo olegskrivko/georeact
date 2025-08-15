@@ -7,9 +7,11 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import EditIcon from '@mui/icons-material/Edit';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockOutlineIcon from '@mui/icons-material/LockOutline';
 import PetsIcon from '@mui/icons-material/Pets';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 import { MenuItem, Modal, Select } from '@mui/material';
 import {
   Avatar,
@@ -291,6 +293,14 @@ function UserPets() {
                         {pet?.status_display || 'Unknown'} {pet?.species_display || 'Unknown'}
                       </Typography>
                     </Box>
+
+                    <Tooltip title="Download Poster">
+                      <Link to={`/pets/${pet.id}/poster`} style={{ textDecoration: 'none' }}>
+                        <IconButton edge="end" size="small" color="warning" aria-label="delete" sx={{ mr: 1 }}>
+                          <FileDownloadIcon />
+                        </IconButton>
+                      </Link>
+                    </Tooltip>
                     {pet.is_closed ? (
                       <Tooltip title="Advertisement Closed">
                         <IconButton

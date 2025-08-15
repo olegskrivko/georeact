@@ -2,20 +2,21 @@ import React from 'react';
 
 import PhoneIcon from '@mui/icons-material/Phone';
 import { Avatar, Box, Card, CardContent, IconButton, Link, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import AnimalAvatar from '../../common/components/AnimalAvatar';
 
 const TabContact = ({ pet }) => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   return (
     <Card
       sx={{
         p: { xs: 1, sm: 2 },
         borderRadius: 3,
-        background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
-        transition: 'all 0.3s ease-in-out',
-        '&:hover': {
-          background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
-        },
+        background: cardBg,
+        color: cardText,
       }}
     >
       {/* <CardContent style={{ paddingBottom: '1rem' }}> */}
@@ -37,10 +38,13 @@ const TabContact = ({ pet }) => {
 
       <Box display="flex" alignItems="center" gap={2} mt={2}>
         <IconButton
-          style={{
-            backgroundColor: '#00b3a4',
-            color: '#f7f9fd',
-            pointerEvents: 'none', // keeps icon non-clickable
+          sx={{
+            pointerEvents: 'none',
+            color: 'primary.main',
+            backgroundColor: 'rgba(25, 118, 210, 0.08)',
+            '&:hover': {
+              backgroundColor: 'rgba(25, 118, 210, 0.2)',
+            },
           }}
         >
           <PhoneIcon />

@@ -9,6 +9,7 @@ function ShelterContacts({ shelter, onLocationClick }) {
   const theme = useTheme();
   const cardBg = theme.palette.custom.card.main;
   const cardText = theme.palette.custom.card.contrastText;
+  const cardTextSecondary = theme.palette.text.secondary;
   return (
     <Card
       sx={{
@@ -34,10 +35,10 @@ function ShelterContacts({ shelter, onLocationClick }) {
           <LocationOnIcon />
         </IconButton>
         <Box>
-          <Typography variant="body2" color="primary" fontWeight={600}>
+          {/* <Typography variant="body2" color="primary" fontWeight={600}>
             Address:{' '}
-          </Typography>
-          <MuiLink onClick={onLocationClick} sx={{ cursor: 'pointer', color: '#000' }} underline="none">
+          </Typography> */}
+          <MuiLink onClick={onLocationClick} sx={{ cursor: 'pointer', color: cardTextSecondary }} underline="none">
             {shelter.full_address}
           </MuiLink>
         </Box>
@@ -58,11 +59,17 @@ function ShelterContacts({ shelter, onLocationClick }) {
           <PublicIcon />
         </IconButton>
         <Box>
-          <Typography variant="body2" color="primary" fontWeight={600}>
+          {/* <Typography variant="body2" color="primary" fontWeight={600}>
             Website:{' '}
-          </Typography>
+          </Typography> */}
           {shelter.website_url ? (
-            <MuiLink href={shelter.website_url} target="_blank" rel="noopener noreferrer" underline="none" color="#000">
+            <MuiLink
+              href={shelter.website_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              underline="none"
+              sx={{ color: cardTextSecondary }}
+            >
               {shelter.website_url}
             </MuiLink>
           ) : (
@@ -88,16 +95,15 @@ function ShelterContacts({ shelter, onLocationClick }) {
           <PhoneIcon />
         </IconButton>
         <Box>
-          <Typography variant="body2" color="primary" fontWeight={600}>
+          {/* <Typography variant="body2" color="primary" fontWeight={600}>
             Phone:{' '}
-          </Typography>
+          </Typography> */}
           {shelter.full_phone_number ? (
             <Typography variant="body2">
               <MuiLink
                 href={`tel:${shelter.full_phone_number}`}
                 underline="none"
-                color="#000"
-                sx={{ cursor: 'pointer' }}
+                sx={{ color: cardTextSecondary, cursor: 'pointer' }}
               >
                 {shelter.full_phone_number}
               </MuiLink>
@@ -123,12 +129,16 @@ function ShelterContacts({ shelter, onLocationClick }) {
           <EmailIcon />
         </IconButton>
         <Box>
-          <Typography variant="body2" color="primary" fontWeight={600}>
+          {/* <Typography variant="body2" color="primary" fontWeight={600}>
             Email:{' '}
-          </Typography>
+          </Typography> */}
           {shelter.email ? (
             <Typography variant="body1">
-              <MuiLink href={`mailto:${shelter.email}`} underline="none" color="#000" sx={{ cursor: 'pointer' }}>
+              <MuiLink
+                href={`mailto:${shelter.email}`}
+                underline="none"
+                sx={{ color: cardTextSecondary, cursor: 'pointer' }}
+              >
                 {shelter.email}
               </MuiLink>
             </Typography>

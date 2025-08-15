@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Box, Button, CardContent, CircularProgress, Container, Grid, LinearProgress, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
@@ -12,23 +13,29 @@ const COLORS = {
   none: '#90a4ae',
 };
 
-const Title = ({ text }) => (
-  <Typography
-    variant="h4"
-    align="center"
-    sx={{
-      mb: 5,
-      fontWeight: 800,
-      background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-    }}
-  >
-    {text}
-  </Typography>
-);
+const Title = ({ text }) => {
+  const theme = useTheme();
+
+  return (
+    <Typography
+      variant="h4"
+      align="center"
+      sx={{
+        mb: 5,
+        mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+        color: theme.palette.text.secondary,
+      }}
+    >
+      {text}
+    </Typography>
+  );
+};
 
 const PetQuiz = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const cardTextSecondary = theme.palette.text.secondary;
   const [questions, setQuestions] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState({});

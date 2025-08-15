@@ -6,6 +6,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import XIcon from '@mui/icons-material/X';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import { Box, Card, Grid, IconButton, Link as MuiLink, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const platformIcons = {
   facebook: FacebookIcon,
@@ -17,11 +18,53 @@ const platformIcons = {
 };
 
 function ShelterSocialMedia({ socialMedia }) {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const cardTextSecondary = theme.palette.text.secondary;
   if (!socialMedia || socialMedia.length === 0) {
     return (
-      <Typography variant="body2" color="text.secondary">
-        No social profiles
-      </Typography>
+      // <Typography variant="body2" color="text.secondary">
+      //   No social profiles
+      // </Typography>
+      <Card
+        sx={{
+          p: { xs: 1, sm: 2 },
+          borderRadius: 3,
+          boxShadow: 3,
+          background: cardBg,
+          color: cardText,
+        }}
+      >
+        <Grid size={{ xs: 12 }}>
+          <Box
+            sx={{
+              pb: 0,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
+            <IconButton
+              sx={{
+                pointerEvents: 'none',
+                color: 'primary.main',
+                backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                '&:hover': {
+                  backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                },
+              }}
+            >
+              <PublicIcon />
+            </IconButton>
+            <Box>
+              <Typography variant="body2" color="text.secondary">
+                No social profiles
+              </Typography>
+            </Box>
+          </Box>
+        </Grid>
+      </Card>
     );
   }
 
@@ -30,8 +73,9 @@ function ShelterSocialMedia({ socialMedia }) {
       sx={{
         p: { xs: 1, sm: 2 },
         borderRadius: 3,
-        background: '#fff',
         boxShadow: 3,
+        background: cardBg,
+        color: cardText,
       }}
     >
       {socialMedia.map((profile, idx) => {
@@ -48,24 +92,27 @@ function ShelterSocialMedia({ socialMedia }) {
               }}
             >
               <IconButton
-                style={{
-                  backgroundColor: '#00b3a4',
-                  color: '#f7f9fd',
+                sx={{
                   pointerEvents: 'none',
+                  color: 'primary.main',
+                  backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                  },
                 }}
               >
                 <IconComponent />
               </IconButton>
               <Box>
-                <Typography variant="body2" color="primary" fontWeight={600}>
+                {/* <Typography variant="body2" color="primary" fontWeight={600}>
                   {profile.platform}:{' '}
-                </Typography>
+                </Typography> */}
                 <MuiLink
                   href={profile.profile_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   underline="hover"
-                  color="#000"
+                  sx={{ color: cardTextSecondary }}
                 >
                   {profile.profile_url}
                 </MuiLink>

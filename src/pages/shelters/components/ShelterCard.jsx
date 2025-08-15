@@ -2,10 +2,14 @@ import { Link } from 'react-router-dom';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Box, Card, CardActions, CardMedia, IconButton, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import ImgPlaceholder from '../../../assets/placeholder.svg';
 
 const ShelterCard = ({ shelter, onPanToLocation }) => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const handleMapIconClick = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -15,7 +19,7 @@ const ShelterCard = ({ shelter, onPanToLocation }) => {
   };
 
   return (
-    <Card>
+    <Card sx={{ background: cardBg, color: cardText }}>
       <Link to={`/shelters/${shelter.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <Box position="relative" sx={{ width: '100%', aspectRatio: '4 / 3', overflow: 'hidden' }}>
           <CardMedia
@@ -31,8 +35,17 @@ const ShelterCard = ({ shelter, onPanToLocation }) => {
         </Box>
       </Link>
       <CardActions disableSpacing style={{ justifyContent: 'start' }}>
-        <Box sx={{ gap: 1 }} style={{ display: 'flex', alignItems: 'center', color: '#343a40' }}>
-          <IconButton color="primary" style={{ backgroundColor: '#f7f9fd' }} onClick={handleMapIconClick}>
+        <Box sx={{ gap: 1 }} style={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton
+            onClick={handleMapIconClick}
+            sx={{
+              color: 'primary.main',
+              backgroundColor: 'rgba(25, 118, 210, 0.08)',
+              '&:hover': {
+                backgroundColor: 'rgba(25, 118, 210, 0.2)',
+              },
+            }}
+          >
             <LocationOnIcon />
           </IconButton>
           <Box>

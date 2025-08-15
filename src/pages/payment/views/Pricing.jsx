@@ -21,6 +21,7 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import TestVisaCard from '../components/TestVisaCard';
 
@@ -86,6 +87,10 @@ const isSubscriptionActive = (endDate) => {
 };
 
 const PricingPage = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const cardTextSecondary = theme.palette.text.secondary;
   const [subscription, setSubscription] = useState(null);
   const [loading, setLoading] = useState(true);
   const [subscriptionError, setSubscriptionError] = useState(null);
@@ -174,9 +179,11 @@ const PricingPage = () => {
                     border: '1px solid #ddd',
                     textAlign: 'center',
                     height: '100%',
-                    background: isActive
-                      ? 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)'
-                      : 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+                    color: cardText,
+                    background: cardBg,
+                    // background: isActive
+                    //   ? background: cardBg
+                    //   : background: cardBg,
                   }}
                 >
                   <CardContent sx={{ flexGrow: 1 }}>

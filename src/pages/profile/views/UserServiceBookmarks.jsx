@@ -23,7 +23,9 @@ import {
 import { useTheme } from '@mui/material/styles';
 // import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
+import Lottie from 'lottie-react';
 
+import spinnerAnimation from '../../../assets/Animation-1749725645616.json';
 import { useAuth } from '../../../contexts/AuthContext';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -131,9 +133,11 @@ function UserServiceBookmarks() {
   if (loading) {
     return (
       <Container>
-        <Typography variant="h5" align="center">
-          Loading your favorited services...
-        </Typography>
+        <Box sx={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Box sx={{ width: 180, height: 180 }}>
+            <Lottie animationData={spinnerAnimation} loop autoplay />
+          </Box>
+        </Box>
       </Container>
     );
   }
@@ -152,25 +156,16 @@ function UserServiceBookmarks() {
     <Container component="main" maxWidth="lg" disableGutters>
       <Box sx={{ my: { xs: 2, sm: 2, md: 3, lg: 4, xl: 4 } }}>
         <Typography
-          component="h1"
+          variant="h5"
           align="center"
           sx={{
-            fontWeight: 800,
-            fontSize: {
-              xs: '1.5rem',
-              sm: '2rem',
-              md: '2.5rem',
-              lg: '2.5rem',
-            },
             mb: 5,
-            background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+            color: theme.palette.text.secondary,
           }}
         >
           Saved Services
         </Typography>
-
         {favoritedServices.length === 0 ? (
           // <Card
           //   sx={{

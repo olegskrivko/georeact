@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
@@ -22,14 +23,20 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 // ✅ Import missing icon
 import axios from 'axios';
+import Lottie from 'lottie-react';
 import { useSnackbar } from 'notistack';
 
+import spinnerAnimation from '../../../assets/Animation-1749725645616.json';
 import { useAuth } from '../../../contexts/AuthContext';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function UserServices() {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const { user } = useAuth();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -86,9 +93,11 @@ function UserServices() {
   if (loading) {
     return (
       <Container>
-        <Typography variant="h5" align="center">
-          Ielādē pakalpojumus...
-        </Typography>
+        <Box sx={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Box sx={{ width: 180, height: 180 }}>
+            <Lottie animationData={spinnerAnimation} loop autoplay />
+          </Box>
+        </Box>
       </Container>
     );
   }
@@ -107,31 +116,38 @@ function UserServices() {
     <Container component="main" maxWidth="lg" disableGutters>
       <Box sx={{ my: { xs: 2, sm: 2, md: 3, lg: 4, xl: 4 } }}>
         <Typography
-          component="h1"
+          variant="h5"
           align="center"
           sx={{
-            fontWeight: 800,
-            fontSize: {
-              xs: '1.5rem',
-              sm: '2rem',
-              md: '2.5rem',
-              lg: '2.5rem',
-            },
             mb: 5,
-            background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+            color: theme.palette.text.secondary,
           }}
         >
           My Services
         </Typography>
         {quota && (
-          <Card sx={{ p: { xs: 1, sm: 2 }, mb: 4, borderRadius: 3, background: 'linear-gradient(90deg, #edf4ff 0%, #f3faff 100%)' }}>
-            <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>Your Limit</Typography>
-            <Typography variant="body2" component="p" sx={{ mb: 1 }}>Allowed service count: <strong>{quota.limit}</strong></Typography>
-            <Typography variant="body2" component="p" sx={{ mb: 1 }}>Currently used: <strong>{quota.used}</strong></Typography>
+          <Card
+            sx={{
+              p: { xs: 1, sm: 2 },
+              mb: 4,
+              borderRadius: 3,
+              background: 'linear-gradient(90deg, #edf4ff 0%, #f3faff 100%)',
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+              Your Limit
+            </Typography>
+            <Typography variant="body2" component="p" sx={{ mb: 1 }}>
+              Allowed service count: <strong>{quota.limit}</strong>
+            </Typography>
+            <Typography variant="body2" component="p" sx={{ mb: 1 }}>
+              Currently used: <strong>{quota.used}</strong>
+            </Typography>
             <Box mt={3}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>Subscription limits:</Typography>
+              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                Subscription limits:
+              </Typography>
               <Box display="flex" gap={2} flexWrap="wrap">
                 <Chip label="Freemium: 1" size="small" color="primary" sx={{ pointerEvents: 'none' }} tabIndex={-1} />
                 <Chip label="Plus: 3" size="small" color="primary" sx={{ pointerEvents: 'none' }} tabIndex={-1} />
@@ -262,12 +278,34 @@ function UserServices() {
                 Back
               </Link>
               {quota && quota.remaining <= 0 ? (
-                <Box sx={{ color: 'gray', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.875rem', fontWeight: '500', opacity: 0.5, cursor: 'not-allowed' }}>
+                <Box
+                  sx={{
+                    color: 'gray',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '0.875rem',
+                    fontWeight: '500',
+                    opacity: 0.5,
+                    cursor: 'not-allowed',
+                  }}
+                >
                   <AddIcon fontSize="small" />
                   Add
                 </Box>
               ) : (
-                <Link to="/add-service" style={{ color: '#00b5ad', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.875rem', fontWeight: '500' }}>
+                <Link
+                  to="/add-service"
+                  style={{
+                    color: '#00b5ad',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '0.875rem',
+                    fontWeight: '500',
+                  }}
+                >
                   <AddIcon fontSize="small" />
                   Add
                 </Link>

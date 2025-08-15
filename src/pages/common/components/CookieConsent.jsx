@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Box, Button, Card, Stack, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import Cookies from 'js-cookie';
 
 import cookiesImg from '../../../assets/cookies.svg';
@@ -12,7 +13,9 @@ const COOKIE_EXPIRY_DAYS = 150;
 const CookieConsent = () => {
   const [accepted, setAccepted] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   useEffect(() => {
     const cookieAccepted = Cookies.get(COOKIE_NAME);
     if (cookieAccepted === 'true') {
@@ -55,6 +58,8 @@ const CookieConsent = () => {
           textAlign: 'center',
           textAlign: 'left',
           boxShadow: 4,
+          background: cardBg,
+          color: cardText,
         }}
       >
         <Box
@@ -71,7 +76,7 @@ const CookieConsent = () => {
         <Typography variant="body2" sx={{ mb: 2 }}>
           We use cookies for essential website functions and to better understand how you use our site, so we can create
           the best possible experience for you ❤️{' '}
-          <Link to="/policies" style={{ mb: 2, textDecoration: 'none' }}>
+          <Link to="/policies" style={{ mb: 2, textDecoration: 'none', color: '#00b3a4' }}>
             Privacy Policy
           </Link>
         </Typography>

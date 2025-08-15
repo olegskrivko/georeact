@@ -1,8 +1,13 @@
 import { useRef } from 'react';
 
 import { Box, Container, Grid, Link, Stack, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const PolicyPage = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const cardTextSecondary = theme.palette.text.secondary;
   const paragraphRefs = useRef([]);
 
   const scrollToParagraph = (index) => {
@@ -25,7 +30,7 @@ const PolicyPage = () => {
 
   return (
     <Container maxWidth="lg" disableGutters>
-      <Typography
+      {/* <Typography
         variant="h4"
         align="center"
         sx={{
@@ -37,9 +42,20 @@ const PolicyPage = () => {
         }}
       >
         Privacy Policy, Cookie Policy, and Terms of Service
+      </Typography> */}
+      <Typography
+        variant="h4"
+        align="center"
+        sx={{
+          mb: 5,
+          mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+          color: theme.palette.text.secondary,
+        }}
+      >
+        Privacy Policy, Cookie Policy, and Terms of Service
       </Typography>
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 600, color: '#16477c' }}>
+        <Typography variant="h4" sx={{ fontWeight: 600, color: '#00b3a4' }}>
           Contents
         </Typography>
         <Stack spacing={1} mt={1}>
@@ -50,8 +66,8 @@ const PolicyPage = () => {
                 onClick={() => scrollToParagraph(i)}
                 sx={{
                   textDecoration: 'none',
-                  color: '#1976d2',
-                  '&:visited': { color: '#1976d2' },
+                  color: '#EAEAEA',
+                  '&:visited': { color: '#EAEAEA' },
                   '&:hover': { textDecoration: 'underline' },
                 }}
               >
@@ -64,7 +80,7 @@ const PolicyPage = () => {
 
       {/* Privacy Policy Section */}
       <Box id="privacy-policy" ref={(el) => (paragraphRefs.current[0] = el)} sx={{ mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 600, color: '#16477c' }}>
+        <Typography variant="h4" sx={{ fontWeight: 600, color: '#00b3a4' }}>
           1. Privacy Policy
         </Typography>
 
@@ -136,7 +152,7 @@ const PolicyPage = () => {
 
       {/* Cookie Policy Section */}
       <Box id="privacy-policy" ref={(el) => (paragraphRefs.current[1] = el)} sx={{ mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 600, color: '#16477c' }}>
+        <Typography variant="h4" sx={{ fontWeight: 600, color: '#00b3a4' }}>
           2. Cookie Policy
         </Typography>
 
@@ -241,7 +257,7 @@ const PolicyPage = () => {
 
       {/* Terms of Service Section */}
       <Box id="terms-of-service" ref={(el) => (paragraphRefs.current[2] = el)} sx={{ mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 600, color: '#16477c' }}>
+        <Typography variant="h4" sx={{ fontWeight: 600, color: '#00b3a4' }}>
           3. Terms of Service
         </Typography>
         <Grid container spacing={3}>
@@ -353,7 +369,7 @@ const PolicyPage = () => {
 
       {/* Data Protection Policy Section */}
       <Box id="data-protection-policy" ref={(el) => (paragraphRefs.current[3] = el)} sx={{ mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 600, color: '#16477c' }}>
+        <Typography variant="h4" sx={{ fontWeight: 600, color: '#00b3a4' }}>
           4. Data Protection Policy
         </Typography>
         <Grid container spacing={3}>
@@ -455,7 +471,7 @@ const PolicyPage = () => {
 
       {/* Disclaimer Section */}
       <Box id="disclaimer" ref={(el) => (paragraphRefs.current[4] = el)} sx={{ mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 600, color: '#16477c' }}>
+        <Typography variant="h4" sx={{ fontWeight: 600, color: '#00b3a4' }}>
           5. Disclaimer
         </Typography>
         <Grid container spacing={3}>
@@ -487,7 +503,7 @@ const PolicyPage = () => {
 
       {/* Community Guidelines Section */}
       <Box id="community-guidelines" ref={(el) => (paragraphRefs.current[5] = el)} sx={{ mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 600, color: '#16477c' }}>
+        <Typography variant="h4" sx={{ fontWeight: 600, color: '#00b3a4' }}>
           6. Community Guidelines
         </Typography>
         <Grid container spacing={3}>

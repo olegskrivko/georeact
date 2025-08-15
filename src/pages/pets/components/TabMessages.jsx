@@ -35,6 +35,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/en';
 // English locale
 import relativeTime from 'dayjs/plugin/relativeTime';
+import moment from 'moment';
 
 // import moment from 'moment';
 // import 'moment/locale/en';
@@ -46,9 +47,10 @@ dayjs.locale('en');
 dayjs.extend(relativeTime);
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const TabMessages = ({ pet, sightings, onZoomMap }) => {
-  const { user, logout } = useAuth();
-
   const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const { user, logout } = useAuth();
 
   const [visibleMessages, setVisibleMessages] = useState(3);
 
@@ -120,7 +122,8 @@ const TabMessages = ({ pet, sightings, onZoomMap }) => {
                 sx={{
                   p: { xs: 1, sm: 2 },
                   borderRadius: 3,
-                  background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+                  background: cardBg,
+                  color: cardText,
                 }}
               >
                 {/* <CardContent style={{ paddingBottom: '1rem' }}> */}
@@ -274,22 +277,21 @@ const TabMessages = ({ pet, sightings, onZoomMap }) => {
             sx={{
               p: { xs: 1, sm: 2 },
               borderRadius: 3,
-              background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease-in-out',
-              '&:hover': {
-                background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
-              },
+              background: cardBg,
+              color: cardText,
             }}
           >
             {/* <CardContent style={{ paddingBottom: '1rem' }}> */}
             <Typography color="textSecondary">
               <Box display="flex" alignItems="center" gap={2}>
                 <IconButton
-                  style={{
-                    backgroundColor: '#00b3a4',
-                    color: '#fff',
+                  sx={{
                     pointerEvents: 'none',
+                    color: 'primary.main',
+                    backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                    },
                   }}
                 >
                   <TextSnippetIcon />

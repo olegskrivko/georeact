@@ -57,7 +57,7 @@ const ShelterSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Category Filter */}
         <ListItem sx={{ padding: '0 !important' }}>
           <Box>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Category</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Category</InputLabel>
             {SHELTER_CATEGORIES.map((category) => (
               <Chip
                 key={category.value}
@@ -73,7 +73,7 @@ const ShelterSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Size Filter */}
         <ListItem sx={{ padding: '0 !important' }}>
           <Box>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Size</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Size</InputLabel>
             {SHELTER_SIZES.map((size) => (
               <Chip
                 key={size.value}
@@ -90,7 +90,7 @@ const ShelterSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Animal Type Filter */}
         <ListItem sx={{ padding: '0 !important' }}>
           <Box mt={2}>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Animal Type</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Animal Type</InputLabel>
             {animalTypes.map((type) => (
               <Chip
                 key={type.slug}

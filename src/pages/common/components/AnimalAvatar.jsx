@@ -26,7 +26,11 @@ const AnimalAvatar = ({ animal, username }) => {
   const altText = username?.toUpperCase() || 'U';
 
   return (
-    <Avatar src={imageSrc} alt={altText} sx={{ backgroundColor: '#00b3a4', color: '#fff' }}>
+    <Avatar
+      src={imageSrc}
+      alt={altText}
+      sx={{ backgroundColor: '#00b3a4', color: '#fff', border: '2px solid #00b3a4' }}
+    >
       {!imageSrc && altText[0]} {/* fallback to first letter if no image */}
     </Avatar>
   );

@@ -9,6 +9,7 @@ import CakeIcon from '@mui/icons-material/Cake';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import DescriptionIcon from '@mui/icons-material/Description';
 import FemaleIcon from '@mui/icons-material/Female';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import HeightIcon from '@mui/icons-material/Height';
 import MaleIcon from '@mui/icons-material/Male';
@@ -16,6 +17,8 @@ import MergeTypeIcon from '@mui/icons-material/MergeType';
 import MoodIcon from '@mui/icons-material/Mood';
 import PersonIcon from '@mui/icons-material/Person';
 import PetsIcon from '@mui/icons-material/Pets';
+import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import TagIcon from '@mui/icons-material/Tag';
 import TextureIcon from '@mui/icons-material/Texture';
 import {
@@ -36,6 +39,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useTheme } from '@mui/material/styles';
 import html2PDF from 'html2pdf.js';
 
 import { APP_NAME, DOMAIN_URL } from '../../../constants/config';
@@ -44,6 +48,10 @@ import { useAuth } from '../../../contexts/AuthContext';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Poster = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const cardTextSecondary = theme.palette.text.secondary;
   const { user } = useAuth();
   const { id } = useParams();
 
@@ -219,7 +227,18 @@ const Poster = () => {
   return (
     <Container maxWidth="lg" disableGutters>
       {/* Phone Dialog */}
-      <Dialog open={phoneDialogOpen} onClose={handleClosePhoneDialog}>
+      <Dialog
+        open={phoneDialogOpen}
+        onClose={handleClosePhoneDialog}
+        PaperProps={{
+          sx: {
+            background: cardBg,
+            color: cardText,
+            borderRadius: 3,
+            p: 2,
+          },
+        }}
+      >
         <DialogTitle>Contact Phone for Poster</DialogTitle>
         <DialogContent>
           <TextField
@@ -243,157 +262,128 @@ const Poster = () => {
         </DialogActions>
       </Dialog>
       {/* Premium Header Section */}
-      <Box
+      <Typography
+        variant="h4"
+        align="center"
         sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          borderRadius: 3,
-          p: 4,
-          mb: 4,
-          color: 'white',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+          mb: 5,
+          mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+          color: theme.palette.text.secondary,
         }}
       >
-        <Stack spacing={3}>
-          <Box textAlign="center">
-            <Typography
-              variant="h3"
-              sx={{
-                fontWeight: 700,
-                mb: 1,
-                textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-              }}
-            >
-              Generate Posters
-            </Typography>
-            <Typography
-              variant="h5"
-              sx={{
-                opacity: 0.9,
-                fontWeight: 300,
-                textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-              }}
-            >
-              for {pet.name}
-            </Typography>
-          </Box>
+        Generate Posters
+      </Typography>
 
-          <Card
-            sx={{
-              background: 'rgba(255,255,255,0.1)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255,255,255,0.2)',
-            }}
-          >
-            <CardContent>
-              <Grid container spacing={3} alignItems="center">
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextField
-                    label="Poster Name"
-                    fullWidth
-                    value={posterName}
-                    onChange={(e) => setPosterName(e.target.value)}
-                    placeholder="poster_2024-01-15T10-30-00"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        color: 'white',
-                        '& fieldset': {
-                          borderColor: 'rgba(255,255,255,0.3)',
-                        },
-                        '&:hover fieldset': {
-                          borderColor: 'rgba(255,255,255,0.5)',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: 'white',
-                        },
-                      },
-                      '& .MuiInputLabel-root': {
-                        color: 'rgba(255,255,255,0.8)',
-                        '&.Mui-focused': {
-                          color: 'white',
-                        },
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid size={{ xs: 12, md: 3 }}>
-                  <TextField
-                    label="Number of Posters"
-                    fullWidth
-                    type="number"
-                    value={posterCount}
-                    onChange={(e) => {
-                      const value = parseInt(e.target.value);
-                      if (value >= 1 && value <= 50) {
-                        setPosterCount(value);
-                      }
-                    }}
-                    inputProps={{
-                      min: 1,
-                      max: 50,
-                      step: 1,
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.7)' }}>
-                            /50
-                          </Typography>
-                        </InputAdornment>
-                      ),
-                    }}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        color: 'white',
-                        '& fieldset': {
-                          borderColor: 'rgba(255,255,255,0.3)',
-                        },
-                        '&:hover fieldset': {
-                          borderColor: 'rgba(255,255,255,0.5)',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: 'white',
-                        },
-                      },
-                      '& .MuiInputLabel-root': {
-                        color: 'rgba(255,255,255,0.8)',
-                        '&.Mui-focused': {
-                          color: 'white',
-                        },
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid size={{ xs: 12, md: 3 }}>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={handleOpenPhoneDialog}
-                    disabled={loading}
-                    sx={{
-                      background: 'rgba(255,255,255,0.2)',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255,255,255,0.3)',
-
+      {generatedPosters.length == 0 && (
+        <Card
+          sx={{
+            p: { xs: 1, sm: 2 },
+            borderRadius: 3,
+            background: cardBg,
+            color: cardText,
+          }}
+        >
+          <Grid container spacing={3} alignItems="center">
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                label="Poster Name"
+                fullWidth
+                value={posterName}
+                onChange={(e) => setPosterName(e.target.value)}
+                placeholder="poster_2024-01-15T10-30-00"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    color: 'white',
+                    '& fieldset': {
+                      borderColor: 'rgba(255,255,255,0.3)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(255,255,255,0.5)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'white',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'rgba(255,255,255,0.8)',
+                    '&.Mui-focused': {
                       color: 'white',
-                      fontWeight: 600,
-                      py: 1.5,
-                      '&:hover': {
-                        background: 'rgba(255,255,255,0.3)',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-                      },
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    {loading ? <CircularProgress size={20} sx={{ color: 'white' }} /> : 'Generate Posters'}
-                  </Button>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Stack>
-      </Box>
-
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 3 }}>
+              <TextField
+                label="Number of Posters (max 50)"
+                fullWidth
+                type="number"
+                value={posterCount}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value);
+                  if (value >= 1 && value <= 50) {
+                    setPosterCount(value);
+                  }
+                }}
+                inputProps={{
+                  min: 1,
+                  max: 50,
+                  step: 1,
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    color: 'white',
+                    '& fieldset': {
+                      borderColor: 'rgba(255,255,255,0.3)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(255,255,255,0.5)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'white',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'rgba(255,255,255,0.8)',
+                    '&.Mui-focused': {
+                      color: 'white',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 3 }}>
+              <Button
+                onClick={handleOpenPhoneDialog}
+                disabled={loading}
+                startIcon={!loading && <PhotoFilterIcon />}
+                variant="contained"
+                fullWidth
+                sx={{ borderRadius: 2, py: 2 }}
+                color="primary"
+              >
+                {loading ? <CircularProgress size={20} sx={{ color: 'white' }} /> : 'Generate Posters'}
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Stack spacing={1.5}>
+                {[
+                  'You can generate up to 50 posters in a single batch.',
+                  'Each poster allows tracking of unique scans.',
+                  'To assign coordinates, perform the first scan with geoposition enabled on your phone.',
+                  'Do this first scan when the poster is already in place.',
+                  'Avoid scanning posters at home for testing purposes.',
+                ].map((text, index) => (
+                  <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <FiberManualRecordIcon fontSize="small" sx={{ color: 'rgba(255,255,255,0.7)' }} />
+                    <Typography sx={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.95rem' }}>{text}</Typography>
+                  </Box>
+                ))}
+              </Stack>
+            </Grid>
+          </Grid>
+        </Card>
+      )}
       {/* Center PDF preview horizontally */}
       <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
         <Box display="flex" flexDirection="column" alignItems="center" width="100%">
@@ -401,29 +391,28 @@ const Poster = () => {
             <>
               <Box
                 sx={{
-                  // background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-                  borderRadius: 2,
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  borderRadius: 3,
+                  background: cardBg,
+                  color: cardText,
                   p: 3,
                   mb: 3,
                   width: '100%',
                   maxWidth: '100%',
                 }}
               >
-                <Typography variant="h5" mb={2} sx={{ fontWeight: 600, color: '#fff' }}>
+                <Typography variant="h5" mb={2} sx={{ fontWeight: 600 }}>
                   Generated Posters ({generatedPosters.length})
                 </Typography>
                 <Button
                   variant="contained"
+                  fullWidth
                   color="primary"
                   startIcon={<ArrowDownwardIcon />}
                   onClick={bulkDownloadPDFs}
                   disabled={downloading !== null}
                   sx={{
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-                    },
+                    borderRadius: 2,
+                    py: 2,
                   }}
                 >
                   Download All Posters as PDF
@@ -450,7 +439,7 @@ const Poster = () => {
                         maxWidth: '794px',
                       }}
                     >
-                      <Typography variant="h6" sx={{ fontWeight: 600, color: '#2c3e50' }}>
+                      <Typography variant="h6" sx={{ fontWeight: 600, color: cardTextSecondary }}>
                         {poster.name}
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -460,12 +449,12 @@ const Poster = () => {
                           onClick={() => generatePDF(poster.id)}
                           startIcon={<FileDownloadIcon />}
                           disabled={downloading === poster.id}
-                          sx={{
-                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                            '&:hover': {
-                              background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-                            },
-                          }}
+                          // sx={{
+                          //   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                          //   '&:hover': {
+                          //     background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                          //   },
+                          // }}
                         >
                           {downloading === poster.id ? 'Generating...' : 'Download PDF'}
                         </Button>
@@ -736,7 +725,7 @@ const Poster = () => {
         <Grid size={{ xs: 12 }}>
           <Box mt={4} display="flex" justifyContent="space-between" alignItems="center" textAlign="center">
             <Link
-              to={`/pets/${pet.id}`}
+              to={`/user-profile/pets`}
               style={{
                 color: '#00b5ad',
                 textDecoration: 'none',
