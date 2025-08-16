@@ -414,7 +414,7 @@ function UserSettings() {
   return (
     <Container component="main" maxWidth="lg" disableGutters>
       <Box sx={{ my: { xs: 2, sm: 2, md: 3, lg: 4, xl: 4 } }}>
-        <Typography
+        {/* <Typography
           component="h1"
           align="center"
           sx={{
@@ -432,8 +432,18 @@ function UserSettings() {
           }}
         >
           User Settings
+        </Typography> */}
+        <Typography
+          variant="h4"
+          align="center"
+          sx={{
+            mb: 5,
+            mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+            color: theme.palette.text.secondary,
+          }}
+        >
+          User Settings
         </Typography>
-
         <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{ mb: 3 }}>
           <Card
             sx={{

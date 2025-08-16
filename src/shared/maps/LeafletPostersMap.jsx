@@ -268,22 +268,43 @@ const MapUpdater = ({ mapCenter }) => {
 };
 
 // Layer provider
-const MapTilerLayer = () => {
+// const MapTilerLayer = () => {
+//   const map = useMap();
+//   useEffect(() => {
+//     const mtLayer = new MaptilerLayer({
+//       apiKey: 'zqJA9kfFpP2bX0hmViWr',
+//       style: 'basic-v2',
+//     });
+//     mtLayer.addTo(map);
+//     return () => {
+//       map.removeLayer(mtLayer);
+//     };
+//   }, [map]);
+
+//   return null;
+// };
+const MapTilerLayerComponent = () => {
   const map = useMap();
+  const theme = useTheme();
+
   useEffect(() => {
+    // Pick style based on MUI theme mode
+    const style = theme.palette.mode === 'dark' ? 'streets-v2-dark' : 'basic-v2';
+
     const mtLayer = new MaptilerLayer({
       apiKey: 'zqJA9kfFpP2bX0hmViWr',
-      style: 'basic-v2',
+      style,
     });
+
     mtLayer.addTo(map);
+
     return () => {
       map.removeLayer(mtLayer);
     };
-  }, [map]);
+  }, [map, theme.palette.mode]); // re-run if theme mode changes
 
   return null;
 };
-
 function LeafletPostersMap({ posters = [], pets, mapCenter, isLoading, userLocation, mapRef }) {
   // const [userLocation, setUserLocation] = useState(null);
   // const theme = useTheme();
@@ -322,7 +343,7 @@ function LeafletPostersMap({ posters = [], pets, mapCenter, isLoading, userLocat
         minZoom={1}
         maxZoom={18}
       >
-        <MapTilerLayer />
+        <MapTilerLayerComponent />
         <MapUpdater mapCenter={mapCenter} />
         <UserLocationUpdater userLocation={userLocation} />
         {userLocation && <Marker position={userLocation} icon={userPulseIcon} />}

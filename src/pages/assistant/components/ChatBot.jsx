@@ -5,6 +5,7 @@ import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import SendIcon from '@mui/icons-material/Send';
 import { Box, Button, Chip, CircularProgress, Paper, TextField, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import Lottie from 'lottie-react';
 
 import AIRobot from '../../../assets/Animation-1749072232400.json';
@@ -12,6 +13,10 @@ import AIRobot from '../../../assets/Animation-1749072232400.json';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ChatBot = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const cardBody = theme.palette.custom.navbar;
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
@@ -139,6 +144,7 @@ const ChatBot = () => {
             boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
             fontSize: '12px',
             zIndex: 999,
+            color: '#000',
           }}
         >
           Hello! How can I help you?
@@ -195,6 +201,7 @@ const ChatBot = () => {
               justifyContent: 'space-between',
               borderTopLeftRadius: isFullscreen ? 0 : '12px',
               borderTopRightRadius: isFullscreen ? 0 : '12px',
+              // background: cardBg,
             }}
           >
             <Box style={{ display: 'flex', alignItems: 'center' }}>

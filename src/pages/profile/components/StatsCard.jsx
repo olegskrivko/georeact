@@ -1,48 +1,49 @@
 import { Paper, Stack, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
-const StatsCard = ({ totalPosters, postersCountByPet }) => (
-  <Paper
-    elevation={3}
-    sx={{
-      mt: 3,
-      px: 3,
-      py: 2,
-      borderTop: '4px solid #00b5ad',
-      boxShadow: 1,
-      position: 'relative',
-      background: 'linear-gradient(90deg, #edf4ff 0%, #f3faff 100%)',
-      borderRadius: 2,
-    }}
-  >
-    <Typography variant="h6" sx={{ fontWeight: '700', mb: 2, color: '#222' }}>
-      Posters Statistics
-    </Typography>
-
-    <Typography component="p" variant="body1" sx={{ mb: 2, fontWeight: 600, color: '#444' }}>
-      Total Posters: {totalPosters}
-    </Typography>
-
-    <Typography component="p" variant="body1" sx={{ mb: 1, fontWeight: 600, color: '#444' }}>
-      Posters per Pet:
-    </Typography>
-
-    <Stack
-      component="ul"
+const StatsCard = ({ totalPosters, postersCountByPet }) => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  return (
+    <Paper
       sx={{
-        pl: 3,
-        listStyleType: 'disc',
-        color: '#555',
-        fontWeight: 500,
-        fontSize: '1rem',
+        p: { xs: 1, sm: 2 },
+        borderRadius: 3,
+        background: cardBg,
+        color: cardText,
       }}
     >
-      {Object.entries(postersCountByPet).map(([petId, count]) => (
-        <Typography key={petId} component="li" sx={{ mb: 0.5 }}>
-          Pet ID {petId}: {count} poster{count > 1 ? 's' : ''}
-        </Typography>
-      ))}
-    </Stack>
-  </Paper>
-);
+      {/* <Typography variant="h6" sx={{ fontWeight: '700', mb: 2 }}>
+        Posters Statistics
+      </Typography> */}
+
+      <Typography component="p" variant="body1" sx={{ mb: 2, fontWeight: 600 }}>
+        Total Posters: {totalPosters}
+      </Typography>
+
+      <Typography component="p" variant="body1" sx={{ mb: 1, fontWeight: 600 }}>
+        Posters per Pet:
+      </Typography>
+
+      <Stack
+        component="ul"
+        sx={{
+          pl: 3,
+          listStyleType: 'disc',
+
+          fontWeight: 500,
+          fontSize: '1rem',
+        }}
+      >
+        {Object.entries(postersCountByPet).map(([petId, count]) => (
+          <Typography key={petId} component="li" sx={{ mb: 0.5 }}>
+            Pet ID {petId}: {count} poster{count > 1 ? 's' : ''}
+          </Typography>
+        ))}
+      </Stack>
+    </Paper>
+  );
+};
 
 export default StatsCard;

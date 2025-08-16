@@ -1,3 +1,4 @@
+import CloseIcon from '@mui/icons-material/Close';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -55,7 +56,7 @@ function ShelterSocialMedia({ socialMedia }) {
                 },
               }}
             >
-              <PublicIcon />
+              <CloseIcon />
             </IconButton>
             <Box>
               <Typography variant="body2" color="text.secondary">

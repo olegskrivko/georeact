@@ -377,15 +377,20 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 
 import { LocationContext } from '../../../contexts/LocationContext';
 import LeafletPostersMap from '../../../shared/maps/LeafletPostersMap';
+import SectionLabel from '../components/SectionLabel';
 import StatsCard from '../components/StatsCard';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const PostersList = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const { location: contextLocation } = useContext(LocationContext);
   const mapRef = useRef(null);
   const [userLocation, setUserLocation] = useState([56.946285, 24.105078]); // Latvia default
@@ -443,6 +448,80 @@ const PostersList = () => {
       setError('Failed to load posters.');
     }
   };
+  // Delete handler
+  const handleDeletePoster = async (posterId) => {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      setError('You must be logged in to delete posters.');
+      return;
+    }
+
+    if (!window.confirm('Are you sure you want to delete this poster?')) return;
+
+    try {
+      // Optimistic UI update
+      setPosters((prev) => prev.filter((p) => p.id !== posterId));
+
+      await axios.delete(`${API_BASE_URL}/api/pets/posters/${posterId}/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      // Refetch from server to stay in sync
+      await fetchUserPosters();
+    } catch (err) {
+      console.error(err);
+      setError('Failed to delete poster.');
+      // Rollback if error
+      await fetchUserPosters();
+    }
+  };
+  // const handleDeletePoster = async (posterId) => {
+  //   const accessToken = localStorage.getItem('access_token');
+  //   if (!accessToken) {
+  //     setError('You must be logged in to delete posters.');
+  //     return;
+  //   }
+
+  //   if (!window.confirm('Are you sure you want to delete this poster?')) return;
+
+  //   try {
+  //     await axios.delete(`${API_BASE_URL}/api/pets/posters/${posterId}/`, {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     });
+
+  //     // Refetch posters from server instead of just removing locally
+  //     await fetchUserPosters();
+  //   } catch (err) {
+  //     console.error(err);
+  //     setError('Failed to delete poster.');
+  //   }
+  // };
+
+  // const handleDeletePoster = async (posterId) => {
+  //   const accessToken = localStorage.getItem('access_token');
+  //   if (!accessToken) {
+  //     setError('You must be logged in to delete posters.');
+  //     return;
+  //   }
+
+  //   if (!window.confirm('Are you sure you want to delete this poster?')) return;
+
+  //   try {
+  //     await axios.delete(`${API_BASE_URL}/api/pets/posters/${posterId}/`, {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     });
+
+  //     // Remove from local state
+  //     setPosters((prev) => prev.filter((p) => p.id !== posterId));
+  //   } catch (err) {
+  //     console.error(err);
+  //     setError('Failed to delete poster.');
+  //   }
+  // };
 
   // Fetch pets
   const fetchUserPets = async () => {
@@ -481,30 +560,41 @@ const PostersList = () => {
     <Container maxWidth="lg" disableGutters>
       <Box sx={{ my: { xs: 2, sm: 2, md: 3, lg: 4, xl: 4 } }}>
         <Typography
-          component="h1"
+          variant="h4"
           align="center"
           sx={{
-            fontWeight: 800,
-            fontSize: {
-              xs: '1.5rem',
-              sm: '2rem',
-              md: '2.5rem',
-              lg: '2.5rem',
-            },
             mb: 5,
-            background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+            color: theme.palette.text.secondary,
           }}
         >
           My Posters
         </Typography>
-
         {loading && <CircularProgress />}
         {error && <Alert severity="error">{error}</Alert>}
 
         {!loading && !error && (
           <>
+            {/* Map with posters and pets */}
+            <Box sx={{ my: 6 }}>
+              {/* Pass both posters and pets as props */}
+              <LeafletPostersMap
+                posters={posters}
+                pets={pets}
+                mapCenter={mapCenter}
+                isLoading={loading}
+                userLocation={userLocation}
+                mapRef={mapRef}
+              />
+            </Box>
+            {/* Contacts Section */}
+            <SectionLabel variant="subtitle1">Posters Statistics</SectionLabel>
+            {/* <Grid container spacing={2} mb={2}>
+              <Grid size={{ xs: 12 }}>
+               
+                <StatsCard totalPosters={totalPosters} postersCountByPet={postersCountByPet} />
+              </Grid>
+            </Grid> */}
             {/* Posters Table */}
             <TableContainer
               component={Paper}
@@ -531,6 +621,10 @@ const PostersList = () => {
                     <TableCell>
                       <strong>Created At</strong>
                     </TableCell>
+                    <TableCell>
+                      <strong>Actions</strong>
+                    </TableCell>{' '}
+                    {/* New column */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -546,27 +640,26 @@ const PostersList = () => {
                         {poster.has_location && poster.longitude != null ? poster.longitude.toFixed(5) : '-'}
                       </TableCell>
                       <TableCell>{new Date(poster.created_at).toLocaleString()}</TableCell>
+                      <TableCell>
+                        <button
+                          style={{
+                            padding: '6px 12px',
+                            backgroundColor: '#d32f2f',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => handleDeletePoster(poster.id)}
+                        >
+                          Delete
+                        </button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-
-            {/* Map with posters and pets */}
-            <Box sx={{ mt: 6 }}>
-              {/* Pass both posters and pets as props */}
-              <LeafletPostersMap
-                posters={posters}
-                pets={pets}
-                mapCenter={mapCenter}
-                isLoading={loading}
-                userLocation={userLocation}
-                mapRef={mapRef}
-              />
-            </Box>
-
-            {/* Statistics */}
-            <StatsCard totalPosters={totalPosters} postersCountByPet={postersCountByPet} />
           </>
         )}
         <Grid container spacing={2}>

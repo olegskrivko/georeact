@@ -31,7 +31,7 @@ const PetCard = ({ pet, onPanToLocation }) => {
           <CardMedia
             component="img"
             src={pet?.pet_image_1 || ImgPlaceholder}
-            alt={pet?.species_display}
+            alt=""
             sx={{
               width: '100%',
               height: '100%',

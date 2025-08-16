@@ -42,6 +42,8 @@ const navItems = {
 
 function DrawerAppBar(props) {
   const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { user } = useAuth();
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext);
@@ -56,7 +58,9 @@ function DrawerAppBar(props) {
         style={{
           width: '100%',
           height: '3.5rem',
-          background: 'linear-gradient(190deg, #16477c 0%, #00b5ad 100%)',
+          // background: 'linear-gradient(190deg, #16477c 0%, #00b5ad 100%)',
+          background: theme.palette.custom.navbar,
+
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'left',
@@ -100,7 +104,7 @@ function DrawerAppBar(props) {
                 to={path}
                 style={{
                   textDecoration: 'none',
-                  color: '#16477c',
+                  color: cardText,
                 }}
               >
                 <ListItemText primary={label} />
@@ -115,7 +119,8 @@ function DrawerAppBar(props) {
               to={user ? '/user-profile' : '/login'}
               style={{
                 textDecoration: 'none',
-                color: '#16477c',
+                color: cardText,
+
                 width: '100%',
               }}
             >
@@ -231,9 +236,11 @@ function DrawerAppBar(props) {
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
+
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              background: theme.palette.custom.body,
             },
           }}
         >

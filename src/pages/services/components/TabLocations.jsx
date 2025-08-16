@@ -94,11 +94,12 @@ const TabLocations = ({ service, mapRef, onPanToLocation }) => {
           <Card
             key={index}
             sx={{
-              mt: { xs: 2, sm: 2, md: 2, lg: 2 },
               p: { xs: 1, sm: 2 },
+              mb: { xs: 2, sm: 2, md: 2, lg: 2 },
               borderRadius: 3,
               background: cardBg,
               color: cardText,
+
               // background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
               // transition: 'all 0.3s ease-in-out',
               // '&:hover': {

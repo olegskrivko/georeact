@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Box, CircularProgress, Container, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 
 import GuideHeader from '../components/GuideHeader';
@@ -11,6 +12,10 @@ import ParagraphSection from '../components/ParagraphSection';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const GuideDetailsPage = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const cardTextSecondary = theme.palette.text.secondary;
   const { slug } = useParams();
   const [guide, setGuide] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -22,6 +27,7 @@ const GuideDetailsPage = () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/guides/${slug}/`);
         setGuide(response.data);
+        console.log('guide', guide);
       } catch (error) {
         console.error('Error fetching guide:', error);
         setError('Error fetching guide. Please try again later.');
@@ -67,7 +73,6 @@ const GuideDetailsPage = () => {
       <GuideHeader title={guide.title} description={guide.description} createdAt={guide.created_at} />
 
       <ParagraphNav paragraphs={guide.paragraphs || []} onJump={scrollToParagraph} />
-
       <Box sx={{ mt: 4 }}>
         {guide.paragraphs?.length > 0 ? (
           guide.paragraphs.map((paragraph, index) => (
