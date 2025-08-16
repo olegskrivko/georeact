@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Box, Paper, Rating, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 
 import AnimalAvatar from '../../common/components/AnimalAvatar';
@@ -21,6 +22,9 @@ const formatDate = (dateString) => {
 };
 
 const ServiceRatingDisplay = ({ serviceId, rating, reviewCount }) => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -76,9 +80,11 @@ const ServiceRatingDisplay = ({ serviceId, rating, reviewCount }) => {
             key={idx}
             elevation={1}
             sx={{
-              background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+              // background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
               p: 2,
               mb: 2,
+              background: cardBg,
+              color: cardText,
               // background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
             }}
           >

@@ -25,6 +25,7 @@ import {
 } from '@mui/material';
 import { Link as MuiLink } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import Lottie from 'lottie-react';
 import { useSnackbar } from 'notistack';
@@ -39,6 +40,10 @@ import ServiceIconLabelTabs from '../components/ServiceIconLabelTabs';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ServiceDetailsPage = () => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
+  const cardTextSecondary = theme.palette.text.secondary;
   const { id } = useParams();
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -208,7 +213,7 @@ const ServiceDetailsPage = () => {
 
   return (
     <Container maxWidth="lg" disableGutters>
-      <Card sx={{ mb: 4, borderRadius: 3, boxShadow: 3, overflow: 'hidden' }}>
+      <Card sx={{ mb: 4, borderRadius: 3, boxShadow: 3, overflow: 'hidden', background: cardBg, color: cardText }}>
         <Grid container>
           {/* Left: Cover Image */}
           <Grid size={{ xs: 12, md: 4 }}>
@@ -247,10 +252,20 @@ const ServiceDetailsPage = () => {
           >
             {/* Top content */}
             <Box>
-              <Typography variant="h3" fontWeight={700} color="primary">
+              {/* <Typography variant="h3" fontWeight={700} color="primary">
                 {service.operating_name}
+              </Typography> */}
+              <Typography
+                variant="h4"
+                fontWeight={700}
+                sx={{
+                  // mb: 5,
+                  mt: { xs: 3, sm: 2, md: 1, lg: 0 },
+                  color: theme.palette.text.secondary,
+                }}
+              >
+                {service?.operating_name}
               </Typography>
-
               <Typography
                 variant="subtitle1"
                 color="primary"
@@ -303,36 +318,40 @@ const ServiceDetailsPage = () => {
             sx={{
               p: { xs: 1, sm: 2 },
               borderRadius: 3,
-              background: '#fff',
+              background: cardBg,
+              color: cardText,
               boxShadow: 3,
             }}
           >
             <Box display="flex" alignItems="center" gap={2}>
               <IconButton
-                style={{
-                  backgroundColor: '#00b3a4',
-                  color: '#f7f9fd',
+                sx={{
                   pointerEvents: 'none',
+                  color: 'primary.main',
+                  backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                  },
                 }}
               >
                 <PublicIcon />
               </IconButton>
               <Box>
-                <Typography variant="body2" color="primary" fontWeight={600}>
+                {/* <Typography variant="body2" color="primary" fontWeight={600}>
                   Website:{' '}
-                </Typography>
+                </Typography> */}
                 {service.website_url ? (
                   <MuiLink
                     href={service.website_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     underline="none"
-                    color="#000"
+                    sx={{ color: cardTextSecondary }}
                   >
                     {service.website_url}
                   </MuiLink>
                 ) : (
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" sx={{ color: cardTextSecondary }}>
                     No website
                   </Typography>
                 )}
@@ -340,25 +359,27 @@ const ServiceDetailsPage = () => {
             </Box>
             <Box display="flex" alignItems="center" gap={2} mt={2}>
               <IconButton
-                style={{
-                  backgroundColor: '#00b3a4',
-                  color: '#f7f9fd',
+                sx={{
                   pointerEvents: 'none',
+                  color: 'primary.main',
+                  backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                  },
                 }}
               >
                 <PhoneIcon />
               </IconButton>
               <Box>
-                <Typography variant="body2" color="primary" fontWeight={600}>
+                {/* <Typography variant="body2" color="primary" fontWeight={600}>
                   Phone:{' '}
-                </Typography>
+                </Typography> */}
                 {service.full_phone_number ? (
                   <Typography variant="body2">
                     <MuiLink
                       href={`tel:${service.full_phone_number}`}
                       underline="none"
-                      color="#000"
-                      sx={{ cursor: 'pointer' }}
+                      sx={{ color: cardTextSecondary, cursor: 'pointer' }}
                     >
                       {service.full_phone_number}
                     </MuiLink>
@@ -370,21 +391,28 @@ const ServiceDetailsPage = () => {
             </Box>
             <Box display="flex" alignItems="center" gap={2} mt={2}>
               <IconButton
-                style={{
-                  backgroundColor: '#00b3a4',
-                  color: '#f7f9fd',
+                sx={{
                   pointerEvents: 'none',
+                  color: 'primary.main',
+                  backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                  },
                 }}
               >
                 <EmailIcon />
               </IconButton>
               <Box>
-                <Typography variant="body2" color="primary" fontWeight={600}>
+                {/* <Typography variant="body2" color="primary" fontWeight={600}>
                   Email:{' '}
-                </Typography>
+                </Typography> */}
                 {service.email ? (
                   <Typography variant="body1">
-                    <MuiLink href={`mailto:${service.email}`} underline="none" color="#000" sx={{ cursor: 'pointer' }}>
+                    <MuiLink
+                      href={`mailto:${service.email}`}
+                      underline="none"
+                      sx={{ color: cardTextSecondary, cursor: 'pointer' }}
+                    >
                       {service.email}
                     </MuiLink>
                   </Typography>

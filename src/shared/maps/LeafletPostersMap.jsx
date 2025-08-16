@@ -208,6 +208,7 @@ import { Link } from 'react-router-dom';
 import '@maptiler/leaflet-maptilersdk';
 import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk';
 import { Box, CardMedia, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 

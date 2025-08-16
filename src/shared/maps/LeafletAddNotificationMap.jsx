@@ -1,5 +1,4 @@
-
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { MapContainer, Marker, useMap, useMapEvents } from 'react-leaflet';
 
@@ -7,6 +6,7 @@ import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { IconButton, Tooltip } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -37,21 +37,42 @@ const LocationMarker = ({ position, onLocationChange }) => {
   );
 };
 
+// const MapTilerLayerComponent = () => {
+//   const map = useMap();
+//   React.useEffect(() => {
+//     const mtLayer = new MaptilerLayer({
+//       apiKey: 'zqJA9kfFpP2bX0hmViWr',
+//       style: 'basic-v2',
+//     });
+//     mtLayer.addTo(map);
+//     return () => {
+//       map.removeLayer(mtLayer);
+//     };
+//   }, [map]);
+//   return null;
+// };
 const MapTilerLayerComponent = () => {
   const map = useMap();
-  React.useEffect(() => {
+  const theme = useTheme();
+
+  useEffect(() => {
+    // Pick style based on MUI theme mode
+    const style = theme.palette.mode === 'dark' ? 'streets-v2-dark' : 'basic-v2';
+
     const mtLayer = new MaptilerLayer({
       apiKey: 'zqJA9kfFpP2bX0hmViWr',
-      style: 'basic-v2',
+      style,
     });
+
     mtLayer.addTo(map);
+
     return () => {
       map.removeLayer(mtLayer);
     };
-  }, [map]);
+  }, [map, theme.palette.mode]); // re-run if theme mode changes
+
   return null;
 };
-
 const LeafletAddNotificationMap = ({ onLocationChange, location }) => {
   const [error, setError] = useState(null);
   const [position, setPosition] = useState([location.lat, location.lng]);

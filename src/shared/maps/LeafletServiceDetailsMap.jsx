@@ -6,6 +6,7 @@ import '@maptiler/leaflet-maptilersdk';
 // MapTiler plugin
 import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk';
 import { Box, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -70,34 +71,55 @@ const MapUpdater = ({ centerCoords }) => {
 };
 
 // ✅ MapTiler Layer (uses official SDK)
+// const MapTilerLayerComponent = () => {
+//   const map = useMap();
+
+//   useEffect(() => {
+//     try {
+//       const mtLayer = new MaptilerLayer({
+//         apiKey: 'zqJA9kfFpP2bX0hmViWr',
+//         style: 'basic-v2', // You can change the style here if you like
+//       });
+
+//       // Wait for map to be ready before adding layer
+//       if (map && map._container) {
+//         mtLayer.addTo(map);
+//       }
+
+//       return () => {
+//         if (map && !map._removed) {
+//           map.removeLayer(mtLayer);
+//         }
+//       };
+//     } catch (error) {
+//       console.error('MapTilerLayerComponent: Error adding layer:', error);
+//     }
+//   }, [map]);
+
+//   return null;
+// };
 const MapTilerLayerComponent = () => {
   const map = useMap();
+  const theme = useTheme();
 
   useEffect(() => {
-    try {
-      const mtLayer = new MaptilerLayer({
-        apiKey: 'zqJA9kfFpP2bX0hmViWr',
-        style: 'basic-v2', // You can change the style here if you like
-      });
+    // Pick style based on MUI theme mode
+    const style = theme.palette.mode === 'dark' ? 'streets-v2-dark' : 'basic-v2';
 
-      // Wait for map to be ready before adding layer
-      if (map && map._container) {
-        mtLayer.addTo(map);
-      }
+    const mtLayer = new MaptilerLayer({
+      apiKey: 'zqJA9kfFpP2bX0hmViWr',
+      style,
+    });
 
-      return () => {
-        if (map && !map._removed) {
-          map.removeLayer(mtLayer);
-        }
-      };
-    } catch (error) {
-      console.error('MapTilerLayerComponent: Error adding layer:', error);
-    }
-  }, [map]);
+    mtLayer.addTo(map);
+
+    return () => {
+      map.removeLayer(mtLayer);
+    };
+  }, [map, theme.palette.mode]); // re-run if theme mode changes
 
   return null;
 };
-
 function LeafletServiceDetailsMap({ shelters, centerCoords }) {
   const [userLocation, setUserLocation] = useState(null);
 

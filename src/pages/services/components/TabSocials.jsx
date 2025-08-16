@@ -8,18 +8,24 @@ import XIcon from '@mui/icons-material/X';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import { Box, Card, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { Link as MuiLink } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const TabNotes = ({ service }) => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   return (
     <Card
       sx={{
         p: { xs: 1, sm: 2 },
         borderRadius: 3,
-        background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
-        transition: 'all 0.3s ease-in-out',
-        '&:hover': {
-          background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
-        },
+        background: cardBg,
+        color: cardText,
+        // background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
+        // transition: 'all 0.3s ease-in-out',
+        // '&:hover': {
+        //   background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
+        // },
       }}
     >
       <Stack spacing={2}>

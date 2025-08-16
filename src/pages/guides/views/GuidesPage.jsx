@@ -55,20 +55,12 @@ const GuidesPage = () => {
   return (
     <Container maxWidth="lg" disableGutters>
       <Typography
-        component="h1"
+        variant="h4"
         align="center"
         sx={{
-          fontWeight: 800,
-          fontSize: {
-            xs: '1.5rem',
-            sm: '2rem',
-            md: '2.5rem',
-            lg: '2.5rem',
-          },
           mb: 5,
-          background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+          mt: { xs: 4, sm: 3, md: 2, lg: 1 },
+          color: theme.palette.text.secondary,
         }}
       >
         Guides

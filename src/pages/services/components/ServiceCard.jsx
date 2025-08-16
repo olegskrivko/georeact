@@ -2,10 +2,14 @@ import { Link } from 'react-router-dom';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Box, Card, CardActions, CardMedia, Chip, IconButton, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import ImgPlaceholder from '../../../assets/placeholder.svg';
 
 const ServiceCard = ({ service, onPanToLocation }) => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const isNew = () => {
     const createdDate = new Date(service.created_at);
     const now = new Date();
@@ -23,7 +27,7 @@ const ServiceCard = ({ service, onPanToLocation }) => {
   };
 
   return (
-    <Card>
+    <Card sx={{ background: cardBg, color: cardText }}>
       <Link to={`/services/${service.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <Box position="relative" sx={{ width: '100%', aspectRatio: '4 / 3', overflow: 'hidden' }}>
           <CardMedia
@@ -53,8 +57,17 @@ const ServiceCard = ({ service, onPanToLocation }) => {
         </Box>
       </Link>
       <CardActions disableSpacing style={{ justifyContent: 'start' }}>
-        <Box sx={{ gap: 1 }} style={{ display: 'flex', alignItems: 'center', color: '#343a40' }}>
-          <IconButton color="primary" style={{ backgroundColor: '#f7f9fd' }} onClick={handleMapIconClick}>
+        <Box sx={{ gap: 1 }} style={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton
+            onClick={handleMapIconClick}
+            sx={{
+              color: 'primary.main',
+              backgroundColor: 'rgba(25, 118, 210, 0.08)',
+              '&:hover': {
+                backgroundColor: 'rgba(25, 118, 210, 0.2)',
+              },
+            }}
+          >
             <LocationOnIcon />
           </IconButton>
           <Box>

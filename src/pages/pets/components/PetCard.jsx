@@ -72,8 +72,6 @@ const PetCard = ({ pet, onPanToLocation }) => {
               {pet?.species_display}
             </Typography>
             <Typography component="p" variant="caption">
-              {/* {pet?.distance_from_riga_km < 1 ? 'Within 1 km' : `${pet?.distance_from_riga_km} km`} */}
-
               {pet?.distance_km < 1 ? 'Within 1 km' : `${pet?.distance_km} km`}
             </Typography>
           </Box>

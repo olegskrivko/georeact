@@ -25,11 +25,15 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import moment from 'moment';
 
 import ServiceRatingDisplay from './ServiceRatingDisplay';
 
 const TabNotes = ({ service }) => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   return (
     // <Card
     //   sx={{

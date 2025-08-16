@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import '@maptiler/leaflet-maptilersdk';
 import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk';
 import { Box, CardMedia, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -69,16 +70,39 @@ const MapUpdater = ({ mapCenter }) => {
 };
 
 // Layer provider
-const MapTilerLayer = () => {
+// const MapTilerLayer = () => {
+//   const map = useMap();
+//   useEffect(() => {
+//     const mtLayer = new MaptilerLayer({
+//       apiKey: 'zqJA9kfFpP2bX0hmViWr',
+//       style: 'basic-v2',
+//     });
+//     mtLayer.addTo(map);
+//     return () => map.removeLayer(mtLayer);
+//   }, [map]);
+//   return null;
+// };
+
+const MapTilerLayerComponent = () => {
   const map = useMap();
+  const theme = useTheme();
+
   useEffect(() => {
+    // Pick style based on MUI theme mode
+    const style = theme.palette.mode === 'dark' ? 'streets-v2-dark' : 'basic-v2';
+
     const mtLayer = new MaptilerLayer({
       apiKey: 'zqJA9kfFpP2bX0hmViWr',
-      style: 'basic-v2',
+      style,
     });
+
     mtLayer.addTo(map);
-    return () => map.removeLayer(mtLayer);
-  }, [map]);
+
+    return () => {
+      map.removeLayer(mtLayer);
+    };
+  }, [map, theme.palette.mode]); // re-run if theme mode changes
+
   return null;
 };
 
@@ -94,7 +118,8 @@ function LeafletSheltersMap({ shelters = [], mapCenter, isLoading, userLocation,
         minZoom={1}
         maxZoom={18}
       >
-        <MapTilerLayer />
+        {/* <MapTilerLayer /> */}
+        <MapTilerLayerComponent />
         <MapUpdater mapCenter={mapCenter} />
         <UserLocationUpdater userLocation={userLocation} />
         {userLocation && <Marker position={userLocation} icon={userPulseIcon} />}
@@ -137,7 +162,7 @@ function LeafletSheltersMap({ shelters = [], mapCenter, isLoading, userLocation,
                     <Link to={`/shelters/${shelter.id}`} style={{ textDecoration: 'none' }}>
                       <Box
                         sx={{
-                          width: '140px',
+                          width: '180px',
                           textAlign: 'center',
                           cursor: 'pointer',
                           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
@@ -165,6 +190,7 @@ function LeafletSheltersMap({ shelters = [], mapCenter, isLoading, userLocation,
                           sx={{
                             color: '#244A72',
                             fontWeight: 600,
+                            fontSize: '0.7rem',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',

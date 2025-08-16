@@ -6,6 +6,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SendIcon from '@mui/icons-material/Send';
 import { Box, Button, Card, Collapse, IconButton, Paper, Rating, TextField, Tooltip, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 
@@ -15,6 +16,9 @@ import AnimalAvatar from '../../common/components/AnimalAvatar';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const RatingForm = ({ serviceId, onSuccess }) => {
+  const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const { user } = useAuth();
   const [expanded, setExpanded] = useState(false);
   const [rating, setRating] = useState(0);
@@ -69,9 +73,12 @@ const RatingForm = ({ serviceId, onSuccess }) => {
       sx={{
         p: { xs: 1, sm: 2 },
         borderRadius: 3,
-        background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
-        overflow: 'hidden',
+
         mt: 4,
+
+        background: cardBg,
+        color: cardText,
+        overflow: 'hidden',
       }}
     >
       <Box

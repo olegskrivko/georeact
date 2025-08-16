@@ -29,7 +29,7 @@ const ServiceSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Category Filter */}
         <ListItem sx={{ padding: '0 !important' }}>
           <Box>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Category</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Category</InputLabel>
             {CATEGORY_CHOICES.map((category) => (
               <Chip
                 key={category.value}
@@ -46,7 +46,7 @@ const ServiceSidebar = ({ filters, setFilters, onFilterChange, onReset }) => {
         {/* Service Provider Filter */}
         <ListItem sx={{ padding: '0 !important', paddingTop: '0.8rem !important' }}>
           <Box>
-            <InputLabel sx={{ fontWeight: '500', color: '#16477c' }}>Service Provider</InputLabel>
+            <InputLabel sx={{ fontWeight: '500', color: '#00b3a4' }}>Service Provider</InputLabel>
             {PROVIDER_TYPES.map((provider) => (
               <Chip
                 key={provider.value}

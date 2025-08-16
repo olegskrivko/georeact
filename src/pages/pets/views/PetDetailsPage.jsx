@@ -673,13 +673,13 @@ const PetDetailsPage = () => {
             </Tooltip>
 
             {/* Download */}
-            <Tooltip title={'Download poster'}>
+            {/* <Tooltip title={'Download poster'}>
               <Link to={`/pets/${id}/poster`}>
                 <IconButton style={{ backgroundColor: '#f7f9fd' }}>
                   <DownloadIcon color="primary" />
                 </IconButton>
               </Link>
-            </Tooltip>
+            </Tooltip> */}
 
             {/* Share */}
             <Tooltip title={'Share'}>
@@ -839,7 +839,7 @@ const PetDetailsPage = () => {
                   )}
 
                   <Typography color="textSecondary" sx={{ pl: { xs: 1, sm: 2 } }}>
-                    ADD MESSAGE
+                    Add Message
                   </Typography>
                 </Box>
               </Typography>

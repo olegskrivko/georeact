@@ -73,7 +73,7 @@ function ShelterContacts({ shelter, onLocationClick }) {
               {shelter.website_url}
             </MuiLink>
           ) : (
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: cardTextSecondary }}>
               No website
             </Typography>
           )}

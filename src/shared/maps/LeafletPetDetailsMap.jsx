@@ -9,6 +9,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PetsIcon from '@mui/icons-material/Pets';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
+import { useTheme } from '@mui/material/styles';
 import { format } from 'date-fns';
 import { lv } from 'date-fns/locale';
 import L from 'leaflet';
@@ -109,13 +110,36 @@ const MapWrapper = ({ onMapLoad }) => {
 };
 
 // MapTiler Layer (with MapTiler SDK)
+// const MapTilerLayerComponent = () => {
+//   const map = useMap();
+
+//   useEffect(() => {
+//     const mtLayer = new MaptilerLayer({
+//       apiKey: 'zqJA9kfFpP2bX0hmViWr',
+//       style: 'basic-v2', // Change this for other map styles
+//     });
+
+//     mtLayer.addTo(map);
+
+//     return () => {
+//       map.removeLayer(mtLayer);
+//     };
+//   }, [map]);
+
+//   return null;
+// };
+
 const MapTilerLayerComponent = () => {
   const map = useMap();
+  const theme = useTheme();
 
   useEffect(() => {
+    // Pick style based on MUI theme mode
+    const style = theme.palette.mode === 'dark' ? 'streets-v2-dark' : 'basic-v2';
+
     const mtLayer = new MaptilerLayer({
       apiKey: 'zqJA9kfFpP2bX0hmViWr',
-      style: 'basic-v2', // Change this for other map styles
+      style,
     });
 
     mtLayer.addTo(map);
@@ -123,7 +147,7 @@ const MapTilerLayerComponent = () => {
     return () => {
       map.removeLayer(mtLayer);
     };
-  }, [map]);
+  }, [map, theme.palette.mode]); // re-run if theme mode changes
 
   return null;
 };
