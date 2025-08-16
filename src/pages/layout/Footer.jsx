@@ -214,7 +214,7 @@ const Footer = () => {
                 <Link
                   to="/support"
                   style={{
-                    color: '#DAFF84',
+                    color: '#00b5ad',
                     textDecoration: 'none',
                     textTransform: 'uppercase',
                     fontWeight: 500,

@@ -14,6 +14,8 @@ const languages = [
 const LanguageSelectorModal = ({ open, onClose }) => {
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext);
   const theme = useTheme();
+  const cardBg = theme.palette.custom.card.main;
+  const cardText = theme.palette.custom.card.contrastText;
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleSelect = (langCode) => {
@@ -32,6 +34,13 @@ const LanguageSelectorModal = ({ open, onClose }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+
+          background: cardBg,
+          color: cardText,
+          zIndex: 9999,
+
+          // p: 2,
+          p: { xs: 1, sm: 2 },
         }}
       >
         <IconButton

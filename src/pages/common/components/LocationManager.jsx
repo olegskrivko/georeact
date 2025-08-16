@@ -236,6 +236,20 @@ const LocationManager = ({ mode = 'full' }) => {
         <IconButton onClick={handleOpen} size="small">
           <RoomIcon style={{ color: '#00b3a4' }} fontSize="small" />
         </IconButton>
+
+        {/* <IconButton
+          onClick={handleOpen}
+          size="small"
+          sx={{
+            color: 'primary.main',
+            backgroundColor: 'rgba(25, 118, 210, 0.08)',
+            '&:hover': {
+              backgroundColor: 'rgba(25, 118, 210, 0.2)',
+            },
+          }}
+        >
+          <RoomIcon style={{ color: '#00b3a4' }} fontSize="small" />
+        </IconButton> */}
       </Tooltip>
       <LocationPicker
         open={modalOpen}
