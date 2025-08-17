@@ -30,6 +30,7 @@ import Lottie from 'lottie-react';
 import { useSnackbar } from 'notistack';
 
 import spinnerAnimation from '../../../assets/Animation-1749725645616.json';
+import ImgPlaceholder from '../../../assets/placeholder.svg';
 import { useAuth } from '../../../contexts/AuthContext';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -49,7 +50,7 @@ function UserServices() {
   const [quota, setQuota] = useState(null);
   console.log('user', user);
   console.log('ownedServices', ownedServices);
-
+  const MAX_SERVICES = 5;
   const fetchUserServices = async () => {
     const accessToken = localStorage.getItem('access_token');
     if (!accessToken) {
@@ -126,36 +127,7 @@ function UserServices() {
         >
           My Services
         </Typography>
-        {quota && (
-          <Card
-            sx={{
-              p: { xs: 1, sm: 2 },
-              mb: 4,
-              borderRadius: 3,
-              background: 'linear-gradient(90deg, #edf4ff 0%, #f3faff 100%)',
-            }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
-              Your Limit
-            </Typography>
-            <Typography variant="body2" component="p" sx={{ mb: 1 }}>
-              Allowed service count: <strong>{quota.limit}</strong>
-            </Typography>
-            <Typography variant="body2" component="p" sx={{ mb: 1 }}>
-              Currently used: <strong>{quota.used}</strong>
-            </Typography>
-            <Box mt={3}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-                Subscription limits:
-              </Typography>
-              <Box display="flex" gap={2} flexWrap="wrap">
-                <Chip label="Freemium: 1" size="small" color="primary" sx={{ pointerEvents: 'none' }} tabIndex={-1} />
-                <Chip label="Plus: 3" size="small" color="primary" sx={{ pointerEvents: 'none' }} tabIndex={-1} />
-                <Chip label="Premium: 5" size="small" color="primary" sx={{ pointerEvents: 'none' }} tabIndex={-1} />
-              </Box>
-            </Box>
-          </Card>
-        )}
+
         {ownedServices.length === 0 ? (
           // ✅ Display message when user has no services
 
@@ -164,11 +136,15 @@ function UserServices() {
               sx={{
                 p: { xs: 1, sm: 2 },
                 borderRadius: 3,
-                background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
 
-                transition: 'all 0.3s ease-in-out',
+                textAlign: 'left',
+                background: cardBg,
+                color: cardText,
+                transition: 'transform 0.2s ease',
+                boxShadow: '0.2s ease',
                 '&:hover': {
-                  background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
                 },
               }}
             >
@@ -188,37 +164,62 @@ function UserServices() {
               <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} key={service.id}>
                 <Card
                   sx={{
-                    p: 2,
+                    p: { xs: 1, sm: 2 },
                     borderRadius: 3,
-                    background: 'linear-gradient(90deg, #e8f6f9 0%, #f1faff 100%)',
-                    // cursor: 'pointer',
-                    transition: 'all 0.3s ease-in-out',
+
+                    textAlign: 'left',
+                    background: cardBg,
+                    color: cardText,
+                    transition: 'transform 0.2s ease',
+                    boxShadow: '0.2s ease',
                     '&:hover': {
-                      background: 'linear-gradient(90deg, #d0f0f5 0%, #e3fbff 100%)',
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
                     },
                   }}
                 >
                   {/* <CardContent> */}
                   <Box display="flex" alignItems="center">
-                    <Avatar
-                      src={service.service_image_1}
-                      alt={service.title}
-                      sx={{ width: 64, height: 64, marginRight: 2 }}
-                    />
+                    <MuiLink href={`/services/${service.id}`} underline="none">
+                      <Avatar
+                        src={service.service_image_1 || ''}
+                        alt={service.operating_name || 'Unknown'}
+                        sx={{ width: 64, height: 64, mr: { xs: 1, sm: 2 }, cursor: 'pointer' }}
+                      >
+                        {service.operating_name || '?'}
+                      </Avatar>
+                    </MuiLink>
                     <Box flexGrow={1}>
                       <Typography variant="h6">
-                        <MuiLink href={`/services/${service.id}`} underline="none">
-                          <Chip
-                            label={service.title || 'Nezināms'}
-                            size="small"
-                            variant="contained"
-                            style={{ backgroundColor: '#5B9BD5', color: '#fff' }}
-                          />
-                        </MuiLink>
+                        <Chip
+                          label={
+                            service?.operating_name
+                              ? service.operating_name.length > 20
+                                ? service.operating_name.slice(0, 20) + '…'
+                                : service.operating_name
+                              : 'Unknown'
+                          }
+                          onClick={() => {}} // dummy click
+                          sx={{
+                            cursor: 'default', // removes hand pointer
+                            pointerEvents: 'auto', // ensures chip behaves normally visually
+                          }}
+                          size="small"
+                          color="primary"
+                        />
                       </Typography>
-                      <Typography variant="body1" color="textSecondary">
-                        {service.title || 'Nav statusa'}
-                      </Typography>
+                      <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 500,
+
+                            color: 'primary.main',
+                          }}
+                        >
+                          {service?.category_display || 'Unknown'}
+                        </Typography>
+                      </Box>
                     </Box>
 
                     <Tooltip title="Edit">
@@ -256,6 +257,64 @@ function UserServices() {
                 </Card>
               </Grid>
             ))}
+
+            {Array.from({ length: quota?.limit - ownedServices.length }).map((_, index) => (
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} key={`ghost-${index}`}>
+                <Card
+                  sx={{
+                    p: { xs: 1, sm: 2 },
+                    borderRadius: 3,
+                    display: 'flex',
+                    justifyContent: 'space-between', // push icon to right
+                    alignItems: 'center',
+                    // cursor: 'pointer',
+                    border: '1px dashed #00b3a4',
+                    background: cardBg,
+                    color: cardText,
+                    transition: 'transform 0.2s ease',
+                    boxShadow: '0.2s ease',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
+                    },
+                    minHeight: 80,
+                  }}
+                >
+                  {/* Invisible placeholder avatar */}
+                  <Avatar
+                    src={ImgPlaceholder}
+                    alt={'Unknown'}
+                    sx={{
+                      width: 64,
+                      height: 64,
+                      mr: { xs: 1, sm: 2 },
+                      visibility: 'hidden', // keeps the space
+                    }}
+                  />
+
+                  {/* Add pet icon */}
+                  <Tooltip title="Add Service">
+                    <IconButton
+                      component={Link}
+                      to="/add-service"
+                      sx={{
+                        color: 'primary.main',
+                        backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                        width: 56,
+                        height: 56,
+                        borderRadius: '50%',
+                        padding: 0,
+                        '&:hover': {
+                          backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                        },
+                      }}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
         )}
 
@@ -277,7 +336,7 @@ function UserServices() {
                 <ArrowBackIcon fontSize="small" />
                 Back
               </Link>
-              {quota && quota.remaining <= 0 ? (
+              {/* {quota && quota.remaining <= 0 ? (
                 <Box
                   sx={{
                     color: 'gray',
@@ -309,7 +368,7 @@ function UserServices() {
                   <AddIcon fontSize="small" />
                   Add
                 </Link>
-              )}
+              )} */}
             </Box>
           </Grid>
 

@@ -281,19 +281,31 @@ function UserPets() {
                     </Link>
 
                     <Box flexGrow={1}>
-                      <Typography
-                        variant="caption"
-                        component="p"
-                        sx={{
-                          fontWeight: 500,
-                          color: 'primary.main',
-                          textTransform: 'uppercase',
-                        }}
-                      >
-                        {pet?.status_display || 'Unknown'} {pet?.species_display || 'Unknown'}
+                      <Typography variant="h6">
+                        <Chip
+                          label={pet?.status_display || 'Unknown'}
+                          onClick={() => {}} // dummy click
+                          sx={{
+                            cursor: 'default', // removes the hand pointer
+                            pointerEvents: 'auto', // ensures chip behaves normally visually
+                          }}
+                          size="small"
+                          color="primary"
+                        />
                       </Typography>
-                    </Box>
+                      <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 500,
 
+                            color: 'primary.main',
+                          }}
+                        >
+                          {pet?.species_display || 'Unknown'}
+                        </Typography>
+                      </Box>
+                    </Box>
                     <Tooltip title="Download Poster">
                       <Link to={`/pets/${pet.id}/poster`} style={{ textDecoration: 'none' }}>
                         <IconButton edge="end" size="small" color="warning" aria-label="delete" sx={{ mr: 1 }}>
@@ -302,7 +314,7 @@ function UserPets() {
                       </Link>
                     </Tooltip>
                     {pet.is_closed ? (
-                      <Tooltip title="Advertisement Closed">
+                      <Tooltip title="Open">
                         <IconButton
                           edge="end"
                           size="small"

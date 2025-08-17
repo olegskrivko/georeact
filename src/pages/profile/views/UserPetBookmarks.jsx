@@ -218,6 +218,32 @@ function UserPetBookmarks() {
                       </Avatar>
                     </Link>
                     <Box flexGrow={1}>
+                      <Typography variant="h6">
+                        <Chip
+                          label={pet?.status_display || 'Unknown'}
+                          onClick={() => {}} // dummy click
+                          sx={{
+                            cursor: 'default', // removes the hand pointer
+                            pointerEvents: 'auto', // ensures chip behaves normally visually
+                          }}
+                          size="small"
+                          color="primary"
+                        />
+                      </Typography>
+                      <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 500,
+
+                            color: 'primary.main',
+                          }}
+                        >
+                          {pet?.species_display || 'Unknown'}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    {/* <Box flexGrow={1}>
                       <Typography
                         variant="caption"
                         component="p"
@@ -229,7 +255,7 @@ function UserPetBookmarks() {
                       >
                         {pet?.status_display || 'Unknown'} {pet?.species_display || 'Unknown'}
                       </Typography>
-                    </Box>
+                    </Box> */}
 
                     {pet.is_closed && (
                       <Tooltip title="Listing Closed">
@@ -246,7 +272,7 @@ function UserPetBookmarks() {
                       </Tooltip>
                     )}
 
-                    <Tooltip title="Remove from favorites">
+                    <Tooltip title="Remove">
                       <IconButton
                         edge="end"
                         color="error"

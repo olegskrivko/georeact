@@ -100,7 +100,7 @@ function UserSettings() {
   const fetchUserPetQuota = async () => {
     try {
       const accessToken = localStorage.getItem('access_token');
-      const response = await fetch(`${API_BASE_URL}/api/pets/pet-quota/`, {
+      const response = await fetch(`${API_BASE_URL}/api/services/service-quota/`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -722,7 +722,8 @@ function UserSettings() {
                             p: { xs: 1, sm: 2 },
                             mb: 2,
                             borderRadius: 3,
-                            background: 'linear-gradient(90deg, #edf4ff 0%, #f3faff 100%)',
+                            background: cardBg,
+                            color: cardText,
                           }}
                         >
                           <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
@@ -792,7 +793,37 @@ function UserSettings() {
             </Card>
           </Grid>
         </Grid>
-
+        {quota && (
+          <Card
+            sx={{
+              p: { xs: 1, sm: 2 },
+              mb: 4,
+              borderRadius: 3,
+              background: cardBg,
+              color: cardText,
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+              Your Limit
+            </Typography>
+            <Typography variant="body2" component="p" sx={{ mb: 1 }}>
+              Allowed service count: <strong>{quota.limit}</strong>
+            </Typography>
+            <Typography variant="body2" component="p" sx={{ mb: 1 }}>
+              Currently used: <strong>{quota.used}</strong>
+            </Typography>
+            <Box mt={3}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                Subscription limits:
+              </Typography>
+              <Box display="flex" gap={2} flexWrap="wrap">
+                <Chip label="Freemium: 1" size="small" color="primary" sx={{ pointerEvents: 'none' }} tabIndex={-1} />
+                <Chip label="Plus: 3" size="small" color="primary" sx={{ pointerEvents: 'none' }} tabIndex={-1} />
+                <Chip label="Premium: 5" size="small" color="primary" sx={{ pointerEvents: 'none' }} tabIndex={-1} />
+              </Box>
+            </Box>
+          </Card>
+        )}
         {/* <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
             <Accordion elevation={1}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>

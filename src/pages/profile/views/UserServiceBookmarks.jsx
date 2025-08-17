@@ -307,7 +307,22 @@ function UserServiceBookmarks() {
                     </MuiLink>
                     <Box flexGrow={1}>
                       <Typography variant="h6">
-                        <Chip label={service?.operating_name || 'Unknown'} size="small" color="primary" />
+                        <Chip
+                          label={
+                            service?.operating_name
+                              ? service.operating_name.length > 20
+                                ? service.operating_name.slice(0, 20) + '…'
+                                : service.operating_name
+                              : 'Unknown'
+                          }
+                          onClick={() => {}} // dummy click
+                          sx={{
+                            cursor: 'default', // removes hand pointer
+                            pointerEvents: 'auto', // ensures chip behaves normally visually
+                          }}
+                          size="small"
+                          color="primary"
+                        />
                       </Typography>
                       <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
                         <Typography
@@ -323,7 +338,7 @@ function UserServiceBookmarks() {
                       </Box>
                     </Box>
 
-                    <Tooltip title="Remove from favorites">
+                    <Tooltip title="Remove">
                       <IconButton
                         edge="end"
                         color="error"

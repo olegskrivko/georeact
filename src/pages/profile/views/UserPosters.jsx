@@ -598,7 +598,14 @@ const PostersList = () => {
             {/* Posters Table */}
             <TableContainer
               component={Paper}
-              sx={{ mt: 3, px: 2, borderTop: '4px solid #00b5ad', boxShadow: 2, position: 'relative' }}
+              sx={{
+                mt: 3,
+                px: 2,
+                borderTop: '4px solid #00b5ad',
+                boxShadow: 2,
+                position: 'relative',
+                background: cardBg,
+              }}
             >
               <Table>
                 <TableHead>
