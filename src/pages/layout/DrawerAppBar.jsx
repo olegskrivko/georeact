@@ -1,5 +1,6 @@
 // DrawerAppBar.js
 import React, { useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -34,19 +35,22 @@ import ThemeToggle from '../common/components/ThemeToggleButton';
 const drawerWidth = 240;
 
 const navItems = {
-  '/pets': 'Pets',
-  '/shelters': 'Shelters',
-  '/services': 'Services',
-  '/guides': 'Guides',
+  '/pets': 'pets',
+  '/shelters': 'shelters',
+  '/services': 'services',
+  '/guides': 'guides',
 };
 
 function DrawerAppBar(props) {
+  const { t } = useTranslation('navbar');
+  const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext);
+  console.log('selectedLanguage', selectedLanguage);
+  console.log('t', t);
   const theme = useTheme();
   const cardBg = theme.palette.custom.card.main;
   const cardText = theme.palette.custom.card.contrastText;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { user } = useAuth();
-  const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -107,7 +111,8 @@ function DrawerAppBar(props) {
                   color: cardText,
                 }}
               >
-                <ListItemText primary={label} />
+                {/* <ListItemText primary={label} /> */}
+                <ListItemText primary={t(label)} />
               </Link>
             </ListItemButton>
           </ListItem>
@@ -124,7 +129,8 @@ function DrawerAppBar(props) {
                 width: '100%',
               }}
             >
-              <ListItemText primary={user ? 'Profile' : 'Login'} />
+              {/* <ListItemText primary={user ? 'Profile' : 'Login'} /> */}
+              <ListItemText primary={user ? t('profile') : t('login')} />
             </Link>
           </ListItemButton>
         </ListItem>
@@ -204,8 +210,8 @@ function DrawerAppBar(props) {
                     color: '#EAEAEA',
                   }}
                 >
-                  <Button size="small" sx={{ color: '#EAEAEA', fontWeight: '400' }}>
-                    {key}
+                  <Button size="small" sx={{ color: '#EAEAEA' }}>
+                    {t(key)}
                   </Button>
                 </Link>
               ))}
@@ -213,7 +219,8 @@ function DrawerAppBar(props) {
               {/* Show Profile or Login Button */}
               <Link to={user ? '/user-profile' : '/login'}>
                 <Button size="small" sx={{ color: '#EAEAEA' }}>
-                  {user ? 'Profile' : 'Login'}
+                  {/* {user ? 'Profile' : 'Login'} */}
+                  {user ? t('profile') : t('login')}
                 </Button>
               </Link>
             </Box>
