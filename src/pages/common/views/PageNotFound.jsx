@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { Box, Button, CardMedia, Container, Typography } from '@mui/material';
 
-import ImgNotFound from '../../../assets/images/pagenotfound/monster_404_error_rafiki.svg';
+import ImgNotFound from '../../../assets/images/pagenotfound/oops_404_rror_with_a_broken_robot_cuate.svg';
 
 const PageNotFound = () => {
   return (

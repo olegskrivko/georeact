@@ -54,6 +54,13 @@ const GENDER_CHOICES = [
   { value: 2, label: 'Female' },
 ];
 
+const COUNTRY_DIALING_CODE_CHOICES = [
+  { value: '', label: '-' },
+  { value: '371', label: '+371 Latvia' },
+  { value: '372', label: '+372 Estonia' },
+  { value: '370', label: '+370 Lithuania' },
+];
+
 const PHONE_CODE_CHOICES = [
   { value: '', label: '-' },
   { value: '1', label: 'United States (+1)' },
@@ -138,6 +145,7 @@ const PRICE_TYPE_CHOICES = [
 ];
 
 export {
+  COUNTRY_DIALING_CODE_CHOICES,
   PRICE_TYPE_CHOICES,
   PROVIDER_TYPES,
   SHELTER_CATEGORIES,
