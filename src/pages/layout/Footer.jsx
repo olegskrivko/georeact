@@ -110,7 +110,7 @@ const Footer = () => {
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 3, md: 3, lg: 3 }} textAlign="left">
               <Typography variant="h6" color="#00b3a4" style={{ fontWeight: '500' }}>
-                Get Started
+                About
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 {appLinks.map((link) => (

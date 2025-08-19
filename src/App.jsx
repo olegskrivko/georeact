@@ -10,6 +10,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { SnackbarProvider } from 'notistack';
 
 import './App.css';
+import SensorDemo from './SensorDemo';
 import { AuthProvider } from './contexts/AuthContext';
 import { useAuth } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
@@ -116,6 +117,7 @@ function App() {
                           <Route path="about" element={<AboutPage />} />
                           <Route path="contact" element={<Contact />} />
                           <Route path="support" element={<Support />} />
+                          <Route path="sensor" element={<SensorDemo />} />
 
                           <Route path="credits" element={<AttributionPage />} />
                           <Route path="frequently-asked-questions" element={<FrequentlyAskedQuestions />} />
