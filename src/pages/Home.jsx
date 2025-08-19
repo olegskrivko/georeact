@@ -19,10 +19,12 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import MapBanner from '../pages/common/components/MapBanner';
-import MapBannerDeepBottom from '../pages/common/components/MapBannerDeepBottom';
+import illustrationGuides from '../assets/images/home/innovation_amico.svg';
+import illustrationServices from '../assets/images/home/veterinary_bro.svg';
+import illustrationPets from '../assets/images/support/cat_astronaut_cuate_blue.svg';
 import PetPath from '../pages/common/components/PetPath';
 import ChatBot from './assistant/components/ChatBot';
+import CallToActionBanner from './common/components/CallToActionBanner';
 import TestimonialSlider from './common/components/TestimonialSlider';
 
 function Home() {
@@ -49,10 +51,28 @@ function Home() {
         />
         <meta property="og:type" content="website" />
       </Helmet>
-      <MapBanner />
-      <Container component="main" maxWidth="lg" sx={{ py: 6, paddingLeft: '0', paddingRight: '0' }}></Container>
-      <Box>
-        <Container component="main" maxWidth="lg" sx={{ py: 4, paddingLeft: '0', paddingRight: '0' }}>
+
+      {/* <Container component="main" maxWidth="lg" sx={{ py: 6, paddingLeft: '0', paddingRight: '0' }}></Container> */}
+
+      <Box sx={{ background: theme.palette.custom?.section || theme.palette.background.paper }}>
+        <CallToActionBanner
+          title="Lost or Found a Pet? "
+          description="Use our app to share details with people nearby, get updates from the community on sightings, and increase the chances of a safe return."
+          imageSrc={illustrationPets}
+          imagePosition="right"
+          mainButton={{ text: 'View Map', path: '/pets', variant: 'contained' }}
+          optionButton={{ text: 'Add Pet', path: '/add-pet', variant: 'outlined' }}
+        />
+        <Container
+          component="main"
+          maxWidth="lg"
+          sx={{
+            py: 4,
+            paddingLeft: '0',
+            paddingRight: '0',
+            // background: theme.palette.custom?.section || theme.palette.background.paper,
+          }}
+        >
           <Grid container spacing={3}>
             <Grid size={{ xs: 12 }} textAlign="center">
               <Typography
@@ -235,9 +255,23 @@ function Home() {
       <PetPath />
 
       {/* <MapBannerBottom /> */}
-      <TestimonialSlider />
-      <MapBannerDeepBottom />
+      <CallToActionBanner
+        title="Pet Services Near You"
+        description="Find trusted pet services – from grooming and training to veterinary care. Browse guides, discover local providers, and get the support your pet needs."
+        imageSrc={illustrationServices}
+        imagePosition="left"
+        mainButton={{ text: 'View Services', path: '/services', variant: 'contained' }}
+        optionButton={{ text: 'Add Service', path: '/add-service', variant: 'outlined' }}
+      />
 
+      <TestimonialSlider />
+      <CallToActionBanner
+        title="Practical pet care tips"
+        description="Learn how to best care for your pet – from daily care to emergency situations. Practical tips, guides, and answers to important questions all in one place."
+        imageSrc={illustrationGuides}
+        imagePosition="right"
+        mainButton={{ text: 'View Tips', path: '/guides', variant: 'contained' }}
+      />
       <Container component="main" maxWidth="lg" sx={{ py: 4, paddingLeft: '0', paddingRight: '0' }}>
         <Grid container spacing={3} style={{ marginTop: '1rem', marginBottom: '3rem' }}>
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} textAlign="center">

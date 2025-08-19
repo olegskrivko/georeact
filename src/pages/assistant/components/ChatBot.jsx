@@ -290,7 +290,7 @@ const ChatBot = () => {
                   disabled={loading}
                   style={{
                     cursor: loading ? 'not-allowed' : 'pointer',
-                    background: '#e3f2fd',
+                    background: '#55a7e2ff',
                   }}
                 />
               ))}
@@ -314,7 +314,7 @@ const ChatBot = () => {
             style={{
               display: 'flex',
               padding: '10px',
-              backgroundColor: '#f7f7f7',
+              backgroundColor: '#507fc5ff',
               borderBottomLeftRadius: isFullscreen ? 0 : '12px',
               borderBottomRightRadius: isFullscreen ? 0 : '12px',
             }}

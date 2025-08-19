@@ -34,12 +34,19 @@ import ThemeToggle from '../common/components/ThemeToggleButton';
 
 const drawerWidth = 240;
 
-const navItems = {
-  '/pets': 'pets',
-  '/shelters': 'shelters',
-  '/services': 'services',
-  '/guides': 'guides',
-};
+const links = [
+  { path: '/pets', label: 'link.pets' },
+  { path: '/shelters', label: 'link.shelters' },
+  { path: '/services', label: 'link.services' },
+  { path: '/guides', label: 'link.guides' },
+];
+
+// const navItems = {
+//   '/pets': 'pets',
+//   '/shelters': 'shelters',
+//   '/services': 'services',
+//   '/guides': 'guides',
+// };
 
 function DrawerAppBar(props) {
   const { t } = useTranslation('navbar');
@@ -100,7 +107,7 @@ function DrawerAppBar(props) {
 
       <Divider />
       <List>
-        {Object.entries(navItems).map(([path, label]) => (
+        {/* {Object.entries(navItems).map(([path, label]) => (
           <ListItem key={path} disablePadding>
             <ListItemButton sx={{ textAlign: 'left' }}>
               <Link
@@ -111,13 +118,29 @@ function DrawerAppBar(props) {
                   color: cardText,
                 }}
               >
-                {/* <ListItemText primary={label} /> */}
+           
                 <ListItemText primary={t(label)} />
               </Link>
             </ListItemButton>
           </ListItem>
+        ))} */}
+        {links.map((link) => (
+          <ListItem disablePadding>
+            <ListItemButton sx={{ textAlign: 'left' }}>
+              <Link
+                key={link.path}
+                to={link.path}
+                style={{
+                  textDecoration: 'none',
+                  color: cardText,
+                }}
+              >
+                {/* <ListItemText primary={label} /> */}
+                <ListItemText primary={t(link.label)} />
+              </Link>
+            </ListItemButton>
+          </ListItem>
         ))}
-
         <ListItem disablePadding>
           <ListItemButton sx={{ textAlign: 'left' }}>
             <Link
@@ -130,7 +153,7 @@ function DrawerAppBar(props) {
               }}
             >
               {/* <ListItemText primary={user ? 'Profile' : 'Login'} /> */}
-              <ListItemText primary={user ? t('profile') : t('login')} />
+              <ListItemText primary={user ? t('link.profile') : t('link.login')} />
             </Link>
           </ListItemButton>
         </ListItem>
@@ -201,7 +224,7 @@ function DrawerAppBar(props) {
               </Link>
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {Object.entries(navItems).map(([path, key]) => (
+              {/* {Object.entries(navItems).map(([path, key]) => (
                 <Link
                   key={path}
                   to={path}
@@ -214,13 +237,26 @@ function DrawerAppBar(props) {
                     {t(key)}
                   </Button>
                 </Link>
+              ))} */}
+              {links.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  style={{
+                    textDecoration: 'none',
+                    color: '#EAEAEA',
+                  }}
+                >
+                  <Button size="small" sx={{ color: '#EAEAEA' }}>
+                    {t(link.label)}
+                  </Button>
+                </Link>
               ))}
-
               {/* Show Profile or Login Button */}
               <Link to={user ? '/user-profile' : '/login'}>
                 <Button size="small" sx={{ color: '#EAEAEA' }}>
                   {/* {user ? 'Profile' : 'Login'} */}
-                  {user ? t('profile') : t('login')}
+                  {user ? t('link.profile') : t('link.login')}
                 </Button>
               </Link>
             </Box>

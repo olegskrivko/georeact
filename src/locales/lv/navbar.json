@@ -1,9 +1,10 @@
 {
-  "home": "Sākums",
-  "pets": "Mājdzīvnieki",
-  "shelters": "Patversmes",
-  "services": "Pakalpojumi",
-  "guides": "Padomi",
-  "login": "Pieteikties",
-  "profile": "Profils"
+  "link": {
+    "pets": "Mājdzīvnieki",
+    "shelters": "Patversmes",
+    "services": "Pakalpojumi",
+    "guides": "Padomi",
+    "login": "Pieteikties",
+    "profile": "Profils"
+  }
 }

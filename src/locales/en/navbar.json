@@ -1,9 +1,10 @@
 {
-  "home": "Home",
-  "pets": "Pets",
-  "shelters": "Shelters",
-  "services": "Services",
-  "guides": "Guides",
-  "login": "Login",
-  "profile": "Profile"
+  "link": {
+    "pets": "Pets",
+    "shelters": "Shelters",
+    "services": "Services",
+    "guides": "Guides",
+    "login": "Login",
+    "profile": "Profile"
+  }
 }

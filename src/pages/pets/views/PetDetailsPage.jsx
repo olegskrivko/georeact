@@ -731,7 +731,7 @@ const PetDetailsPage = () => {
           <PetAttributes pet={pet} />
         </Grid>
       </Grid>
-      <Card
+      {/* <Card
         sx={{
           mt: 2,
           p: { xs: 1, sm: 2 },
@@ -740,7 +740,7 @@ const PetDetailsPage = () => {
         }}
       >
         <Box display="flex" alignItems="center" justifyContent="center" gap={1.5}>
-          {/* Status text - primary color */}
+        
           <Typography
             variant="body2"
             sx={{
@@ -754,7 +754,7 @@ const PetDetailsPage = () => {
             {pet.status_display}
           </Typography>
 
-          {/* Arrow icon */}
+          
           <DoubleArrowIcon
             sx={{
               color: '#00b5ad',
@@ -763,7 +763,7 @@ const PetDetailsPage = () => {
             }}
           />
 
-          {/* Final status text - conditional color */}
+      
           <Typography
             variant="body2"
             sx={{
@@ -777,7 +777,7 @@ const PetDetailsPage = () => {
             {pet.final_status_display}
           </Typography>
         </Box>
-      </Card>
+      </Card> */}
       <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} ref={mapRef}>
         <LeafletPetDetailsMap
           pet={pet}
