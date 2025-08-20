@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+// adjust path
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import {
@@ -16,9 +18,15 @@ import {
 import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 
+import { LanguageContext } from '../../../contexts/LanguageContext';
+import api from '../../../utils/api';
+
+// <- use the axios instance with Accept-Language interceptor
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const FrequentlyAskedQuestions = () => {
+  const { t } = useTranslation('faq');
+  const { selectedLanguage } = useContext(LanguageContext); // watch this
   const theme = useTheme();
   const cardBg = theme.palette.custom.card.main;
   const cardText = theme.palette.custom.card.contrastText;
@@ -27,11 +35,14 @@ const FrequentlyAskedQuestions = () => {
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
   useEffect(() => {
     const fetchFAQs = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/core/faqs/`);
+        console.log('Fetching FAQs for language:', selectedLanguage);
+        const response = await api.get('/api/core/faqs/');
+        console.log('Response data:', response.data);
+        console.log('Request headers:', response.config.headers);
         setFaqs(response.data);
       } catch (err) {
         console.error('Error fetching FAQs:', err);
@@ -42,7 +53,41 @@ const FrequentlyAskedQuestions = () => {
     };
 
     fetchFAQs();
-  }, []);
+  }, [selectedLanguage]); // ✅ refetch whenever language changes
+  // useEffect(() => {
+  //   const fetchFAQs = async () => {
+  //     try {
+  //       console.log('Fetching FAQs from API with base URL:', api.defaults.baseURL);
+  //       const response = await api.get('/api/core/faqs/');
+  //       console.log('Response data:', response.data);
+  //       console.log('Request headers:', response.config.headers);
+  //       setFaqs(response.data);
+  //     } catch (err) {
+  //       console.error('Error fetching FAQs:', err);
+  //       setError('Failed to load FAQs.');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchFAQs();
+  // }, []);
+
+  // useEffect(() => {
+  //   const fetchFAQs = async () => {
+  //     try {
+  //       const response = await axios.get(`${API_BASE_URL}/api/core/faqs/`);
+  //       setFaqs(response.data);
+  //     } catch (err) {
+  //       console.error('Error fetching FAQs:', err);
+  //       setError('Failed to load FAQs.');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchFAQs();
+  // }, []);
 
   if (loading) {
     return (
@@ -73,7 +118,7 @@ const FrequentlyAskedQuestions = () => {
           color: theme.palette.text.secondary,
         }}
       >
-        Frequently Asked Questions
+        {t('heading.h1')}
       </Typography>
       <Grid container spacing={3}>
         {faqs.map((faq, index) => (

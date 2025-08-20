@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -21,6 +22,7 @@ const isSubscriptionActive = (endDate) => {
 };
 
 const Footer = () => {
+  const { t } = useTranslation('footer');
   const YEAR = new Date().getFullYear();
   const theme = useTheme();
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext);
@@ -56,29 +58,29 @@ const Footer = () => {
   const isPremiumActive = hasActiveSubscription && subscription?.subscription_type === 'premium';
 
   const appLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/about', label: 'About us' },
-    { path: '/pets', label: 'Find a pet' },
-    { path: '/services', label: 'Services' },
+    { path: '/', label: t('link.home') },
+    { path: '/about', label: t('link.about') },
+    { path: '/pets', label: t('link.pets') },
+    { path: '/services', label: t('link.services') },
   ];
 
   const exploreLinks = [
-    { path: '/guides', label: 'Pet care tips' },
-    { path: '/shelters', label: 'Shelters' },
-    { path: '/virtual-pet-training-classes', label: 'Dog school' },
+    { path: '/guides', label: t('link.guides') },
+    { path: '/shelters', label: t('link.shelters') },
+    { path: '/virtual-pet-training-classes', label: t('link.school') },
   ];
 
   const policyLinks = [
-    { path: '/policies', label: 'Policies and guidelines' },
-    { path: '/pet-matching-quiz', label: 'Which pet should I choose?' },
-    { path: '/pricing', label: 'Pricing plan' },
+    { path: '/policies', label: t('link.policies') },
+    { path: '/pet-matching-quiz', label: t('link.quiz') },
+    { path: '/pricing', label: t('link.pricing') },
   ];
 
   const infoLinks = [
-    { path: '/contact', label: 'Contact' },
-    { path: '/support', label: 'Support' },
-    { path: '/frequently-asked-questions', label: 'Frequently asked questions' },
-    { path: '/credits', label: 'Credits' },
+    { path: '/contact', label: t('link.contact') },
+    { path: '/support', label: t('link.support') },
+    { path: '/frequently-asked-questions', label: t('link.faq') },
+    { path: '/credits', label: t('link.credits') },
   ];
 
   return (
@@ -110,7 +112,7 @@ const Footer = () => {
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 3, md: 3, lg: 3 }} textAlign="left">
               <Typography variant="h6" color="#00b3a4" style={{ fontWeight: '500' }}>
-                About
+                {t('section.project')}
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 {appLinks.map((link) => (
@@ -133,7 +135,7 @@ const Footer = () => {
 
             <Grid size={{ xs: 12, sm: 3, md: 3, lg: 3 }} textAlign="left">
               <Typography variant="h6" color="#00b3a4" style={{ fontWeight: '500' }}>
-                Resources
+                {t('section.resources')}
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 {exploreLinks.map((link) => (
@@ -156,7 +158,7 @@ const Footer = () => {
 
             <Grid size={{ xs: 12, sm: 3, md: 3, lg: 3 }} textAlign="left">
               <Typography variant="h6" color="#00b3a4" style={{ fontWeight: '500' }}>
-                Learn More
+                {t('section.more')}
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 {policyLinks.map((link) => (
@@ -179,7 +181,7 @@ const Footer = () => {
 
             <Grid size={{ xs: 12, sm: 3, md: 3, lg: 3 }} textAlign="left">
               <Typography variant="h6" color="#00b3a4" style={{ fontWeight: '500' }}>
-                Info
+                {t('section.info')}
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 {infoLinks.map((link) => (
@@ -210,7 +212,7 @@ const Footer = () => {
             {/* SUPPORT */}
             <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} textAlign="center">
               <Typography gutterBottom variant="body2" sx={{ color: '#fff' }}>
-                We are grateful for any support or sponsorship that can help unlock the full potential of the app -{' '}
+                {t('supportMessage')} -{' '}
                 <Link
                   to="/support"
                   style={{
@@ -220,7 +222,7 @@ const Footer = () => {
                     fontWeight: 500,
                   }}
                 >
-                  Support
+                  {t('link.support')}
                 </Link>
               </Typography>
             </Grid>
@@ -228,7 +230,7 @@ const Footer = () => {
             {/* COPYRIGHT */}
             <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} textAlign="center">
               <Typography gutterBottom variant="body2" color="#fff">
-                &copy; {YEAR} {APP_NAME}. Copyright
+                &copy; {YEAR} {APP_NAME}. {t('copyright')}
               </Typography>
             </Grid>
           </Grid>

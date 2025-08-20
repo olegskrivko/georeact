@@ -200,6 +200,7 @@
 // };
 // export default LocationManager;
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
 import RoomIcon from '@mui/icons-material/Room';
@@ -209,6 +210,7 @@ import { LocationContext } from '../../../contexts/LocationContext';
 import LocationPicker from './LocationPicker';
 
 const LocationManager = ({ mode = 'full' }) => {
+  const { t } = useTranslation('footer');
   const { location, city, updateLocation } = useContext(LocationContext);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -229,7 +231,7 @@ const LocationManager = ({ mode = 'full' }) => {
     >
       {mode === 'full' && (
         <Typography variant="subtitle1" component="span" sx={{ color: '#fff' }}>
-          Using your location near <strong style={{ color: '#00b3a4' }}>{city}</strong>
+          {t('location')} <strong style={{ color: '#00b3a4' }}>{city}</strong>
         </Typography>
       )}
       <Tooltip title="Change Location">

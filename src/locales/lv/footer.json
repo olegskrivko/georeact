@@ -1,9 +1,29 @@
 {
   "supportMessage": "Mēs esam pateicīgi par jebkādu atbalstu vai sponsora palīdzību, kas var palīdzēt atklāt lietotnes pilno potenciālu",
   "copyright": "Visas tiesības aizsargātas.",
-  "support": "Atbalsts",
-  "getStarted": "Sākt",
-  "resources": "Resursi",
-  "learnMore": "Uzzināt vairāk",
-  "info": "Informācija"
+"location": "Tuvākā atrašanās vieta",
+
+  "section": {
+    "project": "Mūsu projekts",
+    "resources": "Resursi",
+    "more": "Uzzināt vairāk",
+    "info": "Informācija"
+  },
+  "link": {
+    "home": "Galvenā",
+    "about": "Par mums",
+    "pets": "Meklēt mājdzīvnieku",
+    "services": "Pakalpojumi",
+    "guides": "Mājdzīvnieku aprūpes padomi",
+    "shelters": "Patversmes",
+    "school": "Suņu skola",
+    "policies": "Noteikumi un vadlīnijas",
+    "quiz": "Kuru mājdzīvnieku man izvēlēties?",
+    "pricing": "Cenu plāns",
+    "contact": "Kontakti",
+    "support": "Atbalsts",
+    "faq": "B.U.J",
+    "credits": "Autortiesības"
+  }
 }
+

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Box, Card, CardContent, CardMedia, CircularProgress, Container, Grid, Typography } from '@mui/material';
@@ -10,6 +11,7 @@ import ImgPlaceholder from '../../../assets/placeholder.svg';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const GuidesPage = () => {
+  const { t } = useTranslation('guides');
   const theme = useTheme();
   const cardBg = theme.palette.custom.card.main;
   const cardText = theme.palette.custom.card.contrastText;
@@ -63,7 +65,7 @@ const GuidesPage = () => {
           color: theme.palette.text.secondary,
         }}
       >
-        Guides
+        {t('heading.h1')}
       </Typography>
       <Grid container spacing={3}>
         {guides.map((guide) => (

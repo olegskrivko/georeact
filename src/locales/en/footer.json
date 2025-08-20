@@ -1,9 +1,27 @@
 {
   "supportMessage": "We are grateful for any support or sponsorship that can help unlock the full potential of the app",
   "copyright": "All rights reserved.",
-  "support": "Support",
-  "getStarted": "Get Started",
-  "resources": "Resources",
-  "learnMore": "Learn more",
-  "info": "Information"
+  "location": "Using your location near",
+  "section": {
+    "project": "Our Project",
+    "resources": "Resources",
+    "more": "Learn More",
+    "info": "Information"
+  },
+  "link": {
+    "home": "Home",
+    "about": "About Us",
+    "pets": "Find a Pet",
+    "services": "Services",
+    "guides": "Pet Care Tips",
+    "shelters": "Shelters",
+    "school": "Dog School",
+    "policies": "Policies & Guidelines",
+    "quiz": "Which pet should I choose?",
+    "pricing": "Pricing plan",
+    "contact": "Contact",
+    "support": "Support",
+    "faq": "F.A.Q",
+    "credits": "Credits"
+  }
 }

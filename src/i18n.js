@@ -9,6 +9,7 @@ import enCommon from './locales/en/common.json';
 import enContact from './locales/en/contact.json';
 import enFaq from './locales/en/faq.json';
 import enFooter from './locales/en/footer.json';
+import enGuides from './locales/en/guides.json';
 import enHomePage from './locales/en/homePage.json';
 import enNavbar from './locales/en/navbar.json';
 import enPetDetails from './locales/en/petDetails.json';
@@ -29,6 +30,7 @@ import lvCommon from './locales/lv/common.json';
 import lvContact from './locales/lv/contact.json';
 import lvFaq from './locales/lv/faq.json';
 import lvFooter from './locales/lv/footer.json';
+import lvGuides from './locales/lv/guides.json';
 import lvHomePage from './locales/lv/homePage.json';
 import lvNavbar from './locales/lv/navbar.json';
 import lvPetDetails from './locales/lv/petDetails.json';
@@ -47,6 +49,7 @@ import ruCommon from './locales/ru/common.json';
 import ruContact from './locales/ru/contact.json';
 import ruFaq from './locales/ru/faq.json';
 import ruFooter from './locales/ru/footer.json';
+import ruGuides from './locales/ru/guides.json';
 import ruHomePage from './locales/ru/homePage.json';
 import ruNavbar from './locales/ru/navbar.json';
 import ruPetDetails from './locales/ru/petDetails.json';
@@ -81,6 +84,7 @@ i18n
         contact: enContact,
         support: enSupport,
         faq: enFaq,
+        guides: enGuides,
         pets: enPets,
         petTraining: enPetTraining,
         petDetails: enPetDetails,
@@ -101,6 +105,7 @@ i18n
         contact: lvContact,
         support: lvSupport,
         faq: lvFaq,
+        guides: lvGuides,
         pets: lvPets,
         petTraining: lvPetTraining,
         petDetails: lvPetDetails,
@@ -121,6 +126,7 @@ i18n
         contact: ruContact,
         support: ruSupport,
         faq: ruFaq,
+        guides: ruGuides,
         pets: ruPets,
         petTraining: ruPetTraining,
         petDetails: ruPetDetails,
@@ -146,6 +152,7 @@ i18n
       'contact',
       'support',
       'faq',
+      'guides',
       'pets',
       'petTraining',
       'petDetails',
