@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
@@ -49,6 +49,7 @@ import { useSnackbar } from 'notistack';
 
 import spinnerAnimation from '../../../assets/Animation-1749725645616.json';
 import { useAuth } from '../../../contexts/AuthContext';
+import { LocationContext } from '../../../contexts/LocationContext';
 // import LeafletPetDetailsMap from '../../../components/LeafletPetDetailsMap'
 import LeafletPetDetailsMap from '../../../shared/maps/LeafletPetDetailsMap';
 import AnimalAvatar from '../../common/components/AnimalAvatar';
@@ -65,7 +66,7 @@ const PetDetailsPage = () => {
   const { user } = useAuth();
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
-
+  const [userLocation, setUserLocation] = useState([]);
   const [pet, setPet] = useState(null);
   const [sightings, setSightings] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -77,7 +78,7 @@ const PetDetailsPage = () => {
   const [userFlagged, setUserFlagged] = useState(false);
   const [totalFlags, setTotalFlags] = useState(0);
   const [petBanned, setPetBanned] = useState(false);
-
+  const { location: contextLocation } = useContext(LocationContext);
   const [zoomPosition, setZoomPosition] = useState(null);
   // new states for sending message
   const [message, setMessage] = useState('');
@@ -86,11 +87,28 @@ const PetDetailsPage = () => {
   const [markerPosition, setMarkerPosition] = useState(null);
   // const [locationAdded, setLocationAdded] = useState(false);
   const [isLocationAdded, setIsLocationAdded] = useState(false);
-  const [coords, setCoords] = useState({ lat: null, lng: null });
+  // const [coords, setCoords] = useState({ lat: null, lng: null });
   const [selectedFile, setSelectedFile] = useState(null);
   const [petImageFile, setPetImageFile] = useState(null);
   const [msgExpanded, setMsgExpanded] = useState(false);
   const mapRef = useRef(null); // Ref for the map container
+
+  // Update userLocation from context
+  useEffect(() => {
+    const lat = contextLocation?.latitude ?? contextLocation?.lat;
+    const lng = contextLocation?.longitude ?? contextLocation?.lng;
+
+    if (lat != null && lng != null) {
+      setUserLocation([lat, lng]);
+    }
+  }, [contextLocation]);
+
+  useEffect(() => {
+    if (contextLocation?.latitude && contextLocation?.longitude) {
+      setUserLocation([contextLocation.latitude, contextLocation.longitude]);
+    }
+  }, [contextLocation]);
+
   const onFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -482,14 +500,21 @@ const PetDetailsPage = () => {
     setUserFlagged(false);
     setTotalFlags(0);
     setPetBanned(false);
+    if (!id || userLocation.length !== 2) return;
 
     const fetchPetDetails = async () => {
+      const [lat, lng] = userLocation; // safe now
+      // if (!id) return;
+      // const [lat, lng] = userLocation;
       try {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`${API_BASE_URL}/api/pets/${id}/?format=json`);
-        const data = await response.json();
+        const res = await fetch(`${API_BASE_URL}/api/pets/${id}/?latitude=${lat}&longitude=${lng}`);
+        if (!res.ok) throw new Error('Failed to fetch pet');
+
+        const data = await res.json();
+        console.log('data', data);
 
         if (data && Object.keys(data).length > 0) {
           setPet(data); // pet is loaded
@@ -530,7 +555,7 @@ const PetDetailsPage = () => {
     fetchPetDetails();
     fetchFavoriteStatus();
     fetchFlagStatus();
-  }, [id]); // Run the effect when the pet ID changes
+  }, [id, userLocation]); // Run the effect when the pet ID changes
 
   const fetchPetSightings = async () => {
     try {
@@ -789,7 +814,8 @@ const PetDetailsPage = () => {
           onMarkerDrag={handleMarkerDrag}
           markerPosition={markerPosition}
           sendDataToParent={handleChildData}
-          setCoords={setCoords}
+          // setCoords={setCoords}
+          userLocation={userLocation}
         />
       </Grid>
 

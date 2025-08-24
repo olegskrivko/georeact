@@ -73,6 +73,19 @@ const SearchCircles = ({ center, petType }) => {
   );
 };
 
+// User pulse icon
+const userPulseIcon = L.divIcon({
+  className: '',
+  html: `
+    <div class="user-location-wrapper">
+      <div class="user-location-core"></div>
+      <div class="user-location-pulse"></div>
+    </div>
+  `,
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
+});
+
 const createCustomIcon = (color) =>
   new L.DivIcon({
     html: renderToStaticMarkup(<LocationOnIcon style={{ fontSize: 40, color }} />),
@@ -165,6 +178,7 @@ function LeafletPetDetailsMapNew({
   sendDataToParent,
   handleZoomMap,
   onAddLocation,
+  userLocation,
 }) {
   const mainIcon = createCustomMainIcon('#0077B6');
   const historyIcon = createCustomIcon('#00b3a4');
@@ -188,8 +202,8 @@ function LeafletPetDetailsMapNew({
   const defaultZoom = 14;
   const radius = 5000; // Example: 5km radius
 
+  // const center = pet.latitude && pet.longitude ? [parseFloat(pet.latitude), parseFloat(pet.longitude)] : defaultCenter;
   const center = pet.latitude && pet.longitude ? [parseFloat(pet.latitude), parseFloat(pet.longitude)] : defaultCenter;
-
   const onMapLoadHandler = (mapInstance) => {
     mapRef.current = mapInstance;
     if (onMapLoad) {
@@ -202,6 +216,20 @@ function LeafletPetDetailsMapNew({
       mapRef.current.setView([zoomPosition.lat, zoomPosition.lng], 14);
     }
   }, [zoomPosition]);
+
+  // const [position, setPosition] = useState([
+  //   typeof location.lat === 'number' && !isNaN(location.lat) ? location.lat : 0,
+  //   typeof location.lng === 'number' && !isNaN(location.lng) ? location.lng : 0,
+  // ]);
+
+  // Sync location prop changes with position state
+  // useEffect(() => {
+  //   const validLat = location.lat !== null && location.lat !== undefined && location.lat !== '' && !isNaN(location.lat);
+  //   const validLng = location.lng !== null && location.lng !== undefined && location.lng !== '' && !isNaN(location.lng);
+  //   if (validLat && validLng) {
+  //     setPosition([Number(location.lat), Number(location.lng)]);
+  //   }
+  // }, [location]);
 
   useEffect(() => {
     if (isLocationAdded && mapRef.current) {
@@ -223,7 +251,7 @@ function LeafletPetDetailsMapNew({
         scrollWheelZoom={true}
       >
         <MapTilerLayerComponent />
-
+        {userLocation && <Marker position={userLocation} icon={userPulseIcon} />}
         {markerPosition && (
           <Marker
             position={markerPosition}

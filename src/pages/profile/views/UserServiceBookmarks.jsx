@@ -299,32 +299,22 @@ function UserServiceBookmarks() {
                     <MuiLink href={`/services/${service.id}`} underline="none">
                       <Avatar
                         src={service.service_image_1 || ''}
-                        alt={service.operating_name || 'Unknown'}
-                        sx={{ width: 64, height: 64, mr: { xs: 1, sm: 2 }, cursor: 'pointer' }}
+                        alt={service?.operating_name || 'Unknown'}
+                        sx={{
+                          width: 64,
+                          height: 64,
+                          mr: { xs: 1, sm: 2 },
+                          cursor: 'pointer',
+                          border: '2px solid #00b3a4',
+                        }}
                       >
-                        {service.operating_name || '?'}
+                        {service?.operating_name || '?'}
                       </Avatar>
                     </MuiLink>
+
                     <Box flexGrow={1}>
-                      <Typography variant="h6">
-                        <Chip
-                          label={
-                            service?.operating_name
-                              ? service.operating_name.length > 20
-                                ? service.operating_name.slice(0, 20) + '…'
-                                : service.operating_name
-                              : 'Unknown'
-                          }
-                          onClick={() => {}} // dummy click
-                          sx={{
-                            cursor: 'default', // removes hand pointer
-                            pointerEvents: 'auto', // ensures chip behaves normally visually
-                          }}
-                          size="small"
-                          color="primary"
-                        />
-                      </Typography>
-                      <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
+                      <Typography variant="body2">{service?.operating_name}</Typography>
+                      {/* <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
                         <Typography
                           variant="body2"
                           sx={{
@@ -335,6 +325,48 @@ function UserServiceBookmarks() {
                         >
                           {service?.category_display || 'Unknown'}
                         </Typography>
+                      </Box> */}
+                      <Box>
+                        {service.service_categories && service.service_categories.length > 0 && (
+                          <Box display="flex" flexWrap="wrap" gap={1}>
+                            {service.service_categories.map((type) => (
+                              <Chip
+                                label={type?.name}
+                                onClick={() => {}} // dummy click
+                                sx={{
+                                  cursor: 'default', // removes the hand pointer
+                                  pointerEvents: 'auto', // ensures chip behaves normally visually
+                                }}
+                                size="small"
+                                color="primary"
+                              />
+                            ))}
+                          </Box>
+                        )}
+                        {/* {service.service_categories && service.service_categories.length > 0 && (
+                          <Box display="flex" flexWrap="wrap" gap={1}>
+                            {service.service_categories.map((type) => (
+                              <Box
+                                key={type.id}
+                                sx={{
+                                  display: 'inline-block',
+                                  px: 1.2,
+                                  py: 0.2,
+                                  borderRadius: '16px',
+                                  backgroundColor: '#00b5ad',
+                                  color: '#fff',
+                                  fontSize: '0.7rem',
+                                  fontWeight: 500,
+                                  lineHeight: 1.5,
+                                  letterSpacing: 0.5,
+                                  userSelect: 'none',
+                                }}
+                              >
+                                {type?.name}
+                              </Box>
+                            ))}
+                          </Box>
+                        )} */}
                       </Box>
                     </Box>
 

@@ -286,26 +286,30 @@ const ServiceDetailsPage = () => {
             </Box>
 
             <Box>
-              <Box display="flex" flexWrap="wrap" gap={1}>
-                <Box
-                  component="span"
-                  sx={{
-                    display: 'inline-block',
-                    px: 1.5,
-                    py: 0.5,
-                    borderRadius: '16px',
-                    backgroundColor: '#00b5ad',
-                    color: '#fff',
-                    fontSize: '0.875rem',
-                    fontWeight: 500,
-                    lineHeight: 1.5,
-                    letterSpacing: 0.5,
-                    userSelect: 'none',
-                  }}
-                >
-                  {service.category_display}
+              {service.service_categories && service.service_categories.length > 0 && (
+                <Box display="flex" flexWrap="wrap" gap={1}>
+                  {service.service_categories.map((type) => (
+                    <Box
+                      key={type.id}
+                      sx={{
+                        display: 'inline-block',
+                        px: 1.5,
+                        py: 0.5,
+                        borderRadius: '16px',
+                        backgroundColor: '#00b5ad',
+                        color: '#fff',
+                        fontSize: '0.875rem',
+                        fontWeight: 500,
+                        lineHeight: 1.5,
+                        letterSpacing: 0.5,
+                        userSelect: 'none',
+                      }}
+                    >
+                      {type?.name}
+                    </Box>
+                  ))}
                 </Box>
-              </Box>
+              )}
             </Box>
           </Grid>
         </Grid>

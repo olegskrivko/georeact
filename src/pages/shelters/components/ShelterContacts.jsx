@@ -38,7 +38,7 @@ function ShelterContacts({ shelter, onLocationClick }) {
           {/* <Typography variant="body2" color="primary" fontWeight={600}>
             Address:{' '}
           </Typography> */}
-          <MuiLink onClick={onLocationClick} sx={{ cursor: 'pointer', color: cardTextSecondary }} underline="none">
+          <MuiLink onClick={onLocationClick} sx={{ cursor: 'pointer', color: cardTextSecondary }} underline="hover">
             {shelter.full_address}
           </MuiLink>
         </Box>
@@ -67,15 +67,13 @@ function ShelterContacts({ shelter, onLocationClick }) {
               href={shelter.website_url}
               target="_blank"
               rel="noopener noreferrer"
-              underline="none"
+              underline="hover"
               sx={{ color: cardTextSecondary }}
             >
               {shelter.website_url}
             </MuiLink>
           ) : (
-            <Typography variant="body2" sx={{ color: cardTextSecondary }}>
-              No website
-            </Typography>
+            <Typography sx={{ color: cardTextSecondary }}>No website</Typography>
           )}
         </Box>
       </Box>
@@ -99,17 +97,17 @@ function ShelterContacts({ shelter, onLocationClick }) {
             Phone:{' '}
           </Typography> */}
           {shelter.full_phone_number ? (
-            <Typography variant="body2">
+            <Typography>
               <MuiLink
                 href={`tel:${shelter.full_phone_number}`}
-                underline="none"
+                underline="hover"
                 sx={{ color: cardTextSecondary, cursor: 'pointer' }}
               >
                 {shelter.full_phone_number}
               </MuiLink>
             </Typography>
           ) : (
-            <Typography variant="body2">No phone</Typography>
+            <Typography>No phone</Typography>
           )}
         </Box>
       </Box>
@@ -133,19 +131,17 @@ function ShelterContacts({ shelter, onLocationClick }) {
             Email:{' '}
           </Typography> */}
           {shelter.email ? (
-            <Typography variant="body1">
+            <Typography>
               <MuiLink
                 href={`mailto:${shelter.email}`}
-                underline="none"
+                underline="hover"
                 sx={{ color: cardTextSecondary, cursor: 'pointer' }}
               >
                 {shelter.email}
               </MuiLink>
             </Typography>
           ) : (
-            <Typography variant="body1" color="textSecondary">
-              Email not provided
-            </Typography>
+            <Typography color="textSecondary">Email not provided</Typography>
           )}
         </Box>
       </Box>

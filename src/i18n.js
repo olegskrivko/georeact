@@ -10,7 +10,7 @@ import enContact from './locales/en/contact.json';
 import enFaq from './locales/en/faq.json';
 import enFooter from './locales/en/footer.json';
 import enGuides from './locales/en/guides.json';
-import enHomePage from './locales/en/homePage.json';
+import enHome from './locales/en/home.json';
 import enNavbar from './locales/en/navbar.json';
 import enPetDetails from './locales/en/petDetails.json';
 import enPetTraining from './locales/en/petTraining.json';
@@ -31,7 +31,7 @@ import lvContact from './locales/lv/contact.json';
 import lvFaq from './locales/lv/faq.json';
 import lvFooter from './locales/lv/footer.json';
 import lvGuides from './locales/lv/guides.json';
-import lvHomePage from './locales/lv/homePage.json';
+import lvHome from './locales/lv/home.json';
 import lvNavbar from './locales/lv/navbar.json';
 import lvPetDetails from './locales/lv/petDetails.json';
 import lvPetTraining from './locales/lv/petTraining.json';
@@ -50,7 +50,7 @@ import ruContact from './locales/ru/contact.json';
 import ruFaq from './locales/ru/faq.json';
 import ruFooter from './locales/ru/footer.json';
 import ruGuides from './locales/ru/guides.json';
-import ruHomePage from './locales/ru/homePage.json';
+import ruHome from './locales/ru/home.json';
 import ruNavbar from './locales/ru/navbar.json';
 import ruPetDetails from './locales/ru/petDetails.json';
 import ruPetTraining from './locales/ru/petTraining.json';
@@ -78,7 +78,8 @@ i18n
         navbar: enNavbar,
         footer: enFooter,
         aboutPage: enAboutPage,
-        homePage: enHomePage,
+
+        home: enHome,
         selectOptions: enSelectOptions,
         chatbot: enChatbot,
         contact: enContact,
@@ -99,7 +100,8 @@ i18n
         navbar: lvNavbar,
         footer: lvFooter,
         aboutPage: lvAboutPage,
-        homePage: lvHomePage,
+
+        home: lvHome,
         selectOptions: lvSelectOptions,
         chatbot: lvChatbot,
         contact: lvContact,
@@ -119,8 +121,9 @@ i18n
         common: ruCommon,
         navbar: ruNavbar,
         footer: ruFooter,
+        home: ruHome,
         aboutPage: ruAboutPage,
-        homePage: ruHomePage,
+
         selectOptions: ruSelectOptions,
         chatbot: ruChatbot,
         contact: ruContact,
@@ -146,7 +149,7 @@ i18n
       'navbar',
       'footer',
       'aboutPage',
-      'homePage',
+      'home',
       'selectOptions',
       'chatbot',
       'contact',

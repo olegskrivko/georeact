@@ -51,10 +51,12 @@ const ImageCarousel = ({ pet, images = [] }) => {
           borderRadius: theme.shape.borderRadius,
         }}
       />
-
-      {/* <Box style={{ position: 'absolute', top: 16, left: 16, zIndex: 999 }}>
+      {/* <Typography component="p" variant="caption">
+              {pet?.distance_km < 1 ? 'Within 1 km' : `${pet?.distance_km} km`}
+            </Typography> */}
+      <Box style={{ position: 'absolute', top: 16, left: 16, zIndex: 999 }}>
         <Chip
-          label={pet.status_display}
+          label={pet?.distance_km < 1 ? 'Within 1 km' : `${pet?.distance_km} km`}
           variant="filled"
           sx={{
             // backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -68,7 +70,7 @@ const ImageCarousel = ({ pet, images = [] }) => {
             //   fontSize: '0.85rem',
           }}
         />
-      </Box> */}
+      </Box>
       {/* Left arrow */}
       {images.length > 1 && (
         <IconButton

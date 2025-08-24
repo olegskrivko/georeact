@@ -29,7 +29,7 @@ const PetPath = () => {
         overflow: 'hidden',
       }}
     >
-      <Typography variant="h4" fontWeight={600} gutterBottom style={{ color: '#16477c' }}>
+      {/* <Typography variant="h4" fontWeight={600} gutterBottom style={{ color: '#16477c' }}>
         Smart and convenient post management
       </Typography>
       <Typography
@@ -42,7 +42,7 @@ const PetPath = () => {
       >
         Thanks to the convenient design and filters, searching among posts becomes simple and pleasant. Save posts to
         your profile so you can easily track their status at any time.
-      </Typography>
+      </Typography> */}
       <Box
         sx={{
           position: 'relative',

@@ -27,7 +27,7 @@ const ServicesPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
-  const [filters, setFilters] = useState({ category: '', provider: '', search: '' });
+  const [filters, setFilters] = useState({ category: '', provider: '', search: '', service_category_slug: '' });
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [userLocation, setUserLocation] = useState([56.946285, 24.105078]);
   const [mapCenter, setMapCenter] = useState([56.946285, 24.105078]);
@@ -92,15 +92,17 @@ const ServicesPage = () => {
     const category = queryParams.get('category') || '';
     const provider = queryParams.get('provider') || '';
     const search = queryParams.get('search') || '';
+    const service_category_slug = queryParams.get('service_category_slug') || '';
+
     const page = parseInt(queryParams.get('page')) || 1;
 
-    setFilters({ category, provider, search });
+    setFilters({ category, provider, search, service_category_slug });
     setPagination({ page, totalPages: pagination.totalPages });
 
-    fetchServices({ category, provider, search, page });
+    fetchServices({ category, provider, search, page, service_category_slug });
   }, [location.search]);
 
-  const fetchServices = async ({ category, provider, search, page }) => {
+  const fetchServices = async ({ category, provider, search, page, service_category_slug }) => {
     try {
       setLoading(true);
       setError(null);
@@ -109,6 +111,7 @@ const ServicesPage = () => {
       if (category) queryParams.append('category', category);
       if (provider) queryParams.append('provider', provider);
       if (search) queryParams.append('search', search);
+      if (service_category_slug) queryParams.append('service_category_slug', service_category_slug);
       queryParams.append('page', page);
 
       const newUrl = `${window.location.pathname}?${queryParams.toString()}`;
@@ -140,7 +143,7 @@ const ServicesPage = () => {
   };
 
   const handleResetFilters = () => {
-    setFilters({ category: '', provider: '', search: '' }); // Reset to empty values
+    setFilters({ category: '', provider: '', search: '', service_category_slug: '' }); // Reset to empty values
     setPagination((prev) => ({ ...prev, page: 1 }));
     navigate(`${window.location.pathname}?page=1`, { replace: true });
   };
@@ -167,6 +170,7 @@ const ServicesPage = () => {
     if (newFilters.category) queryParams.append('category', newFilters.category);
     if (newFilters.provider) queryParams.append('provider', newFilters.provider);
     if (newFilters.search) queryParams.append('search', newFilters.search);
+    if (newFilters.service_category_slug) queryParams.append('service_category_slug', newFilters.service_category_slug);
 
     // Add the page number
     queryParams.append('page', 1);

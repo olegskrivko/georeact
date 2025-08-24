@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
@@ -25,9 +26,24 @@ import illustrationPets from '../assets/images/support/cat_astronaut_cuate_blue.
 import PetPath from '../pages/common/components/PetPath';
 import ChatBot from './assistant/components/ChatBot';
 import CallToActionBanner from './common/components/CallToActionBanner';
+import FeaturesSection from './common/components/FeaturesSection';
 import TestimonialSlider from './common/components/TestimonialSlider';
 
+const featuresIconMap = [GroupsIcon, DevicesIcon, SmartphoneIcon, AutoFixHighIcon];
+const supportIconMap = [ComputerIcon, QrCodeIcon, MapIcon, NotificationsIcon];
+
 function Home() {
+  const { t } = useTranslation('home');
+  const featureItems = t('featuresSection.items', { returnObjects: true }).map((item, i) => ({
+    ...item,
+    icon: featuresIconMap[i],
+  }));
+
+  const supportItems = t('supportSection.items', { returnObjects: true }).map((item, i) => ({
+    ...item,
+    icon: supportIconMap[i],
+  }));
+
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -52,401 +68,64 @@ function Home() {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      {/* <Container component="main" maxWidth="lg" sx={{ py: 6, paddingLeft: '0', paddingRight: '0' }}></Container> */}
-
       <Box sx={{ background: theme.palette.custom?.section || theme.palette.background.paper }}>
         <CallToActionBanner
-          title="Lost or Found a Pet? "
-          description="Use our app to share details with people nearby, get updates from the community on sightings, and increase the chances of a safe return."
+          title={t('petsSection.title')}
+          description={t('petsSection.paragraph')}
           imageSrc={illustrationPets}
           imagePosition="right"
-          mainButton={{ text: 'View Map', path: '/pets', variant: 'contained' }}
-          optionButton={{ text: 'Add Pet', path: '/add-pet', variant: 'outlined' }}
+          mainButton={{ text: t('petsSection.button.view'), path: '/pets', variant: 'contained' }}
+          optionButton={{ text: t('petsSection.button.add'), path: '/add-pet', variant: 'outlined' }}
         />
-        <Container
-          component="main"
-          maxWidth="lg"
-          sx={{
-            py: 4,
-            paddingLeft: '0',
-            paddingRight: '0',
-            // background: theme.palette.custom?.section || theme.palette.background.paper,
-          }}
-        >
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12 }} textAlign="center">
-              <Typography
-                variant={isSmallScreen ? 'h6' : 'h4'}
-                sx={{
-                  fontWeight: 400,
-                  color: '#00b5ad',
-                  fontFamily: 'Titillium Web, sans-serif',
-                  textTransform: 'uppercase',
-                  mb: 4,
-                }}
-              >
-                Digital Support
-              </Typography>
 
-              <Typography
-                variant={isSmallScreen ? 'h4' : 'h2'}
-                color="primary"
-                sx={{
-                  fontWeight: 500,
-                  color: theme.palette.text.secondary,
-                  // color: '#16477c',
-                  // // background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-                  // // WebkitBackgroundClip: 'text',
-                  // // WebkitTextFillColor: 'transparent',
-                }}
-              >
-                How exactly do we help you?
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid container spacing={3} style={{ marginTop: '1rem', marginBottom: '3rem' }}>
-            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 3 }} textAlign="center">
-              <CardContent
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  flex: 1,
-                }}
-              >
-                <ComputerIcon sx={{ fontSize: 60, color: '#16477c', mb: 2 }} />
-
-                <div>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: '0.5rem',
-                      textAlign: 'center',
-                      color: '#00b5ad',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Inclusion on our website
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      textAlign: 'center',
-                      color: '#616f7d',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Your pet is added to our page, making reporting observations especially convenient.
-                  </Typography>
-                </div>
-              </CardContent>
-            </Grid>
-
-            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 3 }} textAlign="center">
-              <CardContent
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  flex: 1,
-                }}
-              >
-                <QrCodeIcon sx={{ fontSize: 60, color: '#16477c', mb: 2 }} />
-
-                <div>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: '0.5rem',
-                      textAlign: 'center',
-                      color: '#00b5ad',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Printable poster
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      textAlign: 'center',
-                      color: '#616f7d',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Receive a professionally designed lost pet poster with QR code.
-                  </Typography>
-                </div>
-              </CardContent>
-            </Grid>
-            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 3 }} textAlign="center">
-              <CardContent
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  flex: 1,
-                }}
-              >
-                <MapIcon sx={{ fontSize: 60, color: '#16477c', mb: 2 }} />
-                <div>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: '0.5rem',
-                      textAlign: 'center',
-                      color: '#00b5ad',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Receive observation reports
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      textAlign: 'center',
-                      color: '#616f7d',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Check new observations reported by the community to track leads about your pet.
-                  </Typography>
-                </div>
-              </CardContent>
-            </Grid>
-
-            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 3 }} textAlign="center">
-              <CardContent
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  flex: 1,
-                }}
-              >
-                <NotificationsIcon sx={{ fontSize: 60, color: '#16477c', mb: 2 }} />
-                <div>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: '0.5rem',
-                      textAlign: 'center',
-                      color: '#00b5ad',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Push notifications
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      textAlign: 'center',
-                      color: '#616f7d',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Receive instant alerts when a lost or found pet is reported in your vicinity.
-                  </Typography>
-                </div>
-              </CardContent>
-            </Grid>
-          </Grid>
-        </Container>
+        <FeaturesSection
+          title={t('supportSection.title')}
+          subtitle={t('supportSection.subtitle')}
+          items={supportItems}
+        />
       </Box>
       <PetPath />
 
-      {/* <MapBannerBottom /> */}
       <CallToActionBanner
-        title="Pet Services Near You"
-        description="Find trusted pet services – from grooming and training to veterinary care. Browse guides, discover local providers, and get the support your pet needs."
+        title={t('servicesSection.title')}
+        description={t('servicesSection.paragraph')}
         imageSrc={illustrationServices}
         imagePosition="left"
-        mainButton={{ text: 'View Services', path: '/services', variant: 'contained' }}
-        optionButton={{ text: 'Add Service', path: '/add-service', variant: 'outlined' }}
+        mainButton={{ text: t('servicesSection.button.view'), path: '/services', variant: 'contained' }}
+        optionButton={{ text: t('servicesSection.button.add'), path: '/add-service', variant: 'outlined' }}
       />
 
       <TestimonialSlider />
       <CallToActionBanner
-        title="Practical pet care tips"
-        description="Learn how to best care for your pet – from daily care to emergency situations. Practical tips, guides, and answers to important questions all in one place."
+        title={t('guidesSection.title')}
+        description={t('guidesSection.paragraph')}
         imageSrc={illustrationGuides}
         imagePosition="right"
-        mainButton={{ text: 'View Tips', path: '/guides', variant: 'contained' }}
+        mainButton={{ text: t('guidesSection.button.view'), path: '/guides', variant: 'contained' }}
       />
-      <Container component="main" maxWidth="lg" sx={{ py: 4, paddingLeft: '0', paddingRight: '0' }}>
-        <Grid container spacing={3} style={{ marginTop: '1rem', marginBottom: '3rem' }}>
-          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} textAlign="center">
+      <FeaturesSection
+        title={t('featuresSection.title')}
+        subtitle={t('featuresSection.subtitle')}
+        items={featureItems}
+      />
+
+      <Container component="section" maxWidth="lg" sx={{ py: 4, px: 0 }}>
+        {/* Header */}
+        <Grid container spacing={3} textAlign="center" sx={{ mb: 6 }}>
+          <Grid size={{ xs: 12 }}>
+            <Typography variant="h4" fontWeight={600} gutterBottom style={{ color: '#16477c' }}>
+              {t('postManagementSection.title')}
+            </Typography>
             <Typography
-              variant={isSmallScreen ? 'h6' : 'h4'}
+              variant="body1"
               sx={{
-                fontWeight: 400,
-                color: '#00b5ad',
-                fontFamily: 'Titillium Web, sans-serif',
-                textTransform: 'uppercase',
-                mb: 4,
+                maxWidth: '600px',
+                margin: '0 auto',
+                color: '#555',
               }}
             >
-              Modern Solution
+              {t('postManagementSection.description')}
             </Typography>
-
-            <Typography
-              variant={isSmallScreen ? 'h4' : 'h2'}
-              sx={{
-                fontWeight: 500,
-                color: '#16477c',
-                background: 'linear-gradient(60deg, #16477c 0%, #00b5ad 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Technology that unites pet lovers
-            </Typography>
-          </Grid>
-
-          <Grid container spacing={3} style={{ marginTop: '1rem', marginBottom: '3rem' }}>
-            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 3 }} textAlign="center">
-              <CardContent
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  flex: 1,
-                }}
-              >
-                <GroupsIcon sx={{ fontSize: 60, color: '#16477c', mb: 2 }} />
-                <div>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: '0.5rem',
-                      textAlign: 'center',
-                      color: '#00b5ad',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Technology that unites pet lovers
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      textAlign: 'center',
-                      color: '#616f7d',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Our application connects people with a common goal – to help find lost pets. A community that
-                    collaborates and cares.
-                  </Typography>
-                </div>
-              </CardContent>
-            </Grid>
-            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 3 }} textAlign="center">
-              <CardContent
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  flex: 1,
-                }}
-              >
-                <DevicesIcon sx={{ fontSize: 60, color: '#16477c', mb: 2 }} />
-                <div>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: '0.5rem',
-                      textAlign: 'center',
-                      color: '#00b5ad',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Mobile-optimized platform
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      textAlign: 'center',
-                      color: '#616f7d',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Whether using a phone or tablet – our platform is adapted for comfortable and fast use on all
-                    devices. Access what you need anytime and anywhere.
-                  </Typography>
-                </div>
-              </CardContent>
-            </Grid>
-            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 3 }} textAlign="center">
-              <CardContent
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  flex: 1,
-                }}
-              >
-                <SmartphoneIcon sx={{ fontSize: 60, color: '#16477c', mb: 2 }} />
-                <div>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: '0.5rem',
-                      textAlign: 'center',
-                      color: '#00b5ad',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    App experience – in browser
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      textAlign: 'center',
-                      color: '#616f7d',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Add our platform to your device's home screen and use it like a real app. No download from store –
-                    simple, fast, and always available.
-                  </Typography>
-                </div>
-              </CardContent>
-            </Grid>
-            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 3 }} textAlign="center">
-              <CardContent
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  flex: 1,
-                }}
-              >
-                <AutoFixHighIcon sx={{ fontSize: 60, color: '#16477c', mb: 2 }} />
-                <div>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: '0.5rem',
-                      textAlign: 'center',
-                      color: '#00b5ad',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Artificial Intelligence for your pet's benefit
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      textAlign: 'center',
-                      color: '#616f7d',
-                      fontFamily: 'Titillium Web, sans-serif',
-                    }}
-                  >
-                    Our AI assistant answers questions about pets – from daily care to emergency situations. Knowledge
-                    always at hand so you feel safe and informed.
-                  </Typography>
-                </div>
-              </CardContent>
-            </Grid>
           </Grid>
         </Grid>
       </Container>

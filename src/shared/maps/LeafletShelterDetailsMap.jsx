@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { MapContainer, Marker, useMap, useMapEvents } from 'react-leaflet';
 
@@ -17,6 +17,20 @@ const defaultIcon = new L.Icon({
   iconUrl: locationIcon,
   iconSize: new L.Point(40, 47),
 });
+
+// User pulse icon
+const userPulseIcon = L.divIcon({
+  className: '',
+  html: `
+    <div class="user-location-wrapper">
+      <div class="user-location-core"></div>
+      <div class="user-location-pulse"></div>
+    </div>
+  `,
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
+});
+
 // MapController ensures the map updates only when necessary
 const MapController = ({ position }) => {
   const map = useMap();
@@ -38,7 +52,7 @@ const LocationMarker = ({ position }) => {
 };
 
 // Main Leaflet Map component
-const LeafletShelterDetailsMap = ({ location }) => {
+const LeafletShelterDetailsMap = ({ location, userLocation }) => {
   const theme = useTheme();
   const [position, setPosition] = useState([
     typeof location.lat === 'number' && !isNaN(location.lat) ? location.lat : 0,
@@ -57,6 +71,23 @@ const LeafletShelterDetailsMap = ({ location }) => {
   // Use MUI's useMediaQuery hook to detect small screen
   const isSmallScreen = useMediaQuery('(max-width:600px)');
 
+  // const UserLocationUpdater = ({ userLocation }) => {
+  //   const map = useMap();
+  //   const hasCentered = useRef(false);
+
+  //   useEffect(() => {
+  //     if (!hasCentered.current && userLocation && userLocation.length === 2) {
+  //       map.flyTo(userLocation, map.getZoom(), {
+  //         animate: true,
+  //         duration: 1.0,
+  //       });
+  //       hasCentered.current = true;
+  //     }
+  //   }, [userLocation, map]);
+
+  //   return null;
+  // };
+
   return (
     <div style={{ position: 'relative' }}>
       <Box
@@ -68,6 +99,8 @@ const LeafletShelterDetailsMap = ({ location }) => {
         <MapContainer center={position} zoom={14} style={{ height: '100%', width: '100%' }}>
           {/* MapTiler Layer */}
           <MapTilerLayerComponent />
+          {/* <UserLocationUpdater userLocation={userLocation} /> */}
+          {userLocation && <Marker position={userLocation} icon={userPulseIcon} />}
           <MapController position={position} />
           <LocationMarker position={position} />
         </MapContainer>

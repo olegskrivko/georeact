@@ -1,0 +1,76 @@
+{
+"petsSection": {
+    "title": "Lost or Found a Pet?",
+    "paragraph": "Use our app to share details with people nearby, get updates from the community on sightings, and increase the chances of a safe return.",
+    "button": {
+      "view": "View Map",
+      "add": "Add Pet"
+    }
+},
+"servicesSection": {
+    "title": "Pet Services Near You",
+    "paragraph": "Find trusted pet services – from grooming and training to veterinary care. Browse guides, discover local providers, and get the support your pet needs.",
+    "button": {
+      "view": "View Services",
+      "add": "Add Service"
+    }
+},
+"guidesSection": {
+    "title": "Practical pet care tips",
+    "paragraph": "Learn how to best care for your pet – from daily care to emergency situations. Practical tips, guides, and answers to important questions all in one place.",
+    "button": {
+      "view": "View Tips"
+    }
+},
+"supportSection": {
+  "title": "Digital Support",
+  "subtitle": "How exactly do we help you?",
+  "items": [
+    {
+      "title": "Inclusion on our website",
+      "description": "Your pet is added to our page, making reporting observations especially convenient."
+    },
+    {
+      "title": "Printable poster",
+      "description": "Receive a professionally designed lost pet poster with QR code."
+    },
+    {
+      "title": "Receive observation reports",
+      "description": "Check new observations reported by the community to track leads about your pet."
+    },
+    {
+      "title": "Push notifications",
+      "description": "Receive instant alerts when a lost or found pet is reported in your vicinity."
+    }
+  ]
+}
+,
+"featuresSection": {
+    "title": "Modern Solution",
+    "subtitle": "Technology that unites pet lovers",
+    "items": [
+      {
+        "title": "Technology that unites pet lovers",
+        "description": "Our application connects people with a common goal – to help find lost pets. A community that collaborates and cares."
+      },
+      {
+        "title": "Mobile-optimized platform",
+        "description": "Whether using a phone or tablet – our platform is adapted for comfortable and fast use on all devices."
+      },
+      {
+        "title": "App experience – in browser",
+        "description": "Add our platform to your device's home screen and use it like a real app. No download needed."
+      },
+      {
+        "title": "Artificial Intelligence for your pet's benefit",
+        "description": "Our AI assistant answers questions about pets – from daily care to emergencies."
+      }
+    ]
+  }
+,
+"postManagementSection": {
+  "title": "Smart and convenient post management",
+  "description": "Thanks to the convenient design and filters, searching among posts becomes simple and pleasant. Save posts to your profile so you can easily track their status at any time."
+}
+
+}

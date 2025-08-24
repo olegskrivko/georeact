@@ -1,0 +1,75 @@
+{
+  "petsSection": {
+    "title": "Pazudis vai atrasts mājdzīvnieks?",
+    "paragraph": "Izmantojiet mūsu lietotni, lai dalītos ar informāciju ar cilvēkiem tuvumā, saņemtu kopienas ziņojumus par redzējumiem un palielinātu iespēju droši atgriezt mājdzīvnieku.",
+    "button": {
+      "view": "Skatīt karti",
+      "add": "Pievienot mājdzīvnieku"
+    }
+  },
+  "servicesSection": {
+    "title": "Mājdzīvnieku pakalpojumi tev tuvumā",
+    "paragraph": "Atrodi uzticamus mājdzīvnieku pakalpojumus – no kopšanas un apmācības līdz veterinārajai aprūpei. Pārlūko ceļvežus, atklāj vietējos pakalpojumu sniedzējus un iegūsti atbalstu, kas nepieciešams tavam mājdzīvniekam.",
+    "button": {
+      "view": "Skatīt pakalpojumus",
+      "add": "Pievienot pakalpojumu"
+    }
+  },
+  "guidesSection": {
+    "title": "Praktiski padomi mājdzīvnieku aprūpē",
+    "paragraph": "Uzzini, kā vislabāk rūpēties par savu mājdzīvnieku – no ikdienas aprūpes līdz ārkārtas situācijām. Praktiski padomi, ceļveži un atbildes uz svarīgiem jautājumiem – viss vienuviet.",
+    "button": {
+      "view": "Skatīt padomus"
+    }
+  },
+  "supportSection": {
+  "title": "Digitālais atbalsts",
+  "subtitle": "Kā tieši mēs jums palīdzam?",
+  "items": [
+    {
+      "title": "Iekļaušana mūsu mājaslapā",
+      "description": "Jūsu mājdzīvnieks tiek pievienots mūsu lapai, padarot novērojumu ziņošanu īpaši ērtu."
+    },
+    {
+      "title": "Izdrukājams plakāts",
+      "description": "Saņemiet profesionāli izstrādātu pazuduša mājdzīvnieka plakātu ar QR kodu."
+    },
+    {
+      "title": "Saņemiet novērojumu ziņojumus",
+      "description": "Pārbaudiet jaunus novērojumus, ko ziņo kopiena, lai sekotu līdzi pavedieniem par jūsu mājdzīvnieku."
+    },
+    {
+      "title": "Push paziņojumi",
+      "description": "Saņemiet tūlītējus brīdinājumus, kad jūsu tuvumā tiek ziņots par pazudušu vai atrastu mājdzīvnieku."
+    }
+  ]
+},
+"featuresSection": {
+  "title": "Mūsdienīgs risinājums",
+  "subtitle": "Tehnoloģijas, kas vieno dzīvnieku mīļotājus",
+  "items": [
+    {
+      "title": "Tehnoloģijas, kas vieno dzīvnieku mīļotājus",
+      "description": "Mūsu lietotne apvieno cilvēkus ar kopīgu mērķi – palīdzēt atrast pazudušus mājdzīvniekus. Kopiena, kas sadarbojas un rūpējas."
+    },
+    {
+      "title": "Mobilajām ierīcēm pielāgota platforma",
+      "description": "Neatkarīgi no tā, vai izmantojat tālruni vai planšeti – mūsu platforma ir pielāgota ērtai un ātrai lietošanai uz visām ierīcēm."
+    },
+    {
+      "title": "Lietotnes pieredze pārlūkā",
+      "description": "Pievienojiet mūsu platformu savai ierīcei sākuma ekrānā un izmantojiet to kā īstu lietotni. Nav nepieciešama lejupielāde."
+    },
+    {
+      "title": "Mākslīgais intelekts jūsu mājdzīvnieka labā",
+      "description": "Mūsu AI asistents atbild uz jautājumiem par mājdzīvniekiem – no ikdienas aprūpes līdz ārkārtas situācijām."
+    }
+  ]
+}
+,
+"postManagementSection": {
+  "title": "Gudra un ērtā ierakstu pārvaldība",
+  "description": "Pateicoties ērtajam dizainam un filtriem, ierakstu meklēšana kļūst vienkārša un patīkama. Saglabājiet ierakstus savā profilā, lai jebkurā laikā ērti sekotu to statusam."
+}
+
+}

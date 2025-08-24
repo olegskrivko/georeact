@@ -218,7 +218,8 @@ function UserPetBookmarks() {
                       </Avatar>
                     </Link>
                     <Box flexGrow={1}>
-                      <Typography variant="h6">
+                      <Typography variant="body2">{pet?.status_display || 'Unknown'}</Typography>
+                      {/* <Typography variant="h6">
                         <Chip
                           label={pet?.status_display || 'Unknown'}
                           onClick={() => {}} // dummy click
@@ -229,9 +230,9 @@ function UserPetBookmarks() {
                           size="small"
                           color="primary"
                         />
-                      </Typography>
+                      </Typography> */}
                       <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
-                        <Typography
+                        {/* <Typography
                           variant="body2"
                           sx={{
                             fontWeight: 500,
@@ -240,7 +241,17 @@ function UserPetBookmarks() {
                           }}
                         >
                           {pet?.species_display || 'Unknown'}
-                        </Typography>
+                        </Typography> */}
+                        <Chip
+                          label={pet?.species_display || 'Unknown'}
+                          onClick={() => {}} // dummy click
+                          sx={{
+                            cursor: 'default', // removes the hand pointer
+                            pointerEvents: 'auto', // ensures chip behaves normally visually
+                          }}
+                          size="small"
+                          color="primary"
+                        />
                       </Box>
                     </Box>
                     {/* <Box flexGrow={1}>

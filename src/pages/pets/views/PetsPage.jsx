@@ -25,7 +25,7 @@ import PetSidebar from '../components/PetSidebar';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const PetsList = () => {
+const PetsPage = () => {
   const { location: contextLocation } = useContext(LocationContext);
   const mapRef = useRef(null);
   const [pets, setPets] = useState([]);
@@ -43,8 +43,8 @@ const PetsList = () => {
     color: '',
   });
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [userLocation, setUserLocation] = useState([56.946285, 24.105078]); // Latvia default
-  const [mapCenter, setMapCenter] = useState([56.946285, 24.105078]); // Latvia default
+  const [userLocation, setUserLocation] = useState(null); // Latvia default
+  const [mapCenter, setMapCenter] = useState(null); // Latvia default
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -313,4 +313,4 @@ const PetsList = () => {
   );
 };
 
-export default PetsList;
+export default PetsPage;

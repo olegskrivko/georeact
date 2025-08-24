@@ -125,7 +125,7 @@ function DrawerAppBar(props) {
           </ListItem>
         ))} */}
         {links.map((link) => (
-          <ListItem disablePadding>
+          <ListItem disablePadding key={link.path}>
             <ListItemButton sx={{ textAlign: 'left' }}>
               <Link
                 key={link.path}

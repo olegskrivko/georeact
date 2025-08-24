@@ -184,13 +184,20 @@ function UserServices() {
                       <Avatar
                         src={service.service_image_1 || ''}
                         alt={service.operating_name || 'Unknown'}
-                        sx={{ width: 64, height: 64, mr: { xs: 1, sm: 2 }, cursor: 'pointer' }}
+                        sx={{
+                          width: 64,
+                          height: 64,
+                          mr: { xs: 1, sm: 2 },
+                          cursor: 'pointer',
+                          border: '2px solid #00b3a4',
+                        }}
                       >
                         {service.operating_name || '?'}
                       </Avatar>
                     </MuiLink>
                     <Box flexGrow={1}>
-                      <Typography variant="h6">
+                      <Typography variant="body2">{service?.operating_name}</Typography>
+                      {/* <Typography variant="h6">
                         <Chip
                           label={
                             service?.operating_name
@@ -207,8 +214,8 @@ function UserServices() {
                           size="small"
                           color="primary"
                         />
-                      </Typography>
-                      <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
+                      </Typography> */}
+                      {/* <Box display="flex" alignItems="center" justifyContent="flex-start" gap={1.5}>
                         <Typography
                           variant="body2"
                           sx={{
@@ -219,6 +226,24 @@ function UserServices() {
                         >
                           {service?.category_display || 'Unknown'}
                         </Typography>
+                      </Box> */}
+                      <Box>
+                        {service.service_categories && service.service_categories.length > 0 && (
+                          <Box display="flex" flexWrap="wrap" gap={1}>
+                            {service.service_categories.map((type) => (
+                              <Chip
+                                label={type?.name}
+                                onClick={() => {}} // dummy click
+                                sx={{
+                                  cursor: 'default', // removes the hand pointer
+                                  pointerEvents: 'auto', // ensures chip behaves normally visually
+                                }}
+                                size="small"
+                                color="primary"
+                              />
+                            ))}
+                          </Box>
+                        )}
                       </Box>
                     </Box>
 

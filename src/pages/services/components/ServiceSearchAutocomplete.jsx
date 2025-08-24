@@ -23,7 +23,7 @@ const ServiceSearchAutocomplete = ({ filters, searchValue, onSearchSelect }) => 
         try {
           // added part after ?search=${inputValue} so it would suggest based on already filtered pets
           const res = await axios.get(
-            `${API_BASE_URL}/api/services/?search=${inputValue}&category=${filters.category}&provider=${filters.provider}`,
+            `${API_BASE_URL}/api/services/?search=${inputValue}&category=${filters.category}&provider=${filters.provider}&service_category_slug=${filters.service_category_slug}`,
           );
           const suggestions = res.data.results.map((service) => ({
             label: `${service.operating_name || ''} ${service.description || ''}`.trim(),
